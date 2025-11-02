@@ -9,6 +9,13 @@ export function getListPage(query) {
     params: query
   })
 }
+// 查询列表
+export function getListPageAll() {
+  return request({
+    url: '/system/client/list',
+    method: 'get',
+  })
+}
 // 新增
 export function addRequest(data) {
   return request({

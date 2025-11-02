@@ -75,7 +75,7 @@
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="客户编码" align="center" prop="clientCode" :show-overflow-tooltip="true"/>
       <el-table-column label="客户名称" align="center" prop="clientName" :show-overflow-tooltip="true"/>
-      <el-table-column label="国别" align="center" prop="usdQuotation" :show-overflow-tooltip="true"/>
+      <el-table-column label="国别" align="center" prop="country" :show-overflow-tooltip="true"/>
       <el-table-column label="联系人" align="center" prop="contact" :show-overflow-tooltip="true"/>
       <el-table-column label="电话" align="center" prop="telphone" :show-overflow-tooltip="true"/>
       <el-table-column label="传真" align="center" prop="fax" :show-overflow-tooltip="true"/>
@@ -110,8 +110,8 @@
         <el-form-item label="客户名称" prop="clientName">
           <el-input v-model.trim="form.clientName" placeholder="请输入客户名称"/>
         </el-form-item>
-        <el-form-item label="国别" prop="usdQuotation">
-          <el-input v-model.trim="form.usdQuotation" placeholder="请输入国别"/>
+        <el-form-item label="国别" prop="country">
+          <el-input v-model.trim="form.country" placeholder="请输入国别"/>
         </el-form-item>
         <el-form-item label="联系人" prop="contact">
           <el-input v-model.trim="form.contact" placeholder="请输入联系人"/>
@@ -243,7 +243,7 @@ function reset () {
     /**
      * 国别
      */
-    usdQuotation: null,
+    country: null,
   }
   proxy.resetForm('dictRef')
 }
