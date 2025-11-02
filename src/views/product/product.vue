@@ -556,9 +556,9 @@ function handleDelete (row) {
 
 /** 导出按钮操作 */
 function handleExport () {
-  proxy.download('/system/client/export', {
+  proxy.download('/system/product/export', {
     ...queryParams.value,
-  }, `客户管理_${new Date().getTime()}.xlsx`)
+  }, `产品管理_${new Date().getTime()}.xlsx`)
 }
 
 getList()
