@@ -217,29 +217,9 @@ function reset () {
      */
     fax: '',
     /**
-     * 主键
-     */
-    id: null,
-    /**
-     * 产品id
-     */
-    productId: null,
-    /**
-     * 备注
-     */
-    remark: '',
-    /**
      * 电话
      */
     telphone: '',
-    /**
-     * 更新者
-     */
-    updateBy: '',
-    /**
-     * 更新时间
-     */
-    updateTime: '',
     /**
      * 国别
      */
