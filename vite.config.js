@@ -3,7 +3,7 @@ import path from 'path'
 import createVitePlugins from './vite/plugins'
 
 // const baseUrl = 'https://vue.ruoyi.vip/prod-api' // 后端接口
-const baseUrl = 'http://120.79.93.118:8080' // 后端接口
+const baseUrl = 'http://120.79.93.118:80' // 后端接口
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode, command }) => {
