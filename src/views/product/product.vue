@@ -319,16 +319,18 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="照片" prop="fileUrlList">
-              <el-upload
-                  class="avatar-uploader"
-                  action="#"
-                  :show-file-list="true"
-                  list-type="picture-card"
-                  :on-success="handleAvatarSuccess"
-                  :file-list="form.fileUrlList"
-              >
-                <el-button size="small" type="primary">点击上传</el-button>
-              </el-upload>
+             <image-upload v-model="form.fileUrlList" :limit="10" :fileSize="10"></image-upload>
+
+<!--              <el-upload-->
+<!--                  class="avatar-uploader"-->
+<!--                  action="#"-->
+<!--                  :show-file-list="true"-->
+<!--                  list-type="picture-card"-->
+<!--                  :on-success="handleAvatarSuccess"-->
+<!--                  :file-list="form.fileUrlList"-->
+<!--              >-->
+<!--                <el-button size="small" type="primary">点击上传</el-button>-->
+<!--              </el-upload>-->
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -357,6 +359,7 @@
 import { getListPage, getDetailRequest, addRequest, updateRequest, delRequest } from '@/api/product.js'
 import { getListPageAll  as getClientListAll } from '@/api/client.js'
 import { getListPageAll as getSupplierListAll } from '@/api/supplier.js'
+import ImageUpload from '@/components/ImageUpload/index.vue'
 
 const { proxy } = getCurrentInstance()
 
