@@ -76,7 +76,7 @@ const props = defineProps({
   // 文件类型, 例如['png', 'jpg', 'jpeg']
   fileType: {
     type: Array,
-    default: () => ["png", "jpg", "jpeg"]
+    default: () => ["png", "jpg", "jpeg",  "webp"]
   },
   // 是否显示提示
   isShowTip: {
@@ -173,7 +173,7 @@ function handleExceed() {
 // 上传成功回调
 function handleUploadSuccess(res, file) {
   if (res.code === 200) {
-    uploadList.value.push({ name: res.fileName, url: res.fileName })
+    uploadList.value.push({ name: res.originalFilename, url: res.url })
     uploadedSuccessfully()
   } else {
     number.value--
@@ -219,14 +219,15 @@ function handlePictureCardPreview(file) {
 
 // 对象转成指定字符串分隔
 function listToString(list, separator) {
-  let strs = ""
-  separator = separator || ","
-  for (let i in list) {
-    if (undefined !== list[i].url && list[i].url.indexOf("blob:") !== 0) {
-      strs += list[i].url.replace(baseUrl, "") + separator
-    }
-  }
-  return strs != "" ? strs.substr(0, strs.length - 1) : ""
+  return list
+  // let strs = ""
+  // separator = separator || ","
+  // for (let i in list) {
+  //   if (undefined !== list[i].url && list[i].url.indexOf("blob:") !== 0) {
+  //     strs += list[i].url.replace(baseUrl, "") + separator
+  //   }
+  // }
+  // return strs != "" ? strs.substr(0, strs.length - 1) : ""
 }
 
 // 初始化拖拽排序
@@ -254,5 +255,5 @@ onMounted(() => {
 
 :deep(.el-upload.el-upload--picture-card.is-disabled) {
   display: none !important;
-} 
+}
 </style>
