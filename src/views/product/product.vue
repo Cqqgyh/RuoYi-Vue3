@@ -142,28 +142,13 @@
     <el-dialog :title="title" v-model="open" width="900px" append-to-body>
 
       <el-form ref="dictRef" :model="form" :rules="rules" label-width="90px">
+
+
+
+
+
         <!--        产品名称 name-->
         <!--        样品类别id	sampleCategoryId 下拉列表-->
-        <!--        入库时间	storageTime-->
-        <!--        客户	clientId  客户下拉列表-->
-        <!--        工厂	factoryId 供应商下拉列表-->
-        <!--        客人款号	clientStyleNo.-->
-        <!--        公司款号	styleNo.-->
-        <!--        工厂报价	factoryQuotation-->
-        <!--        美元报价	usdQuotation/newestUsdQuotation-->
-        <!--        尺码	size-->
-        <!--        面料种类	fabricCategoryId	下拉列表-->
-        <!--        面料成分	fabricComposition-->
-        <!--        面料克重	fabricWeight-->
-        <!--        面料价格	fabricPrice-->
-        <!--        面料供应商	fabricSupplierId	供应商下拉列表-->
-        <!--        里布种类	liningCategory-->
-        <!--        里布成分	liningIngredient-->
-        <!--        里布克重	liningWeightPer-->
-        <!--        里布价格	liningPrice-->
-        <!--        里布供应商	liningSupplierId	供应商下拉列表-->
-        <!--        备注  remark-->
-        <!--        照片  fileUrlList-->
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="产品名称" prop="name">
@@ -172,19 +157,38 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="样品类别" prop="sampleCategoryId">
-              <el-select v-model="form.sampleCategoryId" placeholder="请选择样品类别">
-                <el-option v-for="item in []" :key="item.sampleCategoryId" :label="item.sampleCategoryName"
-                           :value="item.sampleCategoryId"/>
+              <el-select v-model="form.sampleCategoryId" placeholder="请选择样品类别" filterable clearable>>
+                <el-option v-for="item in sampleCategoryList" :key="item.value" :label="item.label"
+                           :value="item.value"/>
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
+        <!--        入库时间	storageTime-->
+        <!--        客户	clientId  客户下拉列表-->
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="入库时间" prop="storageTime">
+              <el-date-picker style="width: 100%;" v-model="form.storageTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="请选择入库时间"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="客户" prop="clientId">
+              <el-select v-model="form.clientId" placeholder="请选择客户" filterable clearable>
+                <el-option v-for="item in clientList" :key="item.id" :label="item.clientName"
+                           :value="item.id"/>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <!--        工厂	factoryId 供应商下拉列表-->
+        <!--        客人款号	clientStyleNo.-->
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="工厂" prop="factoryId">
-              <el-select v-model="form.factoryId" placeholder="请选择工厂">
-                <el-option v-for="item in []" :key="item.factoryId" :label="item.factoryName"
-                           :value="item.factoryId"/>
+              <el-select v-model="form.factoryId" placeholder="请选择供应商" filterable clearable>
+                <el-option v-for="item in supplierList" :key="item.id" :label="item.supplierName"
+                           :value="item.id"/>
               </el-select>
             </el-form-item>
 
@@ -195,6 +199,8 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <!--        公司款号	styleNo.-->
+        <!--        工厂报价	factoryQuotation-->
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="公司款号" prop="styleNo">
@@ -208,6 +214,8 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <!--        美元报价	usdQuotation/newestUsdQuotation-->
+        <!--        尺码	size-->
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="美元报价" prop="usdQuotation">
@@ -221,13 +229,15 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <!--        面料种类	fabricCategoryId	下拉列表-->
+        <!--        面料成分	fabricComposition-->
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="面料种类" prop="fabricCategoryId">
-              <el-select v-model="form.fabricCategoryId" placeholder="请选择面料种类">
+              <el-select v-model="form.fabricCategoryId" placeholder="请选择面料种类" filterable clearable>
                 <el-option v-for="item in fabricCategoryList" :key="item.fabricCategoryId"
-                           :label="item.fabricCategoryName"
-                           :value="item.fabricCategoryId"/>
+                           :label="item.label"
+                           :value="item.value"/>
               </el-select>
             </el-form-item>
 
@@ -238,6 +248,8 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <!--        面料克重	fabricWeight-->
+        <!--        面料价格	fabricPrice-->
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="面料克重" prop="fabricWeight">
@@ -251,12 +263,14 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <!--        面料供应商	fabricSupplierId	供应商下拉列表-->
+        <!--        里布种类	liningCategory-->
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="面料供应商" prop="fabricSupplierId">
-              <el-select v-model="form.fabricSupplierId" placeholder="请选择面料供应商">
-                <el-option v-for="item in []" :key="item.fabricSupplierId" :label="item.fabricSupplierName"
-                           :value="item.fabricSupplierId"/>
+              <el-select v-model="form.fabricSupplierId" placeholder="请选择面料供应商" filterable clearable>
+                <el-option v-for="item in supplierList" :key="item.id" :label="item.supplierName"
+                           :value="item.id"/>
               </el-select>
             </el-form-item>
 
@@ -267,6 +281,8 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <!--        里布成分	liningIngredient-->
+        <!--        里布克重	liningWeightPer-->
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="里布成分" prop="liningIngredient">
@@ -280,6 +296,8 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <!--        里布价格	liningPrice-->
+        <!--        里布供应商	liningSupplierId	供应商下拉列表-->
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="里布价格" prop="liningPrice">
@@ -289,13 +307,15 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="里布供应商" prop="liningSupplierId">
-              <el-select v-model="form.liningSupplierId" placeholder="请选择里布供应商">
-                <el-option v-for="item in []" :key="item.liningSupplierId" :label="item.liningSupplierName"
+              <el-select v-model="form.liningSupplierId" placeholder="请选择里布供应商" filterable clearable>
+                <el-option v-for="item in supplierList" :key="item.id" :label="item.supplierName"
                            :value="item.liningSupplierId"/>
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
+        <!--        照片  fileUrlList-->
+        <!--        备注  remark-->
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="照片" prop="fileUrlList">
@@ -335,6 +355,8 @@
 <script setup name="Product">
 
 import { getListPage, getDetailRequest, addRequest, updateRequest, delRequest } from '@/api/product.js'
+import { getListPageAll  as getClientListAll } from '@/api/client.js'
+import { getListPageAll as getSupplierListAll } from '@/api/supplier.js'
 
 const { proxy } = getCurrentInstance()
 
@@ -359,6 +381,26 @@ const data = reactive({
 })
 
 const { queryParams, form, rules } = toRefs(data)
+//#region <供应商、客户>
+const supplierList = ref([])
+const clientList = ref([])
+/** 获取客户列表 */
+async function getClientList () {
+ const res = await getClientListAll()
+  clientList.value = res.data
+}
+async function getSupplierList () {
+  const res = await getSupplierListAll()
+  supplierList.value = res.data
+}
+getClientList()
+getSupplierList()
+//#endregion
+//#region <样品类别、面料种类>
+const { fabric_category : fabricCategoryList, sample_category : sampleCategoryList } = proxy.useDict("fabric_category", "sample_category")
+console.log('fabricCategoryList',fabricCategoryList)
+console.log('sampleCategoryList',sampleCategoryList)
+//#endregion
 
 /** 查询字典类型列表 */
 function getList () {
