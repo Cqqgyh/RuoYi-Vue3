@@ -1,0 +1,45 @@
+
+
+# 方法1：尝试常见的源码安装路径（最可能）
+/usr/local/nginx/sbin/nginx -t  # 检查配置语法
+/usr/local/nginx/sbin/nginx -s reload  # 重载配置
+
+查看 Nginx 错误日志，快速定位：
+tail -f /usr/local/nginx/logs/error.log
+
+查看java启动
+ps -ef | grep java
+
+结合日志查看应用状态：
+tail -f /opt/jenkins-logs/honeycom-require-biz.log
+
+生产环境打包：
+npm run build:prod
+测试 / 预发布环境打包：
+npm run build:stage
+
+java启动
+nohup java -Dfile.encoding=utf-8 -jar /opt/bin/jar/honeycom-require-biz.jar --server.port=8080 > /opt/jenkins-logs/honeycom-require-biz.log 2>&1 &
+
+查看日志确认启动状态：
+tail -f /opt/jenkins-logs/honeycom-require-biz.log
+
+#监听端口号
+    server {
+        listen       80;
+        server_name  120.79.93.118;
+#api路由转发
+       location /api/ {
+                  #部署在同一个服务器上
+                 proxy_pass http://127.0.0.1:8080/;
+                 proxy_set_header Host $host;
+                 proxy_set_header X-Real-IP $remote_addr;
+                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                 proxy_set_header X-Forwarded-Proto $scheme;
+             }
+#前端文件路径
+   location / {
+            root   /opt/vue/dist;
+            index  index.html index.htm;
+	    try_files $uri $uri/ @router;
+        }
