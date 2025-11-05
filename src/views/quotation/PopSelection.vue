@@ -14,6 +14,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="报价日期" prop="quotationDate">
+              <!--              默认是当日-->
               <el-date-picker
                   v-model="form.quotationDate"
                   type="date"
@@ -84,7 +85,9 @@
                 <el-form ref="formRef" :model="tableData">
                   <el-table :data="tableData" style="width: 100%" height="485px">
                     <!-- 姓名列 -->
-                    <el-table-column prop="name" label="产品名称" />
+                    <el-table-column prop="name" label="产品名称"  :show-overflow-tooltip="true"/>
+                    <el-table-column prop="clientStyleNo" label="客人款号"  :show-overflow-tooltip="true"/>
+                    <el-table-column prop="styleNo" label="公司款号"  :show-overflow-tooltip="true"/>
                     <!-- 客户 -->
                     <el-table-column prop="clientId" label="客户*"
                     >
@@ -188,6 +191,7 @@
 <script lang="ts" setup name="SelectDialog">
 import { ref,  computed, watch, nextTick, h } from "vue";
 import { ElMessage} from "element-plus";
+import dayjs from 'dayjs'
 import {
   getListPageAll,addRequest
 } from '@/api/product.js'
@@ -212,14 +216,16 @@ const close = () => {
 // 报价日期quotationDate	报价单号quotationNo
 const topFormRef = ref()
 const form = ref({
-  quotationDate: '',
+  // 默认是当日
+  // 默认是当日 value-format="YYYY-MM-DD"
+  quotationDate: dayjs().format('YYYY-MM-DD'),
   quotationNo: '',
 })
 /** 表单重置 */
 function reset () {
   form.value ={
-    quotationDate: '',
-        quotationNo: '',
+    quotationDate: dayjs().format('YYYY-MM-DD'),
+    quotationNo: '',
   }
   proxy?.resetForm('dictRef')
 }
@@ -653,12 +659,13 @@ const submitForm = async () => {
 
     // 收集表单数据
     // 报价日期quotationDate	客户clientId  美元报价usdQuotation 备注remark
+    console.log(tableData.value)
     const formData = {
       ...form.value,
       productReqs:tableData.value.map(item => ({
-        id: item.id,
-        quotationDate: item.quotationDate,
-        clientId: item.clientId,
+        productId: item.id,
+        clientStyleNo: item.clientStyleNo,
+        styleNo: item.styleNo,
         usdQuotation: item.usdQuotation,
         remark: item.remark,
       }))

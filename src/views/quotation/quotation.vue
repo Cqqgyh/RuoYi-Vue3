@@ -104,7 +104,7 @@
     <PopSelection
         ref="PopSelectionRef"
         :title="title"
-        width="1000px"
+        width="1200px"
         append-to-body
     />
   </div>
