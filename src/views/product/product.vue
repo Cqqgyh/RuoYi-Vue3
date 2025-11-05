@@ -157,7 +157,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="样品类别" prop="sampleCategoryId">
-              <el-select v-model="form.sampleCategoryId" placeholder="请选择样品类别" filterable clearable>>
+              <el-select v-model="form.sampleCategoryId" placeholder="请选择样品类别" filterable clearable>
                 <el-option v-for="item in sampleCategoryList" :key="item.value" :label="item.label"
                            :value="item.value"/>
               </el-select>
@@ -400,7 +400,7 @@ getClientList()
 getSupplierList()
 //#endregion
 //#region <样品类别、面料种类>
-const { fabric_category : fabricCategoryList, sample_category : sampleCategoryList } = proxy.useDict("fabric_category", "sample_category")
+const { fabric_category : fabricCategoryList, sample_category : sampleCategoryList } = proxy.useDictForCode("fabric_category", "sample_category")
 console.log('fabricCategoryList',fabricCategoryList)
 console.log('sampleCategoryList',sampleCategoryList)
 //#endregion

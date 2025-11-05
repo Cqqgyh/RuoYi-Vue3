@@ -25,7 +25,7 @@ import elementIcons from '@/components/SvgIcon/svgicon'
 
 import './permission' // permission control
 
-import { useDict } from '@/utils/dict'
+import { useDict, useDictForCode } from '@/utils/dict'
 import { getConfigKey } from "@/api/system/config"
 import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels } from '@/utils/ruoyi'
 
@@ -48,6 +48,7 @@ const app = createApp(App)
 
 // 全局方法挂载
 app.config.globalProperties.useDict = useDict
+app.config.globalProperties.useDictForCode = useDictForCode
 app.config.globalProperties.download = download
 app.config.globalProperties.parseTime = parseTime
 app.config.globalProperties.resetForm = resetForm
