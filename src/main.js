@@ -25,6 +25,10 @@ import elementIcons from '@/components/SvgIcon/svgicon'
 
 import './permission' // permission control
 
+// 布局工具
+import { Splitpanes, Pane } from "splitpanes";
+import "splitpanes/dist/splitpanes.css";
+
 import { useDict, useDictForCode } from '@/utils/dict'
 import { getConfigKey } from "@/api/system/config"
 import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels } from '@/utils/ruoyi'
@@ -58,6 +62,9 @@ app.config.globalProperties.getConfigKey = getConfigKey
 app.config.globalProperties.selectDictLabel = selectDictLabel
 app.config.globalProperties.selectDictLabels = selectDictLabels
 
+// 注册全局组件
+app.component("Splitpanes", Splitpanes);
+app.component("Pane", Pane);
 // 全局组件挂载
 app.component('DictTag', DictTag)
 app.component('Pagination', Pagination)

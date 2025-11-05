@@ -1,20 +1,229 @@
+<template>
+  <el-dialog
+      v-model="visible"
+      destroy-on-close
+  >
+    <div class="dashboard-container">
+      <el-form ref="topFormRef" :model="form" label-width="90px">
+        <el-row :gutter="20">
+          <el-col :span="12">
+<!--            动态rules，当tableData长度大于时，报价单号必填-->
+            <el-form-item label="报价单号" prop="quotationNo" :required="tableData.length > 1" :rules="tableData.length > 1 ? [{ required: true, message: '请输入报价单号', trigger: 'blur' }] : []">
+              <el-input v-model.trim="form.quotationNo" placeholder="请输入报价单号"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="报价日期" prop="quotationDate">
+              <el-date-picker
+                  v-model="form.quotationDate"
+                  type="date"
+                  value-format="YYYY-MM-DD"
+                  placeholder="请选择报价日期"
+              />
+
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <splitpanes>
+        <pane>
+          <splitpanes>
+            <!-- 左侧选择器区域 -->
+            <pane size="30">
+              <div class="selector-panel">
+
+                <!-- 搜索输入框 -->
+                <el-input
+                    v-model="searchQuery"
+                    placeholder="搜索姓名、部门或邮箱..."
+                    prefix-icon="Search"
+                    clearable
+                    class="search-input"
+                />
+
+                <!-- 操作按钮组 -->
+                <div class="action-buttons">
+                  <el-button size="small" @click="clearSelection">清空选择</el-button>
+                  <el-button size="small" @click="selectAllFiltered">全选</el-button>
+                  <el-button size="small" @click="reverseSelection">反选</el-button>
+                </div>
+
+                <!-- 虚拟化列表控件 -->
+                <div class="tree-container">
+                  <el-tree-v2
+                      ref="treeRef"
+                      :data="listData"
+                      :props="{ label: 'name' }"
+                      :show-checkbox="true"
+                      :height="400"
+                      :check-strictly="false"
+                      @check="handleCheckChange"
+                      :render-content="renderContent"
+                      class="data-tree"
+                      :default-checked-keys="addedIds"
+                  >
+                    <template #empty>
+                      <el-empty description="没有找到匹配的数据" />
+                    </template>
+                  </el-tree-v2>
+                </div>
+
+                <!-- 搜索结果统计 -->
+                <div class="search-stats">
+                  共找到 {{ listData.length }} 条数据，
+                  已选择 {{ selectedCount }} 条
+                </div>
+              </div>
+            </pane>
+
+            <!-- 右侧表格区域 -->
+            <pane class="ml8">
+              <div class="table-panel">
+
+                <!-- 表格 -->
+                <el-form ref="formRef" :model="tableData">
+                  <el-table :data="tableData" style="width: 100%" height="485px">
+                    <!-- 姓名列 -->
+                    <el-table-column prop="name" label="产品名称" />
+                    <!-- 客户 -->
+                    <el-table-column prop="clientId" label="客户*"
+                    >
+                      <template #default="scope">
+                        <el-form-item
+                            :prop="`${scope.$index}.clientId`"
+                            style="margin-bottom: 0;width: 100%"
+
+                            :rules="[
+  { required: true, message: '请选择客户', trigger: 'blur' },
+]"
+                        >
+                          <el-select
+                              v-model="scope.row.clientId"
+                              placeholder="请选择客户"
+                              size="small"
+                              style="width: 100%"
+                              disabled
+                          >
+                            <el-option
+                                v-for="option in clientOptions"
+                                :key="option.id"
+                                :label="option.clientName"
+                                :value="option.id"
+                            />
+                          </el-select>
+                        </el-form-item>
+                      </template>
+                    </el-table-column>
+                    <!-- 美元报价 -->
+                    <el-table-column prop="usdQuotation" label="美元报价*"
+                    >
+                      <template #default="scope">
+                        <el-form-item
+                            :prop="`${scope.$index}.usdQuotation`"
+                            style="margin-bottom: 0;"
+                            :rules="[
+  { required: true, message: '请输入美元报价', trigger: 'blur' },
+]"
+                        >
+                          <el-input
+                              v-model.number="scope.row.usdQuotation"
+                              placeholder="请输入美元报价"
+                              size="small"
+                              type="number"
+                          />
+                        </el-form-item>
+                      </template>
+                    </el-table-column>
+
+                    <!-- 备注） -->
+                    <el-table-column prop="remark" label="备注">
+                      <template #default="scope">
+                        <el-form-item
+                            :prop="`${scope.$index}.remark`"
+                            style="margin-bottom: 0;"
+                        >
+                          <el-input
+                              v-model="scope.row.remark"
+                              placeholder="请输入备注"
+                              size="small"
+                              type="textarea"
+                          />
+                        </el-form-item>
+                      </template>
+                    </el-table-column>
+
+
+                    <!-- 操作列 -->
+                    <el-table-column label="操作" width="80">
+                      <template #default="scope">
+                        <el-button
+                            size="small"
+                            type="danger"
+                            @click="deleteRow(scope.row)"
+                        >
+                          删除
+                        </el-button>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </el-form>
+
+              </div>
+            </pane>
+          </splitpanes>
+        </pane>
+      </splitpanes>
+    </div>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="close">取消</el-button>
+        <el-button type="primary" @click="submitForm">
+          确认
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
+
+</template>
 <script lang="ts" setup name="SelectDialog">
-import { ref, reactive, computed, watch, nextTick, h } from "vue";
-import { ElMessage, ElMessageBox, type TreeNode } from "element-plus";
-import type { TreeNodeData } from "element-plus/es/components/tree-v2/src/types";
+import { ref,  computed, watch, nextTick, h } from "vue";
+import { ElMessage} from "element-plus";
+import {
+  getListPageAll,addRequest
+} from '@/api/product.js'
+
+const { proxy } = getCurrentInstance()
 //#region <弹窗相关>
 const visible = ref(false);
 // 开启弹窗
 const open = () => {
   visible.value = true;
+  reset()
+  getList()
 };
 // 关闭弹窗
 const close = () => {
+  reset()
   visible.value = false;
 };
 
 //#endregion
-
+//#region <form相关>
+// 报价日期quotationDate	报价单号quotationNo
+const topFormRef = ref()
+const form = ref({
+  quotationDate: '',
+  quotationNo: '',
+})
+/** 表单重置 */
+function reset () {
+  form.value ={
+    quotationDate: '',
+        quotationNo: '',
+  }
+  proxy?.resetForm('dictRef')
+}
+//#endregion
 // 原始数据
 const allOptions = ref([
   {
@@ -66,9 +275,9 @@ const allOptions = ref([
     "updateBy": "2025-04-15",
     "updateTime": "2025-11-01 01:18:29",
     "remark": "in adipisicing laboris do",
-    "id": 21,
+    "id": 2,
     "delFlag": "0",
-    "name": "仪秀英",
+    "name": "仪秀英2",
     "sampleCategoryId": 30,
     "sampleCategoryName": "分类1",
     "storageTime": "1974-03-31",
@@ -77,7 +286,7 @@ const allOptions = ref([
     "factoryId": 1,
     "factoryName": "印子欣",
     "clientStyleNo": "clientStyleNo",
-    "styleNo": "styleNo003",
+    "styleNo": "styleNo",
     "factoryQuotation": 92,
     "usdQuotation": 8,
     "newestUsdQuotation": 84,
@@ -103,94 +312,13 @@ const allOptions = ref([
     "qrCodeUrl": null,
     "quotationRecordList": null
   },
-  {
-    "createBy": "admin",
-    "createTime": "2025-11-01 09:56:11",
-    "updateBy": "admin",
-    "updateTime": "2025-11-01 09:56:11",
-    "remark": "in adipisicing laboris do",
-    "id": 23,
-    "delFlag": "0",
-    "name": "仪秀英",
-    "sampleCategoryId": 30,
-    "sampleCategoryName": "分类1",
-    "storageTime": "1974-03-31",
-    "clientId": 4,
-    "clientName": "禚一全",
-    "factoryId": 1,
-    "factoryName": "印子欣",
-    "clientStyleNo": "clientStyleNo",
-    "styleNo": "styleNo002",
-    "factoryQuotation": 92,
-    "usdQuotation": 8,
-    "newestUsdQuotation": 84,
-    "size": 21,
-    "fabricCategoryId": 33,
-    "fabricCategoryName": "面料种类1",
-    "fabricComposition": "laboris in tempor irure cillum",
-    "fabricWeight": 25,
-    "fabricPrice": 34.89,
-    "fabricSupplierId": 2,
-    "fabricSupplierName": "功鑫",
-    "liningCategory": "pariatur Duis",
-    "liningIngredient": "tempor",
-    "liningWeightPer": 35,
-    "liningPrice": 87.69,
-    "liningSupplierId": 4,
-    "liningSupplierName": "宛安琪",
-    "isShowFlag": "1",
-    "isShowFlagStr": "是",
-    "registrar": 1,
-    "registrarName": "admin",
-    "fileUrlList": null,
-    "qrCodeUrl": null,
-    "quotationRecordList": null
-  },
-  {
-    "createBy": "admin",
-    "createTime": "2025-11-04 20:24:51",
-    "updateBy": "admin",
-    "updateTime": "2025-11-04 20:24:51",
-    "remark": "aute",
-    "id": 24,
-    "delFlag": "0",
-    "name": "愚宇",
-    "sampleCategoryId": 65,
-    "sampleCategoryName": null,
-    "storageTime": "1985-04-04",
-    "clientId": 35,
-    "clientName": "客户名称30",
-    "factoryId": 45,
-    "factoryName": "供应商名称39",
-    "clientStyleNo": "veniam non sed",
-    "styleNo": "elit consectetur ut magna Excepteur",
-    "factoryQuotation": 10,
-    "usdQuotation": 41,
-    "newestUsdQuotation": 73,
-    "size": 31,
-    "fabricCategoryId": 65,
-    "fabricCategoryName": null,
-    "fabricComposition": "commodo sint exercitation labore",
-    "fabricWeight": 38,
-    "fabricPrice": 316.19,
-    "fabricSupplierId": 11,
-    "fabricSupplierName": "供应商名称6",
-    "liningCategory": "Duis",
-    "liningIngredient": "ex est voluptate tempor",
-    "liningWeightPer": 73,
-    "liningPrice": 574.1,
-    "liningSupplierId": 50,
-    "liningSupplierName": "供应商名称44",
-    "isShowFlag": null,
-    "isShowFlagStr": null,
-    "registrar": 1,
-    "registrarName": "admin",
-    "fileUrlList": null,
-    "qrCodeUrl": null,
-    "quotationRecordList": null
-  }
 ]);
-
+// 获取原始数据
+/** 查询字典类型列表 */
+async function getList () {
+  const res = await getListPageAll()
+  allOptions.value = res.data
+}
 // 搜索关键词
 const searchQuery = ref("");
 
@@ -255,23 +383,27 @@ watch(tableData, (newTableData) => {
 
 // 删除行
 const deleteRow = (row) => {
-  ElMessageBox.confirm(
-      `确定要删除 ${row.name} 吗？`,
-      "提示",
-      {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      },
-  ).then(() => {
-    const index = tableData.value.findIndex(item => item.id === row.id);
-    if (index !== -1) {
-      tableData.value.splice(index, 1);
-      ElMessage.success("删除成功");
-    }
-  }).catch(() => {
-    ElMessage.info("已取消删除");
-  });
+  // ElMessageBox.confirm(
+  //     `确定要删除 ${row.name} 吗？`,
+  //     "提示",
+  //     {
+  //       confirmButtonText: "确定",
+  //       cancelButtonText: "取消",
+  //       type: "warning",
+  //     },
+  // ).then(() => {
+  //   const index = tableData.value.findIndex(item => item.id === row.id);
+  //   if (index !== -1) {
+  //     tableData.value.splice(index, 1);
+  //     ElMessage.success("删除成功");
+  //   }
+  // }).catch(() => {
+  //   ElMessage.info("已取消删除");
+  // });
+  const index = tableData.value.findIndex(item => item.id === row.id);
+  if (index !== -1) {
+    tableData.value.splice(index, 1);
+  }
 };
 
 // 客户选项
@@ -515,20 +647,28 @@ const submitForm = async () => {
 
   try {
     // 使用表单验证
+    await topFormRef.value.validate();
     await formRef.value.validate();
+    //
 
     // 收集表单数据
     // 报价日期quotationDate	客户clientId  美元报价usdQuotation 备注remark
-    const formData = tableData.value.map(item => ({
-      id: item.id,
-      quotationDate: item.quotationDate,
-      clientId: item.clientId,
-      usdQuotation: item.usdQuotation,
-      remark: item.remark,
-    }));
+    const formData = {
+      ...form.value,
+      productReqs:tableData.value.map(item => ({
+        id: item.id,
+        quotationDate: item.quotationDate,
+        clientId: item.clientId,
+        usdQuotation: item.usdQuotation,
+        remark: item.remark,
+      }))
+    }
 
     console.log("提交的表单数据：", formData);
-    ElMessage.success(`成功提交 ${formData.length} 条数据`);
+    await addRequest(formData);
+    ElMessage.success(`成功提交 ${formData.productReqs.length} 条数据`);
+    // 关闭弹窗
+    close();
 
     // 这里可以调用API提交数据
     // await submitData(formData)
@@ -552,173 +692,7 @@ defineExpose({
 });
 </script>
 
-<template>
-  <el-dialog
-      v-model="visible"
-  >
-    <div class="dashboard-container">
-      <splitpanes>
-        <pane>
-          <splitpanes>
-            <!-- 左侧选择器区域 -->
-            <pane size="30">
-              <div class="selector-panel">
 
-                <!-- 搜索输入框 -->
-                <el-input
-                    v-model="searchQuery"
-                    placeholder="搜索姓名、部门或邮箱..."
-                    prefix-icon="Search"
-                    clearable
-                    class="search-input"
-                />
-
-                <!-- 操作按钮组 -->
-                <div class="action-buttons">
-                  <el-button size="small" @click="clearSelection">清空选择</el-button>
-                  <el-button size="small" @click="selectAllFiltered">全选</el-button>
-                  <el-button size="small" @click="reverseSelection">反选</el-button>
-                </div>
-
-                <!-- 虚拟化列表控件 -->
-                <div class="tree-container">
-                  <el-tree-v2
-                      ref="treeRef"
-                      :data="listData"
-                      :props="{ label: 'name' }"
-                      :show-checkbox="true"
-                      :height="400"
-                      :check-strictly="false"
-                      @check="handleCheckChange"
-                      :render-content="renderContent"
-                      class="data-tree"
-                      :default-checked-keys="addedIds"
-                  >
-                    <template #empty>
-                      <el-empty description="没有找到匹配的数据" />
-                    </template>
-                  </el-tree-v2>
-                </div>
-
-                <!-- 搜索结果统计 -->
-                <div class="search-stats">
-                  共找到 {{ listData.length }} 条数据，
-                  已选择 {{ selectedCount }} 条
-                </div>
-              </div>
-            </pane>
-
-            <!-- 右侧表格区域 -->
-            <pane class="ml8">
-              <div class="table-panel">
-
-                <!-- 表格 -->
-                <el-form ref="formRef" :model="tableData">
-                  <el-table :data="tableData" style="width: 100%" height="485px">
-                    <!-- 姓名列 -->
-                    <el-table-column prop="name" label="产品名称" />
-                    <!-- 客户 -->
-                    <el-table-column prop="clientId" label="客户*"
-                    >
-                      <template #default="scope">
-                        <el-form-item
-                            :prop="`${scope.$index}.clientId`"
-                            style="margin-bottom: 0;width: 100%"
-
-                            :rules="[
-  { required: true, message: '请选择客户', trigger: 'blur' },
-]"
-                        >
-                          <el-select
-                              v-model="scope.row.clientId"
-                              placeholder="请选择客户"
-                              size="small"
-                              style="width: 100%"
-                              disabled
-                          >
-                            <el-option
-                                v-for="option in clientOptions"
-                                :key="option.id"
-                                :label="option.clientName"
-                                :value="option.id"
-                            />
-                          </el-select>
-                        </el-form-item>
-                      </template>
-                    </el-table-column>
-                    <!-- 美元报价 -->
-                    <el-table-column prop="usdQuotation" label="美元报价*"
-                    >
-                      <template #default="scope">
-                        <el-form-item
-                            :prop="`${scope.$index}.usdQuotation`"
-                            style="margin-bottom: 0;"
-                            :rules="[
-  { required: true, message: '请输入美元报价', trigger: 'blur' },
-]"
-                        >
-                          <el-input
-                              v-model.number="scope.row.usdQuotation"
-                              placeholder="请输入美元报价"
-                              size="small"
-                              type="number"
-                          />
-                        </el-form-item>
-                      </template>
-                    </el-table-column>
-
-                    <!-- 备注） -->
-                    <el-table-column prop="remark" label="备注">
-                      <template #default="scope">
-                        <el-form-item
-                            :prop="`${scope.$index}.remark`"
-                            style="margin-bottom: 0;"
-                        >
-                          <el-input
-                              v-model="scope.row.remark"
-                              placeholder="请输入备注"
-                              size="small"
-                              type="textarea"
-                          />
-                        </el-form-item>
-                      </template>
-                    </el-table-column>
-
-
-                    <!-- 操作列 -->
-                    <el-table-column label="操作" width="80">
-                      <template #default="scope">
-                        <el-button
-                            size="small"
-                            type="danger"
-                            @click="deleteRow(scope.row)"
-                        >
-                          删除
-                        </el-button>
-                      </template>
-                    </el-table-column>
-                  </el-table>
-                </el-form>
-
-                <!-- 空状态 -->
-                <el-empty v-if="tableData.length === 0" description="暂无数据，请从左侧选择器添加数据" />
-              </div>
-            </pane>
-          </splitpanes>
-        </pane>
-      </splitpanes>
-    </div>
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="close">取消</el-button>
-        <el-button type="primary" @click="submitForm">
-          确认
-        </el-button>
-      </div>
-    </template>
-  </el-dialog>
-
-</template>
 
 <style scoped lang="scss">
 .dashboard-container {

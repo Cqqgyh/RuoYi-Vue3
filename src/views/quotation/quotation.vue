@@ -101,44 +101,18 @@
     />
 
     <!-- 添加或修改参数配置对话框 -->
-    <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-
-      <el-form ref="dictRef" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="供应商编码" prop="supplierCode">
-          <el-input v-model.trim="form.supplierCode" placeholder="请输入供应商编码"/>
-        </el-form-item>
-        <el-form-item label="供应商名称" prop="supplierName">
-          <el-input v-model.trim="form.supplierName" placeholder="请输入供应商名称"/>
-        </el-form-item>
-        <el-form-item label="联系人" prop="contact">
-          <el-input v-model.trim="form.contact" placeholder="请输入联系人"/>
-        </el-form-item>
-        <el-form-item label="电话" prop="telphone">
-          <el-input v-model.trim="form.telphone" placeholder="请输入电话"/>
-        </el-form-item>
-        <el-form-item label="传真" prop="fax">
-          <el-input v-model.trim="form.fax" placeholder="请输入传真"/>
-        </el-form-item>
-        <el-form-item label="邮件" prop="email">
-          <el-input v-model.trim="form.email" placeholder="请输入邮件"/>
-        </el-form-item>
-        <el-form-item label="微信号" prop="wxCode">
-          <el-input v-model.trim="form.wxCode" placeholder="请输入邮件"/>
-        </el-form-item>
-
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="cancel">取 消</el-button>
-        </div>
-      </template>
-    </el-dialog>
+    <PopSelection
+        ref="PopSelectionRef"
+        :title="title"
+        width="1000px"
+        append-to-body
+    />
   </div>
+
 </template>
 
 <script setup name="Quotation">
-
+import PopSelection from './PopSelection.vue'
 import {
   getListPage,
   getDetailRequest,
@@ -167,21 +141,13 @@ const data = reactive({
     pageNum: 1,
     pageSize: 10,
   },
-  rules: {
-    supplierCode: [{ required: true, message: '请输入供应商编码', trigger: 'blur' }],
-    supplierName: [{ required: true, message: '请输入供应商名称', trigger: 'blur' }],
-    contact: [{ required: true, message: '请输入联系人', trigger: 'blur' }],
-    // 电话不能包含特殊字符
-    telphone: [{ required: true, message: '请输入电话', trigger: 'blur' },
-      { pattern: /^[0-9-]+$/, message: '电话只能包含数字、-', trigger: 'blur' }
-    ],
-    email: [{ required: true, message: '请输入邮件', trigger: 'blur' },
-      { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
-    ],
-  },
 })
 
-const { queryParams, form, rules } = toRefs(data)
+const { queryParams, form } = toRefs(data)
+//#region <弹窗相关>
+const visible = ref(false)
+const PopSelectionRef = ref()
+//#endregion
 
 /** 查询字典类型列表 */
 function getList () {
@@ -194,46 +160,7 @@ function getList () {
   })
 }
 
-/** 取消按钮 */
-function cancel () {
-  open.value = false
-  reset()
-}
 
-/** 表单重置 */
-function reset () {
-  form.value = {
-    /**
-     * 供应商编码
-     */
-    supplierCode: '',
-    /**
-     * 供应商名称
-     */
-    supplierName: '',
-    /**
-     * 联系人
-     */
-    contact: '',
-    /**
-     * 邮件
-     */
-    email: '',
-    /**
-     * 传真
-     */
-    fax: '',
-    /**
-     * 电话
-     */
-    telphone: '',
-    /**
-     * 微信号
-     */
-    wxCode: '',
-  }
-  proxy.resetForm('dictRef')
-}
 
 /** 搜索按钮操作 */
 function handleQuery () {
@@ -244,15 +171,14 @@ function handleQuery () {
 /** 重置按钮操作 */
 function resetQuery () {
   dateRange.value = []
-  proxy.resetForm('queryRef')
   handleQuery()
 }
 
 /** 新增按钮操作 */
 function handleAdd () {
-  reset()
-  open.value = true
-  title.value = '添加供应商'
+  title.value = '添加报价'
+  visible.value = !visible.value
+  PopSelectionRef.value.open()
 }
 
 /** 多选框选中数据 */
