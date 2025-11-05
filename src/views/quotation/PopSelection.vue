@@ -221,7 +221,9 @@ function reset () {
     quotationDate: '',
         quotationNo: '',
   }
-  proxy?.resetForm('dictRef')
+  // 清空表格数据
+  tableData.value=[]
+  proxy?.resetForm('topFormRef')
 }
 //#endregion
 // 原始数据
