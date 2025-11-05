@@ -112,7 +112,7 @@
 </template>
 
 <script setup name="Quotation">
-import PopSelection from './PopSelection.vue'
+import PopSelection from './popSelection.vue'
 import {
   getListPage,
   getDetailRequest,
