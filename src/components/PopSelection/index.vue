@@ -1,16 +1,194 @@
-<script lang="ts" setup name="Dashboard">
+<script lang="ts" setup name="SelectDialog">
 import { ref, reactive, computed, watch, nextTick, h } from "vue";
 import { ElMessage, ElMessageBox, type TreeNode } from "element-plus";
 import type { TreeNodeData } from "element-plus/es/components/tree-v2/src/types";
+//#region <弹窗相关>
+const visible = ref(false);
+// 开启弹窗
+const open = () => {
+  visible.value = true;
+};
+// 关闭弹窗
+const close = () => {
+  visible.value = false;
+};
+
+//#endregion
 
 // 原始数据
 const allOptions = ref([
-  { id: 1, name: "张三", age: 25, email: "zhangsan@example.com", department: "技术部" },
-  { id: 2, name: "李四", age: 30, email: "lisi@example.com", department: "产品部" },
-  { id: 3, name: "王五", age: 28, email: "wangwu@example.com", department: "设计部" },
-  { id: 4, name: "赵六", age: 32, email: "zhaoliu@example.com", department: "市场部" },
-  { id: 5, name: "钱七", age: 26, email: "qianqi@example.com", department: "技术部" },
-  { id: 6, name: "孙八", age: 29, email: "sunba@example.com", department: "运营部" },
+  {
+    "createBy": "consequat cillum velit anim",
+    "createTime": "2025-11-01 01:18:29",
+    "updateBy": "2025-04-15",
+    "updateTime": "2025-11-01 01:18:29",
+    "remark": "in adipisicing laboris do",
+    "id": 1,
+    "delFlag": "0",
+    "name": "仪秀英",
+    "sampleCategoryId": 30,
+    "sampleCategoryName": "分类1",
+    "storageTime": "1974-03-31",
+    "clientId": 4,
+    "clientName": "禚一全",
+    "factoryId": 1,
+    "factoryName": "印子欣",
+    "clientStyleNo": "clientStyleNo",
+    "styleNo": "styleNo",
+    "factoryQuotation": 92,
+    "usdQuotation": 8,
+    "newestUsdQuotation": 84,
+    "size": 21,
+    "fabricCategoryId": 33,
+    "fabricCategoryName": "面料种类1",
+    "fabricComposition": "laboris in tempor irure cillum",
+    "fabricWeight": 25,
+    "fabricPrice": 34.89,
+    "fabricSupplierId": 2,
+    "fabricSupplierName": "功鑫",
+    "liningCategory": "pariatur Duis",
+    "liningIngredient": "tempor",
+    "liningWeightPer": 35,
+    "liningPrice": 87.69,
+    "liningSupplierId": 4,
+    "liningSupplierName": "宛安琪",
+    "isShowFlag": "1",
+    "isShowFlagStr": "是",
+    "registrar": 1,
+    "registrarName": "admin",
+    "fileUrlList": null,
+    "qrCodeUrl": null,
+    "quotationRecordList": null
+  },
+  {
+    "createBy": "consequat cillum velit anim",
+    "createTime": "2025-11-01 01:18:29",
+    "updateBy": "2025-04-15",
+    "updateTime": "2025-11-01 01:18:29",
+    "remark": "in adipisicing laboris do",
+    "id": 21,
+    "delFlag": "0",
+    "name": "仪秀英",
+    "sampleCategoryId": 30,
+    "sampleCategoryName": "分类1",
+    "storageTime": "1974-03-31",
+    "clientId": 4,
+    "clientName": "禚一全",
+    "factoryId": 1,
+    "factoryName": "印子欣",
+    "clientStyleNo": "clientStyleNo",
+    "styleNo": "styleNo003",
+    "factoryQuotation": 92,
+    "usdQuotation": 8,
+    "newestUsdQuotation": 84,
+    "size": 21,
+    "fabricCategoryId": 33,
+    "fabricCategoryName": "面料种类1",
+    "fabricComposition": "laboris in tempor irure cillum",
+    "fabricWeight": 25,
+    "fabricPrice": 34.89,
+    "fabricSupplierId": 2,
+    "fabricSupplierName": "功鑫",
+    "liningCategory": "pariatur Duis",
+    "liningIngredient": "tempor",
+    "liningWeightPer": 35,
+    "liningPrice": 87.69,
+    "liningSupplierId": 4,
+    "liningSupplierName": "宛安琪",
+    "isShowFlag": "1",
+    "isShowFlagStr": "是",
+    "registrar": 1,
+    "registrarName": "admin",
+    "fileUrlList": null,
+    "qrCodeUrl": null,
+    "quotationRecordList": null
+  },
+  {
+    "createBy": "admin",
+    "createTime": "2025-11-01 09:56:11",
+    "updateBy": "admin",
+    "updateTime": "2025-11-01 09:56:11",
+    "remark": "in adipisicing laboris do",
+    "id": 23,
+    "delFlag": "0",
+    "name": "仪秀英",
+    "sampleCategoryId": 30,
+    "sampleCategoryName": "分类1",
+    "storageTime": "1974-03-31",
+    "clientId": 4,
+    "clientName": "禚一全",
+    "factoryId": 1,
+    "factoryName": "印子欣",
+    "clientStyleNo": "clientStyleNo",
+    "styleNo": "styleNo002",
+    "factoryQuotation": 92,
+    "usdQuotation": 8,
+    "newestUsdQuotation": 84,
+    "size": 21,
+    "fabricCategoryId": 33,
+    "fabricCategoryName": "面料种类1",
+    "fabricComposition": "laboris in tempor irure cillum",
+    "fabricWeight": 25,
+    "fabricPrice": 34.89,
+    "fabricSupplierId": 2,
+    "fabricSupplierName": "功鑫",
+    "liningCategory": "pariatur Duis",
+    "liningIngredient": "tempor",
+    "liningWeightPer": 35,
+    "liningPrice": 87.69,
+    "liningSupplierId": 4,
+    "liningSupplierName": "宛安琪",
+    "isShowFlag": "1",
+    "isShowFlagStr": "是",
+    "registrar": 1,
+    "registrarName": "admin",
+    "fileUrlList": null,
+    "qrCodeUrl": null,
+    "quotationRecordList": null
+  },
+  {
+    "createBy": "admin",
+    "createTime": "2025-11-04 20:24:51",
+    "updateBy": "admin",
+    "updateTime": "2025-11-04 20:24:51",
+    "remark": "aute",
+    "id": 24,
+    "delFlag": "0",
+    "name": "愚宇",
+    "sampleCategoryId": 65,
+    "sampleCategoryName": null,
+    "storageTime": "1985-04-04",
+    "clientId": 35,
+    "clientName": "客户名称30",
+    "factoryId": 45,
+    "factoryName": "供应商名称39",
+    "clientStyleNo": "veniam non sed",
+    "styleNo": "elit consectetur ut magna Excepteur",
+    "factoryQuotation": 10,
+    "usdQuotation": 41,
+    "newestUsdQuotation": 73,
+    "size": 31,
+    "fabricCategoryId": 65,
+    "fabricCategoryName": null,
+    "fabricComposition": "commodo sint exercitation labore",
+    "fabricWeight": 38,
+    "fabricPrice": 316.19,
+    "fabricSupplierId": 11,
+    "fabricSupplierName": "供应商名称6",
+    "liningCategory": "Duis",
+    "liningIngredient": "ex est voluptate tempor",
+    "liningWeightPer": 73,
+    "liningPrice": 574.1,
+    "liningSupplierId": 50,
+    "liningSupplierName": "供应商名称44",
+    "isShowFlag": null,
+    "isShowFlagStr": null,
+    "registrar": 1,
+    "registrarName": "admin",
+    "fileUrlList": null,
+    "qrCodeUrl": null,
+    "quotationRecordList": null
+  }
 ]);
 
 // 搜索关键词
@@ -32,10 +210,7 @@ const listData = computed(() => {
   }
 
   return allOptions.value.filter(item =>
-    item.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-    item.department.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-    item.email.toLowerCase().includes(searchQuery.value.toLowerCase()),
-  );
+      item.name.toLowerCase().includes(searchQuery.value.toLowerCase()));
 });
 
 // 获取已添加到右侧表格的ID列表
@@ -81,13 +256,13 @@ watch(tableData, (newTableData) => {
 // 删除行
 const deleteRow = (row) => {
   ElMessageBox.confirm(
-    `确定要删除 ${row.name} 吗？`,
-    "提示",
-    {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
-      type: "warning",
-    },
+      `确定要删除 ${row.name} 吗？`,
+      "提示",
+      {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      },
   ).then(() => {
     const index = tableData.value.findIndex(item => item.id === row.id);
     if (index !== -1) {
@@ -99,14 +274,179 @@ const deleteRow = (row) => {
   });
 };
 
-// 部门选项
-const departmentOptions = [
-  { label: "技术部", value: "技术部" },
-  { label: "产品部", value: "产品部" },
-  { label: "设计部", value: "设计部" },
-  { label: "市场部", value: "市场部" },
-  { label: "运营部", value: "运营部" },
-];
+// 客户选项
+const clientOptions = ref([
+  {
+    "createBy": "",
+    "createTime": "2025-11-04 09:45:14",
+    "updateBy": "",
+    "updateTime": null,
+    "remark": null,
+    "id": 106,
+    "delFlag": "0",
+    "productId": null,
+    "clientCode": "11",
+    "clientName": "2",
+    "country": "3",
+    "contact": "4",
+    "telphone": "13054729089",
+    "fax": "5",
+    "email": "2524028821@qq.com",
+  },
+  {
+    "createBy": "",
+    "createTime": "2025-11-02 21:31:07",
+    "updateBy": "",
+    "updateTime": null,
+    "remark": null,
+    "id": 101,
+    "delFlag": "0",
+    "productId": null,
+    "clientCode": "客户编码95",
+    "clientName": "客户名称95",
+    "country": null,
+    "contact": "联系人95",
+    "telphone": "957777777777",
+    "fax": "传真95",
+    "email": "email95@example.com",
+  },
+  {
+    "createBy": "",
+    "createTime": "2025-11-02 21:31:07",
+    "updateBy": "",
+    "updateTime": null,
+    "remark": null,
+    "id": 104,
+    "delFlag": "0",
+    "productId": null,
+    "clientCode": "客户编码97",
+    "clientName": "客户名称97",
+    "country": null,
+    "contact": "联系人97",
+    "telphone": "977777777777",
+    "fax": "传真97",
+    "email": "email97@example.com",
+  },
+  {
+    "createBy": "",
+    "createTime": "2025-11-02 21:31:07",
+    "updateBy": "",
+    "updateTime": null,
+    "remark": null,
+    "id": 103,
+    "delFlag": "0",
+    "productId": null,
+    "clientCode": "客户编码96",
+    "clientName": "客户名称96",
+    "country": null,
+    "contact": "联系人96",
+    "telphone": "967777777777",
+    "fax": "传真96",
+    "email": "email96@example.com",
+  },
+  {
+    "createBy": "",
+    "createTime": "2025-11-02 21:31:07",
+    "updateBy": "",
+    "updateTime": null,
+    "remark": null,
+    "id": 99,
+    "delFlag": "0",
+    "productId": null,
+    "clientCode": "客户编码98",
+    "clientName": "客户名称98",
+    "country": null,
+    "contact": "联系人98",
+    "telphone": "987777777777",
+    "fax": "传真98",
+    "email": "email98@example.com",
+  },
+  {
+    "createBy": "",
+    "createTime": "2025-11-02 21:31:07",
+    "updateBy": "",
+    "updateTime": null,
+    "remark": null,
+    "id": 102,
+    "delFlag": "0",
+    "productId": null,
+    "clientCode": "客户编码94",
+    "clientName": "客户名称94",
+    "country": null,
+    "contact": "联系人94",
+    "telphone": "947777777777",
+    "fax": "传真94",
+    "email": "email94@example.com",
+  },
+  {
+    "createBy": "",
+    "createTime": "2025-11-02 21:31:07",
+    "updateBy": "",
+    "updateTime": null,
+    "remark": null,
+    "id": 105,
+    "delFlag": "0",
+    "productId": null,
+    "clientCode": "客户编码100",
+    "clientName": "客户名称100",
+    "country": null,
+    "contact": "联系人100",
+    "telphone": "1007777777777",
+    "fax": "传真100",
+    "email": "email100@example.com",
+  },
+  {
+    "createBy": "",
+    "createTime": "2025-11-02 21:31:07",
+    "updateBy": "",
+    "updateTime": null,
+    "remark": null,
+    "id": 100,
+    "delFlag": "0",
+    "productId": null,
+    "clientCode": "客户编码99",
+    "clientName": "客户名称99",
+    "country": null,
+    "contact": "联系人99",
+    "telphone": "997777777777",
+    "fax": "传真99",
+    "email": "email99@example.com",
+  },
+  {
+    "createBy": "",
+    "createTime": "2025-11-02 21:31:06",
+    "updateBy": "",
+    "updateTime": null,
+    "remark": null,
+    "id": 60,
+    "delFlag": "0",
+    "productId": null,
+    "clientCode": "客户编码56",
+    "clientName": "客户名称56",
+    "country": null,
+    "contact": "联系人56",
+    "telphone": "567777777777",
+    "fax": "传真56",
+    "email": "email56@example.com",
+  },
+  {
+    "createBy": "",
+    "createTime": "2025-11-02 21:31:06",
+    "updateBy": "",
+    "updateTime": null,
+    "remark": null,
+    "id": 59,
+    "delFlag": "0",
+    "productId": null,
+    "clientCode": "客户编码54",
+    "clientName": "客户名称54",
+    "country": null,
+    "contact": "联系人54",
+    "telphone": "547777777777",
+    "fax": "传真54",
+    "email": "email54@example.com",
+  },
+]);
 
 // 清空选择
 const clearSelection = () => {
@@ -135,7 +475,7 @@ const selectAllFiltered = () => {
 const reverseSelection = () => {
   const allIds = listData.value.map(item => item.id);
   const currentAddedIds = addedIds.value.filter(id =>
-    listData.value.some(item => item.id === id),
+      listData.value.some(item => item.id === id),
   );
 
   const newSelection = allIds.filter(id => !currentAddedIds.includes(id));
@@ -146,7 +486,7 @@ const reverseSelection = () => {
 
   // 移除当前已添加的，添加未添加的
   tableData.value = tableData.value.filter(item =>
-    !listData.value.some(listItem => listItem.id === item.id),
+      !listData.value.some(listItem => listItem.id === item.id),
   );
 
   newSelection.forEach(id => {
@@ -159,19 +499,10 @@ const reverseSelection = () => {
 
 // 自定义节点内容
 const renderContent = ({ node, data }) => {
-  const isAdded = isAddedToTable(data.id);
   return h("div", {
     class: "employee-node",
   }, [
     h("span", { class: "employee-name" }, data.name),
-    h("span", { class: "employee-info" }, `${data.age}岁`),
-    h("span", { class: "employee-info" }, data.email),
-    h("span", { class: "employee-dept" }, data.department),
-    isAdded ? h("el-tag", {
-      type: "success",
-      size: "small",
-      style: { marginLeft: "8px" },
-    }, "已添加") : null,
   ]);
 };
 
@@ -187,12 +518,13 @@ const submitForm = async () => {
     await formRef.value.validate();
 
     // 收集表单数据
+    // 报价日期quotationDate	客户clientId  美元报价usdQuotation 备注remark
     const formData = tableData.value.map(item => ({
       id: item.id,
-      name: item.name,
-      age: item.age,
-      email: item.email,
-      department: item.department,
+      quotationDate: item.quotationDate,
+      clientId: item.clientId,
+      usdQuotation: item.usdQuotation,
+      remark: item.remark,
     }));
 
     console.log("提交的表单数据：", formData);
@@ -209,170 +541,183 @@ const submitForm = async () => {
 // 获取已选择的数量
 const selectedCount = computed(() => {
   return addedIds.value.filter(id =>
-    listData.value.some(item => item.id === id),
+      listData.value.some(item => item.id === id),
   ).length;
+});
+
+// 对外暴露
+defineExpose({
+  open,
+  close,
 });
 </script>
 
 <template>
-  <div class="dashboard-container">
-    <splitpanes>
-      <pane>
-        <splitpanes>
-          <!-- 左侧选择器区域 -->
-          <pane size="30">
-            <div class="selector-panel">
-              <h3 class="panel-title">数据选择器</h3>
+  <el-dialog
+      v-model="visible"
+  >
+    <div class="dashboard-container">
+      <splitpanes>
+        <pane>
+          <splitpanes>
+            <!-- 左侧选择器区域 -->
+            <pane size="30">
+              <div class="selector-panel">
 
-              <!-- 搜索输入框 -->
-              <el-input
-                v-model="searchQuery"
-                placeholder="搜索姓名、部门或邮箱..."
-                prefix-icon="Search"
-                clearable
-                class="search-input"
-              />
+                <!-- 搜索输入框 -->
+                <el-input
+                    v-model="searchQuery"
+                    placeholder="搜索姓名、部门或邮箱..."
+                    prefix-icon="Search"
+                    clearable
+                    class="search-input"
+                />
 
-              <!-- 操作按钮组 -->
-              <div class="action-buttons">
-                <el-button size="small" @click="clearSelection">清空选择</el-button>
-                <el-button size="small" @click="selectAllFiltered">全选</el-button>
-                <el-button size="small" @click="reverseSelection">反选</el-button>
-              </div>
+                <!-- 操作按钮组 -->
+                <div class="action-buttons">
+                  <el-button size="small" @click="clearSelection">清空选择</el-button>
+                  <el-button size="small" @click="selectAllFiltered">全选</el-button>
+                  <el-button size="small" @click="reverseSelection">反选</el-button>
+                </div>
 
-              <!-- 虚拟化列表控件 -->
-              <div class="tree-container">
-                <el-tree-v2
-                  ref="treeRef"
-                  :data="listData"
-                  :props="{ label: 'name' }"
-                  :show-checkbox="true"
-                  :height="400"
-                  :check-strictly="false"
-                  @check="handleCheckChange"
-                  :render-content="renderContent"
-                  class="data-tree"
-                  :default-checked-keys="addedIds"
-                >
-                  <template #empty>
-                    <el-empty description="没有找到匹配的数据" />
-                  </template>
-                </el-tree-v2>
-              </div>
-
-              <!-- 搜索结果统计 -->
-              <div class="search-stats">
-                共找到 {{ listData.length }} 条数据，
-                已选择 {{ selectedCount }} 条
-              </div>
-            </div>
-          </pane>
-
-          <!-- 右侧表格区域 -->
-          <pane class="ml8">
-            <div class="table-panel">
-              <h3 class="panel-title">数据表格（直接编辑）</h3>
-
-              <!-- 表格 -->
-              <el-form ref="formRef" :model="tableData">
-                <el-table :data="tableData" style="width: 100%">
-                  <!-- 姓名列 -->
-                  <el-table-column prop="name" label="姓名">
-                    <template #default="scope">
-                      <el-input
-                        v-model="scope.row.name"
-                        placeholder="请输入姓名"
-                        size="small"
-                      />
+                <!-- 虚拟化列表控件 -->
+                <div class="tree-container">
+                  <el-tree-v2
+                      ref="treeRef"
+                      :data="listData"
+                      :props="{ label: 'name' }"
+                      :show-checkbox="true"
+                      :height="400"
+                      :check-strictly="false"
+                      @check="handleCheckChange"
+                      :render-content="renderContent"
+                      class="data-tree"
+                      :default-checked-keys="addedIds"
+                  >
+                    <template #empty>
+                      <el-empty description="没有找到匹配的数据" />
                     </template>
-                  </el-table-column>
+                  </el-tree-v2>
+                </div>
 
-                  <!-- 年龄列 -->
-                  <el-table-column prop="age" label="年龄">
-                    <template #default="scope">
-                      <el-input
-                        v-model.number="scope.row.age"
-                        placeholder="年龄"
-                        size="small"
-                        type="number"
-                      />
-                    </template>
-                  </el-table-column>
+                <!-- 搜索结果统计 -->
+                <div class="search-stats">
+                  共找到 {{ listData.length }} 条数据，
+                  已选择 {{ selectedCount }} 条
+                </div>
+              </div>
+            </pane>
 
-                  <!-- 邮箱列（必填校验） -->
-                  <el-table-column prop="email" label="邮箱*">
-                    <template #default="scope">
-                      <el-form-item
-                        :prop="`${scope.$index}.email`"
-                        :rules="[
-  { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-  { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+            <!-- 右侧表格区域 -->
+            <pane class="ml8">
+              <div class="table-panel">
+
+                <!-- 表格 -->
+                <el-form ref="formRef" :model="tableData">
+                  <el-table :data="tableData" style="width: 100%" height="485px">
+                    <!-- 姓名列 -->
+                    <el-table-column prop="name" label="产品名称" />
+                    <!-- 客户 -->
+                    <el-table-column prop="clientId" label="客户*"
+                    >
+                      <template #default="scope">
+                        <el-form-item
+                            :prop="`${scope.$index}.clientId`"
+                            style="margin-bottom: 0;width: 100%"
+
+                            :rules="[
+  { required: true, message: '请选择客户', trigger: 'blur' },
 ]"
-                        style="margin-bottom: 0;"
-                      >
-                        <el-input
-                          v-model="scope.row.email"
-                          placeholder="请输入邮箱"
-                          size="small"
-                        />
-                      </el-form-item>
-                    </template>
-                  </el-table-column>
+                        >
+                          <el-select
+                              v-model="scope.row.clientId"
+                              placeholder="请选择客户"
+                              size="small"
+                              style="width: 100%"
+                              disabled
+                          >
+                            <el-option
+                                v-for="option in clientOptions"
+                                :key="option.id"
+                                :label="option.clientName"
+                                :value="option.id"
+                            />
+                          </el-select>
+                        </el-form-item>
+                      </template>
+                    </el-table-column>
+                    <!-- 美元报价 -->
+                    <el-table-column prop="usdQuotation" label="美元报价*"
+                    >
+                      <template #default="scope">
+                        <el-form-item
+                            :prop="`${scope.$index}.usdQuotation`"
+                            style="margin-bottom: 0;"
+                            :rules="[
+  { required: true, message: '请输入美元报价', trigger: 'blur' },
+]"
+                        >
+                          <el-input
+                              v-model.number="scope.row.usdQuotation"
+                              placeholder="请输入美元报价"
+                              size="small"
+                              type="number"
+                          />
+                        </el-form-item>
+                      </template>
+                    </el-table-column>
 
-                  <!-- 部门列 -->
-                  <el-table-column prop="department" label="部门">
-                    <template #default="scope">
-                      <el-select
-                        v-model="scope.row.department"
-                        placeholder="请选择部门"
-                        size="small"
-                        style="width: 100%"
-                      >
-                        <el-option
-                          v-for="option in departmentOptions"
-                          :key="option.value"
-                          :label="option.label"
-                          :value="option.value"
-                        />
-                      </el-select>
-                    </template>
-                  </el-table-column>
+                    <!-- 备注） -->
+                    <el-table-column prop="remark" label="备注">
+                      <template #default="scope">
+                        <el-form-item
+                            :prop="`${scope.$index}.remark`"
+                            style="margin-bottom: 0;"
+                        >
+                          <el-input
+                              v-model="scope.row.remark"
+                              placeholder="请输入备注"
+                              size="small"
+                              type="textarea"
+                          />
+                        </el-form-item>
+                      </template>
+                    </el-table-column>
 
-                  <!-- 操作列 -->
-                  <el-table-column label="操作" width="80">
-                    <template #default="scope">
-                      <el-button
-                        size="small"
-                        type="danger"
-                        @click="deleteRow(scope.row)"
-                      >
-                        删除
-                      </el-button>
-                    </template>
-                  </el-table-column>
-                </el-table>
-              </el-form>
 
-              <!-- 提交按钮 -->
-              <div class="submit-section">
-                <el-button
-                  type="primary"
-                  size="large"
-                  @click="submitForm"
-                  :disabled="tableData.length === 0"
-                >
-                  提交数据 ({{ tableData.length }})
-                </el-button>
+                    <!-- 操作列 -->
+                    <el-table-column label="操作" width="80">
+                      <template #default="scope">
+                        <el-button
+                            size="small"
+                            type="danger"
+                            @click="deleteRow(scope.row)"
+                        >
+                          删除
+                        </el-button>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </el-form>
+
+                <!-- 空状态 -->
+                <el-empty v-if="tableData.length === 0" description="暂无数据，请从左侧选择器添加数据" />
               </div>
+            </pane>
+          </splitpanes>
+        </pane>
+      </splitpanes>
+    </div>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="close">取消</el-button>
+        <el-button type="primary" @click="submitForm">
+          确认
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
 
-              <!-- 空状态 -->
-              <el-empty v-if="tableData.length === 0" description="暂无数据，请从左侧选择器添加数据" />
-            </div>
-          </pane>
-        </splitpanes>
-      </pane>
-    </splitpanes>
-  </div>
 </template>
 
 <style scoped lang="scss">
@@ -387,13 +732,6 @@ const selectedCount = computed(() => {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-
-  .panel-title {
-    margin-bottom: 20px;
-    color: #333;
-    font-size: 18px;
-    font-weight: bold;
-  }
 
   .search-input {
     margin-bottom: 15px;
@@ -489,9 +827,10 @@ const selectedCount = computed(() => {
     // 所有行都显示为编辑状态
     .el-table__row {
       background-color: #f0f9ff;
-      .cell{
+
+      .cell {
         height: 50px;
-      //  居中
+        //  居中
         display: flex;
         align-items: center;
       }
@@ -512,16 +851,6 @@ const selectedCount = computed(() => {
     }
   }
 
-  .submit-section {
-    margin-top: 20px;
-    text-align: center;
-    padding-top: 20px;
-    border-top: 1px solid #e4e7ed;
-
-    .el-button {
-      min-width: 120px;
-    }
-  }
 }
 
 .ml8 {
