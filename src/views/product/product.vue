@@ -169,7 +169,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="入库时间" prop="storageTime">
-              <el-date-picker style="width: 100%;" v-model="form.storageTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="请选择入库时间"/>
+              <el-date-picker style="width: 100%;" v-model="form.storageTime" type="datetime" value-format="YYYY-MM-DD HH:mm:ss" placeholder="请选择入库时间"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
