@@ -193,8 +193,11 @@ import { ref,  computed, watch, nextTick, h } from "vue";
 import { ElMessage} from "element-plus";
 import dayjs from 'dayjs'
 import {
-  getListPageAll,addRequest
+  getListPageAll
 } from '@/api/product.js'
+import {
+  addRequest
+} from '@/api/quotation.js'
 
 const { proxy } = getCurrentInstance()
 //#region <弹窗相关>
@@ -231,94 +234,7 @@ function reset () {
 }
 //#endregion
 // 原始数据
-const allOptions = ref([
-  {
-    "createBy": "consequat cillum velit anim",
-    "createTime": "2025-11-01 01:18:29",
-    "updateBy": "2025-04-15",
-    "updateTime": "2025-11-01 01:18:29",
-    "remark": "in adipisicing laboris do",
-    "id": 1,
-    "delFlag": "0",
-    "name": "仪秀英",
-    "sampleCategoryId": 30,
-    "sampleCategoryName": "分类1",
-    "storageTime": "1974-03-31",
-    "clientId": 4,
-    "clientName": "禚一全",
-    "factoryId": 1,
-    "factoryName": "印子欣",
-    "clientStyleNo": "clientStyleNo",
-    "styleNo": "styleNo",
-    "factoryQuotation": 92,
-    "usdQuotation": 8,
-    "newestUsdQuotation": 84,
-    "size": 21,
-    "fabricCategoryId": 33,
-    "fabricCategoryName": "面料种类1",
-    "fabricComposition": "laboris in tempor irure cillum",
-    "fabricWeight": 25,
-    "fabricPrice": 34.89,
-    "fabricSupplierId": 2,
-    "fabricSupplierName": "功鑫",
-    "liningCategory": "pariatur Duis",
-    "liningIngredient": "tempor",
-    "liningWeightPer": 35,
-    "liningPrice": 87.69,
-    "liningSupplierId": 4,
-    "liningSupplierName": "宛安琪",
-    "isShowFlag": "1",
-    "isShowFlagStr": "是",
-    "registrar": 1,
-    "registrarName": "admin",
-    "fileUrlList": null,
-    "qrCodeUrl": null,
-    "quotationRecordList": null
-  },
-  {
-    "createBy": "consequat cillum velit anim",
-    "createTime": "2025-11-01 01:18:29",
-    "updateBy": "2025-04-15",
-    "updateTime": "2025-11-01 01:18:29",
-    "remark": "in adipisicing laboris do",
-    "id": 2,
-    "delFlag": "0",
-    "name": "仪秀英2",
-    "sampleCategoryId": 30,
-    "sampleCategoryName": "分类1",
-    "storageTime": "1974-03-31",
-    "clientId": 4,
-    "clientName": "禚一全",
-    "factoryId": 1,
-    "factoryName": "印子欣",
-    "clientStyleNo": "clientStyleNo",
-    "styleNo": "styleNo",
-    "factoryQuotation": 92,
-    "usdQuotation": 8,
-    "newestUsdQuotation": 84,
-    "size": 21,
-    "fabricCategoryId": 33,
-    "fabricCategoryName": "面料种类1",
-    "fabricComposition": "laboris in tempor irure cillum",
-    "fabricWeight": 25,
-    "fabricPrice": 34.89,
-    "fabricSupplierId": 2,
-    "fabricSupplierName": "功鑫",
-    "liningCategory": "pariatur Duis",
-    "liningIngredient": "tempor",
-    "liningWeightPer": 35,
-    "liningPrice": 87.69,
-    "liningSupplierId": 4,
-    "liningSupplierName": "宛安琪",
-    "isShowFlag": "1",
-    "isShowFlagStr": "是",
-    "registrar": 1,
-    "registrarName": "admin",
-    "fileUrlList": null,
-    "qrCodeUrl": null,
-    "quotationRecordList": null
-  },
-]);
+const allOptions = ref([]);
 // 获取原始数据
 /** 查询字典类型列表 */
 async function getList () {
