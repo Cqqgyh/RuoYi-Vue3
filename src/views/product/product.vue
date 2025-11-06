@@ -356,7 +356,7 @@
 
 <script setup name="Product">
 
-import { getListPage, getDetailRequest, addRequest, updateRequest, delRequest } from '@/api/product.js'
+import { getListPage, getDetailRequest, addRequest, updateRequest, delRequest, delBatchRequest } from '@/api/product.js'
 import { getListPageAll  as getClientListAll } from '@/api/client.js'
 import { getListPageAll as getSupplierListAll } from '@/api/supplier.js'
 import ImageUpload from '@/components/ImageUpload/index.vue'
@@ -603,9 +603,10 @@ function submitForm () {
 
 /** 删除按钮操作 */
 function handleDelete (row) {
-  const ids = row.id || ids.value
+  console.log('row',row)
+  const idOrIdList = row?.id || ids.value
   proxy.$modal.confirm('是否确认删除？').then(function () {
-    return delRequest(ids)
+    return Array.isArray(idOrIdList) ? delBatchRequest(idOrIdList) : delRequest(idOrIdList)
   }).then(() => {
     getList()
     proxy.$modal.msgSuccess('删除成功')
