@@ -603,7 +603,6 @@ function submitForm () {
 
 /** 删除按钮操作 */
 function handleDelete (row) {
-  console.log('row',row)
   const idOrIdList = row?.id || ids.value
   proxy.$modal.confirm('是否确认删除？').then(function () {
     return Array.isArray(idOrIdList) ? delBatchRequest(idOrIdList) : delRequest(idOrIdList)
