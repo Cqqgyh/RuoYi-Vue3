@@ -104,7 +104,7 @@
     <PopSelection
         ref="PopSelectionRef"
         :title="title"
-        width="1000px"
+        width="1200px"
         append-to-body
     />
   </div>
@@ -153,7 +153,7 @@ const PopSelectionRef = ref()
 function getList () {
   loading.value = true
   console.log('queryParams.value', queryParams.value)
-  getListPage(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
+  getListPage(proxy.addDateRangeMode(queryParams.value, dateRange.value)).then(response => {
     typeList.value = response.rows
     total.value = response.total
     loading.value = false

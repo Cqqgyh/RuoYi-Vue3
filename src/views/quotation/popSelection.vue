@@ -14,6 +14,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="报价日期" prop="quotationDate">
+              <!--              默认是当日-->
               <el-date-picker
                   v-model="form.quotationDate"
                   type="date"
@@ -84,7 +85,9 @@
                 <el-form ref="formRef" :model="tableData">
                   <el-table :data="tableData" style="width: 100%" height="485px">
                     <!-- 姓名列 -->
-                    <el-table-column prop="name" label="产品名称" />
+                    <el-table-column prop="name" label="产品名称"  :show-overflow-tooltip="true"/>
+                    <el-table-column prop="clientStyleNo" label="客人款号"  :show-overflow-tooltip="true"/>
+                    <el-table-column prop="styleNo" label="公司款号"  :show-overflow-tooltip="true"/>
                     <!-- 客户 -->
                     <el-table-column prop="clientId" label="客户*"
                     >
@@ -188,9 +191,13 @@
 <script lang="ts" setup name="SelectDialog">
 import { ref,  computed, watch, nextTick, h } from "vue";
 import { ElMessage} from "element-plus";
+import dayjs from 'dayjs'
 import {
-  getListPageAll,addRequest
+  getListPageAll
 } from '@/api/product.js'
+import {
+  addRequest
+} from '@/api/quotation.js'
 
 const { proxy } = getCurrentInstance()
 //#region <弹窗相关>
@@ -212,14 +219,16 @@ const close = () => {
 // 报价日期quotationDate	报价单号quotationNo
 const topFormRef = ref()
 const form = ref({
-  quotationDate: '',
+  // 默认是当日
+  // 默认是当日 value-format="YYYY-MM-DD"
+  quotationDate: dayjs().format('YYYY-MM-DD'),
   quotationNo: '',
 })
 /** 表单重置 */
 function reset () {
   form.value ={
-    quotationDate: '',
-        quotationNo: '',
+    quotationDate: dayjs().format('YYYY-MM-DD'),
+    quotationNo: '',
   }
   // 清空表格数据
   tableData.value=[]
@@ -227,94 +236,7 @@ function reset () {
 }
 //#endregion
 // 原始数据
-const allOptions = ref([
-  {
-    "createBy": "consequat cillum velit anim",
-    "createTime": "2025-11-01 01:18:29",
-    "updateBy": "2025-04-15",
-    "updateTime": "2025-11-01 01:18:29",
-    "remark": "in adipisicing laboris do",
-    "id": 1,
-    "delFlag": "0",
-    "name": "仪秀英",
-    "sampleCategoryId": 30,
-    "sampleCategoryName": "分类1",
-    "storageTime": "1974-03-31",
-    "clientId": 4,
-    "clientName": "禚一全",
-    "factoryId": 1,
-    "factoryName": "印子欣",
-    "clientStyleNo": "clientStyleNo",
-    "styleNo": "styleNo",
-    "factoryQuotation": 92,
-    "usdQuotation": 8,
-    "newestUsdQuotation": 84,
-    "size": 21,
-    "fabricCategoryId": 33,
-    "fabricCategoryName": "面料种类1",
-    "fabricComposition": "laboris in tempor irure cillum",
-    "fabricWeight": 25,
-    "fabricPrice": 34.89,
-    "fabricSupplierId": 2,
-    "fabricSupplierName": "功鑫",
-    "liningCategory": "pariatur Duis",
-    "liningIngredient": "tempor",
-    "liningWeightPer": 35,
-    "liningPrice": 87.69,
-    "liningSupplierId": 4,
-    "liningSupplierName": "宛安琪",
-    "isShowFlag": "1",
-    "isShowFlagStr": "是",
-    "registrar": 1,
-    "registrarName": "admin",
-    "fileUrlList": null,
-    "qrCodeUrl": null,
-    "quotationRecordList": null
-  },
-  {
-    "createBy": "consequat cillum velit anim",
-    "createTime": "2025-11-01 01:18:29",
-    "updateBy": "2025-04-15",
-    "updateTime": "2025-11-01 01:18:29",
-    "remark": "in adipisicing laboris do",
-    "id": 2,
-    "delFlag": "0",
-    "name": "仪秀英2",
-    "sampleCategoryId": 30,
-    "sampleCategoryName": "分类1",
-    "storageTime": "1974-03-31",
-    "clientId": 4,
-    "clientName": "禚一全",
-    "factoryId": 1,
-    "factoryName": "印子欣",
-    "clientStyleNo": "clientStyleNo",
-    "styleNo": "styleNo",
-    "factoryQuotation": 92,
-    "usdQuotation": 8,
-    "newestUsdQuotation": 84,
-    "size": 21,
-    "fabricCategoryId": 33,
-    "fabricCategoryName": "面料种类1",
-    "fabricComposition": "laboris in tempor irure cillum",
-    "fabricWeight": 25,
-    "fabricPrice": 34.89,
-    "fabricSupplierId": 2,
-    "fabricSupplierName": "功鑫",
-    "liningCategory": "pariatur Duis",
-    "liningIngredient": "tempor",
-    "liningWeightPer": 35,
-    "liningPrice": 87.69,
-    "liningSupplierId": 4,
-    "liningSupplierName": "宛安琪",
-    "isShowFlag": "1",
-    "isShowFlagStr": "是",
-    "registrar": 1,
-    "registrarName": "admin",
-    "fileUrlList": null,
-    "qrCodeUrl": null,
-    "quotationRecordList": null
-  },
-]);
+const allOptions = ref([]);
 // 获取原始数据
 /** 查询字典类型列表 */
 async function getList () {
@@ -655,12 +577,13 @@ const submitForm = async () => {
 
     // 收集表单数据
     // 报价日期quotationDate	客户clientId  美元报价usdQuotation 备注remark
+    console.log(tableData.value)
     const formData = {
       ...form.value,
       productReqs:tableData.value.map(item => ({
-        id: item.id,
-        quotationDate: item.quotationDate,
-        clientId: item.clientId,
+        productId: item.id,
+        clientStyleNo: item.clientStyleNo,
+        styleNo: item.styleNo,
         usdQuotation: item.usdQuotation,
         remark: item.remark,
       }))

@@ -22,7 +22,7 @@
 
       <el-form-item label="创建时间" style="width: 308px">
         <el-date-picker
-            v-model="dateRange"
+            v-model="addDateRangeMode"
             value-format="YYYY-MM-DD"
             type="daterange"
             range-separator="-"
@@ -159,7 +159,7 @@ const single = ref(true)
 const multiple = ref(true)
 const total = ref(0)
 const title = ref('')
-const dateRange = ref([])
+const addDateRangeMode = ref([])
 
 const data = reactive({
   form: {},
@@ -187,7 +187,7 @@ const { queryParams, form, rules } = toRefs(data)
 function getList () {
   loading.value = true
   console.log('queryParams.value', queryParams.value)
-  getListPage(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
+  getListPage(proxy.addDateRange(queryParams.value, addDateRangeMode.value)).then(response => {
     typeList.value = response.rows
     total.value = response.total
     loading.value = false
@@ -243,7 +243,7 @@ function handleQuery () {
 
 /** 重置按钮操作 */
 function resetQuery () {
-  dateRange.value = []
+  addDateRangeMode.value = []
   proxy.resetForm('queryRef')
   handleQuery()
 }

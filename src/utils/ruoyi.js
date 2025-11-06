@@ -65,6 +65,19 @@ export function addDateRange(params, dateRange, propName) {
   }
   return search
 }
+export function addDateRangeMode(params, dateRange, propNameList) {
+  let search = params
+  search.params = typeof (search.params) === 'object' && search.params !== null && !Array.isArray(search.params) ? search.params : {}
+  dateRange = Array.isArray(dateRange) ? dateRange : []
+  if (typeof (propName) === 'undefined') {
+    search.params['createStartTime'] = dateRange[0]
+    search.params['createEndTime'] = dateRange[1]
+  } else {
+    search.params[propNameList[0]] = dateRange[0]
+    search.params[propNameList[1]] = dateRange[1]
+  }
+  return search
+}
 
 // 回显数据字典
 export function selectDictLabel(datas, value) {
