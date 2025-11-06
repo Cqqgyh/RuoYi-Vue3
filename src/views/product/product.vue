@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="客户编码" prop="clientCode">
+      <el-form-item label="产品名称" prop="name">
         <el-input
-            v-model.trim="queryParams.clientCode"
-            placeholder="请输入客户编码"
+            v-model.trim="queryParams.name"
+            placeholder="请输入产品名称"
             clearable
             style="width: 240px"
             @keyup.enter="handleQuery"
@@ -98,23 +98,23 @@
       <el-table-column label="产品名称" align="center" prop="name" :show-overflow-tooltip="true"/>
       <el-table-column label="样品类别" align="center" prop="sampleCategoryId" :show-overflow-tooltip="true"/>
       <el-table-column label="入库时间" align="center" prop="storageTime" :show-overflow-tooltip="true"/>
-      <el-table-column label="客户" align="center" prop="clientId" :show-overflow-tooltip="true"/>
-      <el-table-column label="工厂" align="center" prop="factoryId" :show-overflow-tooltip="true"/>
+      <el-table-column label="客户名称" align="center" prop="clientName" :show-overflow-tooltip="true"/>
+      <el-table-column label="工厂名称" align="center" prop="factoryName" :show-overflow-tooltip="true"/>
       <el-table-column label="客人款号" align="center" prop="clientStyleNo" :show-overflow-tooltip="true"/>
       <el-table-column label="公司款号" align="center" prop="styleNo" :show-overflow-tooltip="true"/>
       <el-table-column label="工厂报价" align="center" prop="factoryQuotation" :show-overflow-tooltip="true"/>
       <el-table-column label="美元报价" align="center" prop="usdQuotation" :show-overflow-tooltip="true"/>
       <el-table-column label="尺码" align="center" prop="size" :show-overflow-tooltip="true"/>
-      <el-table-column label="面料种类" align="center" prop="fabricCategoryId" :show-overflow-tooltip="true"/>
+      <el-table-column label="面料种类" align="center" prop="fabricCategoryName" :show-overflow-tooltip="true"/>
       <el-table-column label="面料成分" align="center" prop="fabricComposition" :show-overflow-tooltip="true"/>
       <el-table-column label="面料克重" align="center" prop="fabricWeight" :show-overflow-tooltip="true"/>
       <el-table-column label="面料价格" align="center" prop="fabricPrice" :show-overflow-tooltip="true"/>
-      <el-table-column label="面料供应商" align="center" prop="fabricSupplierId" :show-overflow-tooltip="true"/>
+      <el-table-column label="面料供应商" align="center" prop="fabricSupplierName" :show-overflow-tooltip="true"/>
       <el-table-column label="里布种类" align="center" prop="liningCategory" :show-overflow-tooltip="true"/>
       <el-table-column label="里布成分" align="center" prop="liningIngredient" :show-overflow-tooltip="true"/>
       <el-table-column label="里布克重" align="center" prop="liningWeightPer" :show-overflow-tooltip="true"/>
       <el-table-column label="里布价格" align="center" prop="liningPrice" :show-overflow-tooltip="true"/>
-      <el-table-column label="里布供应商" align="center" prop="liningSupplierId" :show-overflow-tooltip="true"/>
+      <el-table-column label="里布供应商" align="center" prop="liningSupplierName" :show-overflow-tooltip="true"/>
       <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true"/>
       <el-table-column label="照片" align="center" prop="fileUrlList" :show-overflow-tooltip="true"/>
       <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
