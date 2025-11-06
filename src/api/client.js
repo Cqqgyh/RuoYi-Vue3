@@ -49,3 +49,10 @@ export function delRequest(id) {
     method: 'post'
   })
 }
+// 批量删除
+export function delBatchRequest(ids) {
+  return request({
+    url: `/system/client/${ids}`,
+    method: 'delete'
+  })
+}
