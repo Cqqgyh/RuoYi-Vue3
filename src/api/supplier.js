@@ -46,7 +46,7 @@ export function updateRequest(data) {
 export function delRequest(id) {
   return request({
     url: `/system/supplier/single/${parseStrEmpty(id)}`,
-    method: 'post'
+    method: 'delete'
   })
 }
 // 批量删除
