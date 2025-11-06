@@ -95,29 +95,29 @@
       <!--        里布供应商	liningSupplierId	供应商下拉列表-->
       <!--        备注  remark-->
       <!--        照片  fileUrlList-->
-      <el-table-column label="产品名称" align="center" prop="name" :show-overflow-tooltip="true"/>
-      <el-table-column label="样品类别" align="center" prop="sampleCategoryId" :show-overflow-tooltip="true"/>
-      <el-table-column label="入库时间" align="center" prop="storageTime" :show-overflow-tooltip="true"/>
-      <el-table-column label="客户名称" align="center" prop="clientName" :show-overflow-tooltip="true"/>
-      <el-table-column label="工厂名称" align="center" prop="factoryName" :show-overflow-tooltip="true"/>
-      <el-table-column label="客人款号" align="center" prop="clientStyleNo" :show-overflow-tooltip="true"/>
-      <el-table-column label="公司款号" align="center" prop="styleNo" :show-overflow-tooltip="true"/>
-      <el-table-column label="工厂报价" align="center" prop="factoryQuotation" :show-overflow-tooltip="true"/>
+      <el-table-column label="产品名称" align="center" prop="name" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="样品类别" align="center" prop="sampleCategoryName" :show-overflow-tooltip="true" />
+      <el-table-column label="入库时间" align="center" prop="storageTime" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="客户名称" align="center" prop="clientName" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="工厂名称" align="center" prop="factoryName" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="客人款号" align="center" prop="clientStyleNo" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="公司款号" align="center" prop="styleNo" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="工厂报价" align="center" prop="factoryQuotation" :show-overflow-tooltip="true" />
       <el-table-column label="美元报价" align="center" prop="usdQuotation" :show-overflow-tooltip="true"/>
-      <el-table-column label="尺码" align="center" prop="size" :show-overflow-tooltip="true"/>
-      <el-table-column label="面料种类" align="center" prop="fabricCategoryName" :show-overflow-tooltip="true"/>
-      <el-table-column label="面料成分" align="center" prop="fabricComposition" :show-overflow-tooltip="true"/>
-      <el-table-column label="面料克重" align="center" prop="fabricWeight" :show-overflow-tooltip="true"/>
-      <el-table-column label="面料价格" align="center" prop="fabricPrice" :show-overflow-tooltip="true"/>
-      <el-table-column label="面料供应商" align="center" prop="fabricSupplierName" :show-overflow-tooltip="true"/>
-      <el-table-column label="里布种类" align="center" prop="liningCategory" :show-overflow-tooltip="true"/>
-      <el-table-column label="里布成分" align="center" prop="liningIngredient" :show-overflow-tooltip="true"/>
-      <el-table-column label="里布克重" align="center" prop="liningWeightPer" :show-overflow-tooltip="true"/>
-      <el-table-column label="里布价格" align="center" prop="liningPrice" :show-overflow-tooltip="true"/>
-      <el-table-column label="里布供应商" align="center" prop="liningSupplierName" :show-overflow-tooltip="true"/>
-      <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true"/>
-      <el-table-column label="照片" align="center" prop="fileUrlList" :show-overflow-tooltip="true"/>
-      <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
+      <el-table-column label="尺码" align="center" prop="size" :show-overflow-tooltip="true" />
+      <el-table-column label="面料种类" align="center" prop="fabricCategoryName" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="面料成分" align="center" prop="fabricComposition" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="面料克重" align="center" prop="fabricWeight" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="面料价格" align="center" prop="fabricPrice" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="面料供应商" align="center" prop="fabricSupplierName" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="里布种类" align="center" prop="liningCategory" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="里布成分" align="center" prop="liningIngredient" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="里布克重" align="center" prop="liningWeightPer" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="里布价格" align="center" prop="liningPrice" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="里布供应商" align="center" prop="liningSupplierName" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" width="180px"/>
+<!--      悬浮操作列-->
+      <el-table-column label="操作"  fixed="right" align="center" width="160" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['system:product:edit']">

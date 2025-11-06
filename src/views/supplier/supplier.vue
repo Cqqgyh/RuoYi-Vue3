@@ -80,9 +80,10 @@
       <el-table-column label="传真" align="center" prop="fax" :show-overflow-tooltip="true"/>
       <el-table-column label="邮件" align="center" prop="email" :show-overflow-tooltip="true"/>
       <el-table-column label="微信号" align="center" prop="wxCode" :show-overflow-tooltip="true"/>
-      <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
+      <el-table-column label="操作" fixed="right" align="center" width="160" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:supplier:edit']">
+          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
+                     v-hasPermi="['system:supplier:edit']">
             修改
           </el-button>
           <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
@@ -172,11 +173,13 @@ const data = reactive({
     supplierName: [{ required: true, message: '请输入供应商名称', trigger: 'blur' }],
     contact: [{ required: true, message: '请输入联系人', trigger: 'blur' }],
     // 电话不能包含特殊字符
-    telphone: [{ required: true, message: '请输入电话', trigger: 'blur' },
-      { pattern: /^[0-9-]+$/, message: '电话只能包含数字、-', trigger: 'blur' }
+    telphone: [
+      { required: true, message: '请输入电话', trigger: 'blur' },
+      { pattern: /^[0-9-]+$/, message: '电话只能包含数字、-', trigger: 'blur' },
     ],
-    email: [{ required: true, message: '请输入邮件', trigger: 'blur' },
-      { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
+    email: [
+      { required: true, message: '请输入邮件', trigger: 'blur' },
+      { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' },
     ],
   },
 })
@@ -260,7 +263,7 @@ function handleSelectionChange (selection) {
   ids.value = selection.map(item => item.id)
   single.value = selection.length != 1
   multiple.value = !selection.length
-  console.log('handleSelectionChange',ids)
+  console.log('handleSelectionChange', ids)
 }
 
 /** 修改按钮操作 */
@@ -294,6 +297,7 @@ function submitForm () {
     }
   })
 }
+
 /** 删除按钮操作 */
 function handleDelete (row) {
   const idOrIdList = row?.id || ids.value

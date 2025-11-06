@@ -81,7 +81,7 @@
       <el-table-column label="公司款号" align="center" prop="styleNo" :show-overflow-tooltip="true"/>
       />
       <el-table-column label="美元报价" align="center" prop="usdQuotation" :show-overflow-tooltip="true"/>
-      <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
+      <el-table-column label="操作" fixed="right" align="center" width="160" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['system:batch:record:edit']">
@@ -106,16 +106,16 @@
 
       <el-form ref="dictRef" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="产品名称" prop="name">
-<!--          <el-input v-model.trim="form.name" placeholder="请输入产品名称"/>-->
-          <el-text>{{form.name}}</el-text>
+          <!--          <el-input v-model.trim="form.name" placeholder="请输入产品名称"/>-->
+          <el-text>{{ form.name }}</el-text>
         </el-form-item>
         <el-form-item label="客人款号" prop="clientStyleNo">
-<!--          <el-input v-model.trim="form.supplierName" placeholder="请输入客人款号"/>-->
-          <el-text>{{form.clientStyleNo}}</el-text>
+          <!--          <el-input v-model.trim="form.supplierName" placeholder="请输入客人款号"/>-->
+          <el-text>{{ form.clientStyleNo }}</el-text>
         </el-form-item>
         <el-form-item label="公司款号" prop="styleNo">
-<!--          <el-input v-model.trim="form.styleNo" placeholder="请输入公司款号"/>-->
-          <el-text>{{form.clientStyleNo}}</el-text>
+          <!--          <el-input v-model.trim="form.styleNo" placeholder="请输入公司款号"/>-->
+          <el-text>{{ form.clientStyleNo }}</el-text>
         </el-form-item>
         <el-form-item label="美元报价" prop="usdQuotation">
           <el-input
@@ -125,11 +125,10 @@
               type="number"
           />
         </el-form-item>
-<!--        // 备注-->
+        <!--        // 备注-->
         <el-form-item label="备注" prop="remark">
           <el-input v-model.trim="form.remark" type="textarea" placeholder="请输入备注"/>
         </el-form-item>
-
 
 
       </el-form>
