@@ -1,24 +1,25 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="90px">
-      <el-form-item label="供应商编码" prop="supplierCode">
+      <el-form-item label="报价单号" prop="quotationNo">
         <el-input
-            v-model.trim="queryParams.supplierCode"
-            placeholder="请输入供应商编码"
+            v-model.trim="queryParams.quotationNo"
+            placeholder="请输入报价单号"
             clearable
             style="width: 240px"
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="供应商名称" prop="supplierName">
+      <el-form-item label="产品名称" prop="productName">
         <el-input
-            v-model.trim="queryParams.supplierName"
-            placeholder="请输入客供应商名称"
+            v-model.trim="queryParams.productName"
+            placeholder="请输入产品名称"
             clearable
             style="width: 240px"
             @keyup.enter="handleQuery"
         />
       </el-form-item>
+
 
       <el-form-item label="创建时间" style="width: 308px">
         <el-date-picker
@@ -73,13 +74,12 @@
 
     <el-table v-loading="loading" :data="typeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="供应商编码" align="center" prop="supplierCode" :show-overflow-tooltip="true"/>
-      <el-table-column label="供应商名称" align="center" prop="supplierName" :show-overflow-tooltip="true"/>
-      <el-table-column label="联系人" align="center" prop="contact" :show-overflow-tooltip="true"/>
-      <el-table-column label="电话" align="center" prop="telphone" :show-overflow-tooltip="true"/>
-      <el-table-column label="传真" align="center" prop="fax" :show-overflow-tooltip="true"/>
-      <el-table-column label="邮件" align="center" prop="email" :show-overflow-tooltip="true"/>
-      <el-table-column label="微信号" align="center" prop="wxCode" :show-overflow-tooltip="true"/>
+      <el-table-column label="报价单号" align="center" prop="quotationNo" :show-overflow-tooltip="true"/>
+      <el-table-column label="产品名称" align="center" prop="name" :show-overflow-tooltip="true"/>
+      <el-table-column label="报价日期" align="center" prop="quotationDate" :show-overflow-tooltip="true"/>
+      <el-table-column label="客人款号" align="center" prop="clientStyleNo" :show-overflow-tooltip="true"/>
+      <el-table-column label="公司款号" align="center" prop="styleNo" :show-overflow-tooltip="true"/>/>
+      <el-table-column label="美元报价" align="center" prop="usdQuotation" :show-overflow-tooltip="true"/>
       <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:supplier:edit']">
@@ -102,6 +102,7 @@
 
     <!-- 添加或修改参数配置对话框 -->
     <PopSelection
+        @refresh="getList"
         ref="PopSelectionRef"
         :title="title"
         width="1200px"
@@ -233,9 +234,9 @@ function handleDelete (row) {
 
 /** 导出按钮操作 */
 function handleExport () {
-  proxy.download('/system/supplier/export', {
+  proxy.download('/system/quotation/batch/export', {
     ...queryParams.value,
-  }, `供应商管理_${new Date().getTime()}.xlsx`)
+  }, `报价管理_${new Date().getTime()}.xlsx`)
 }
 
 getList()

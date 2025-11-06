@@ -88,35 +88,6 @@
                     <el-table-column prop="name" label="产品名称"  :show-overflow-tooltip="true"/>
                     <el-table-column prop="clientStyleNo" label="客人款号"  :show-overflow-tooltip="true"/>
                     <el-table-column prop="styleNo" label="公司款号"  :show-overflow-tooltip="true"/>
-                    <!-- 客户 -->
-                    <el-table-column prop="clientId" label="客户*"
-                    >
-                      <template #default="scope">
-                        <el-form-item
-                            :prop="`${scope.$index}.clientId`"
-                            style="margin-bottom: 0;width: 100%"
-
-                            :rules="[
-  { required: true, message: '请选择客户', trigger: 'blur' },
-]"
-                        >
-                          <el-select
-                              v-model="scope.row.clientId"
-                              placeholder="请选择客户"
-                              size="small"
-                              style="width: 100%"
-                              disabled
-                          >
-                            <el-option
-                                v-for="option in clientOptions"
-                                :key="option.id"
-                                :label="option.clientName"
-                                :value="option.id"
-                            />
-                          </el-select>
-                        </el-form-item>
-                      </template>
-                    </el-table-column>
                     <!-- 美元报价 -->
                     <el-table-column prop="usdQuotation" label="美元报价*"
                     >
@@ -330,179 +301,6 @@ const deleteRow = (row) => {
   }
 };
 
-// 客户选项
-const clientOptions = ref([
-  {
-    "createBy": "",
-    "createTime": "2025-11-04 09:45:14",
-    "updateBy": "",
-    "updateTime": null,
-    "remark": null,
-    "id": 106,
-    "delFlag": "0",
-    "productId": null,
-    "clientCode": "11",
-    "clientName": "2",
-    "country": "3",
-    "contact": "4",
-    "telphone": "13054729089",
-    "fax": "5",
-    "email": "2524028821@qq.com",
-  },
-  {
-    "createBy": "",
-    "createTime": "2025-11-02 21:31:07",
-    "updateBy": "",
-    "updateTime": null,
-    "remark": null,
-    "id": 101,
-    "delFlag": "0",
-    "productId": null,
-    "clientCode": "客户编码95",
-    "clientName": "客户名称95",
-    "country": null,
-    "contact": "联系人95",
-    "telphone": "957777777777",
-    "fax": "传真95",
-    "email": "email95@example.com",
-  },
-  {
-    "createBy": "",
-    "createTime": "2025-11-02 21:31:07",
-    "updateBy": "",
-    "updateTime": null,
-    "remark": null,
-    "id": 104,
-    "delFlag": "0",
-    "productId": null,
-    "clientCode": "客户编码97",
-    "clientName": "客户名称97",
-    "country": null,
-    "contact": "联系人97",
-    "telphone": "977777777777",
-    "fax": "传真97",
-    "email": "email97@example.com",
-  },
-  {
-    "createBy": "",
-    "createTime": "2025-11-02 21:31:07",
-    "updateBy": "",
-    "updateTime": null,
-    "remark": null,
-    "id": 103,
-    "delFlag": "0",
-    "productId": null,
-    "clientCode": "客户编码96",
-    "clientName": "客户名称96",
-    "country": null,
-    "contact": "联系人96",
-    "telphone": "967777777777",
-    "fax": "传真96",
-    "email": "email96@example.com",
-  },
-  {
-    "createBy": "",
-    "createTime": "2025-11-02 21:31:07",
-    "updateBy": "",
-    "updateTime": null,
-    "remark": null,
-    "id": 99,
-    "delFlag": "0",
-    "productId": null,
-    "clientCode": "客户编码98",
-    "clientName": "客户名称98",
-    "country": null,
-    "contact": "联系人98",
-    "telphone": "987777777777",
-    "fax": "传真98",
-    "email": "email98@example.com",
-  },
-  {
-    "createBy": "",
-    "createTime": "2025-11-02 21:31:07",
-    "updateBy": "",
-    "updateTime": null,
-    "remark": null,
-    "id": 102,
-    "delFlag": "0",
-    "productId": null,
-    "clientCode": "客户编码94",
-    "clientName": "客户名称94",
-    "country": null,
-    "contact": "联系人94",
-    "telphone": "947777777777",
-    "fax": "传真94",
-    "email": "email94@example.com",
-  },
-  {
-    "createBy": "",
-    "createTime": "2025-11-02 21:31:07",
-    "updateBy": "",
-    "updateTime": null,
-    "remark": null,
-    "id": 105,
-    "delFlag": "0",
-    "productId": null,
-    "clientCode": "客户编码100",
-    "clientName": "客户名称100",
-    "country": null,
-    "contact": "联系人100",
-    "telphone": "1007777777777",
-    "fax": "传真100",
-    "email": "email100@example.com",
-  },
-  {
-    "createBy": "",
-    "createTime": "2025-11-02 21:31:07",
-    "updateBy": "",
-    "updateTime": null,
-    "remark": null,
-    "id": 100,
-    "delFlag": "0",
-    "productId": null,
-    "clientCode": "客户编码99",
-    "clientName": "客户名称99",
-    "country": null,
-    "contact": "联系人99",
-    "telphone": "997777777777",
-    "fax": "传真99",
-    "email": "email99@example.com",
-  },
-  {
-    "createBy": "",
-    "createTime": "2025-11-02 21:31:06",
-    "updateBy": "",
-    "updateTime": null,
-    "remark": null,
-    "id": 60,
-    "delFlag": "0",
-    "productId": null,
-    "clientCode": "客户编码56",
-    "clientName": "客户名称56",
-    "country": null,
-    "contact": "联系人56",
-    "telphone": "567777777777",
-    "fax": "传真56",
-    "email": "email56@example.com",
-  },
-  {
-    "createBy": "",
-    "createTime": "2025-11-02 21:31:06",
-    "updateBy": "",
-    "updateTime": null,
-    "remark": null,
-    "id": 59,
-    "delFlag": "0",
-    "productId": null,
-    "clientCode": "客户编码54",
-    "clientName": "客户名称54",
-    "country": null,
-    "contact": "联系人54",
-    "telphone": "547777777777",
-    "fax": "传真54",
-    "email": "email54@example.com",
-  },
-]);
 
 // 清空选择
 const clearSelection = () => {
@@ -561,7 +359,7 @@ const renderContent = ({ node, data }) => {
     h("span", { class: "employee-name" }, data.name),
   ]);
 };
-
+const emit = defineEmits(["refresh"]);
 // 提交表单数据
 const submitForm = async () => {
   if (tableData.value.length === 0) {
@@ -591,6 +389,8 @@ const submitForm = async () => {
 
     console.log("提交的表单数据：", formData);
     await addRequest(formData);
+    // 刷新父组件数据
+    emit("refresh");
     ElMessage.success(`成功提交 ${formData.productReqs.length} 条数据`);
     // 关闭弹窗
     close();

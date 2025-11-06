@@ -46,7 +46,7 @@ export function updateRequest(data) {
 export function delRequest(id) {
   return request({
     url: `/system/quotation/batch/single/${parseStrEmpty(id)}`,
-    method: 'post'
+    method: 'DELETE'
   })
 }
 // 批量删除
