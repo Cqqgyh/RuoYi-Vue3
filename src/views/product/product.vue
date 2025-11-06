@@ -210,7 +210,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="工厂报价" prop="factoryQuotation">
-              <el-input v-model.trim="form.factoryQuotation" placeholder="请输入工厂报价"/>
+              <el-input-number v-model.trim="form.factoryQuotation" placeholder="请输入工厂报价"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -219,7 +219,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="美元报价" prop="usdQuotation">
-              <el-input v-model.trim="form.usdQuotation" placeholder="请输入美元报价"/>
+              <el-input-number v-model.trim="form.usdQuotation" placeholder="请输入美元报价"/>
             </el-form-item>
 
           </el-col>
@@ -253,13 +253,13 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="面料克重" prop="fabricWeight">
-              <el-input v-model.trim="form.fabricWeight" placeholder="请输入面料克重"/>
+              <el-input-number v-model.trim="form.fabricWeight" placeholder="请输入面料克重"/>
             </el-form-item>
 
           </el-col>
           <el-col :span="12">
             <el-form-item label="面料价格" prop="fabricPrice">
-              <el-input v-model.trim="form.fabricPrice" placeholder="请输入面料价格"/>
+              <el-input-number v-model.trim="form.fabricPrice" placeholder="请输入面料价格"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -292,7 +292,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="里布克重" prop="liningWeightPer">
-              <el-input v-model.trim="form.liningWeightPer" placeholder="请输入里布克重"/>
+              <el-input-number v-model.trim="form.liningWeightPer" placeholder="请输入里布克重"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -301,7 +301,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="里布价格" prop="liningPrice">
-              <el-input v-model.trim="form.liningPrice" placeholder="请输入里布价格"/>
+              <el-input-number v-model.trim="form.liningPrice" placeholder="请输入里布价格"/>
             </el-form-item>
 
           </el-col>
@@ -309,7 +309,7 @@
             <el-form-item label="里布供应商" prop="liningSupplierId">
               <el-select v-model="form.liningSupplierId" placeholder="请选择里布供应商" filterable clearable>
                 <el-option v-for="item in supplierList" :key="item.id" :label="item.supplierName"
-                           :value="item.liningSupplierId"/>
+                           :value="item.id"/>
               </el-select>
             </el-form-item>
           </el-col>
@@ -380,7 +380,24 @@ const data = reactive({
     pageNum: 1,
     pageSize: 10,
   },
-  rules: {},
+  rules: {
+    // 产品名称
+    name: [
+      { required: true, message: '请输入产品名称', trigger: 'blur' },
+    ],
+    // 客人款号
+    clientStyleNo: [
+      { required: true, message: '请输入客人款号', trigger: 'blur' },
+    ],
+    styleNo: [
+      { required: true, message: '请输入公司款号', trigger: 'blur' },
+    ],
+  //   客户
+    // 客户id
+    clientId: [
+      { required: true, message: '请选择客户', trigger: 'change' },
+    ],
+  },
 })
 
 const { queryParams, form, rules } = toRefs(data)
@@ -464,10 +481,6 @@ function reset () {
      * 附件列表-附件url
      */
     fileUrlList: [],
-    /**
-     * 主键
-     */
-    id: '',
     /**
      * 是否可以展示给客户：是、否
      */
@@ -571,7 +584,7 @@ function handleUpdate (row) {
 function submitForm () {
   proxy.$refs['dictRef'].validate(valid => {
     if (valid) {
-      if (form.value.id != undefined) {
+      if (form.value.id) {
         updateRequest(form.value).then(response => {
           proxy.$modal.msgSuccess('修改成功')
           open.value = false
