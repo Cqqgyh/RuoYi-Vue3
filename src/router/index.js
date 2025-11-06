@@ -53,6 +53,11 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/viewCard',
+    component: () => import('@/views/viewCard'),
+    hidden: true
+  },
+  {
     path: '/401',
     component: () => import('@/views/error/401'),
     hidden: true
