@@ -38,6 +38,27 @@ $--color-warning: #E6A23C;
 $--color-danger: #F56C6C;
 $--color-info: #909399;
 
+$menuBg: #262b32;           // 侧边栏背景色（柔和蓝灰）
+$menuText: #b8c2cc;         // 菜单文字颜色（柔和浅灰蓝）
+$menuActiveBg: #3a4250;     // 激活菜单项背景色（柔和蓝灰）
+$menuActiveText: #f4f7fa;   // 激活菜单项文字色（柔和白灰）
+$menuHoverBg: #31363e;      // 菜单项悬停背景色（柔和蓝灰）
+$menuHoverText: #e0e6ed;    // 菜单项悬停文字色（柔和白蓝）
+$menuBorder: #2f333a;       // 侧边栏分割线颜色（柔和蓝灰）
+
+$headerBg: #23262b;         // 顶部栏背景色（柔和深蓝灰）
+$headerText: #b8c2cc;       // 顶部栏文字色（柔和浅灰蓝）
+$headerActiveText: #f4f7fa; // 顶部栏激活文字色（柔和白灰）
+
+$mainBg: #202328;           // 主内容区背景色（柔和深蓝灰）
+$mainText: #e0e6ed;         // 主内容区文字色（柔和白蓝）
+
+$btnPrimaryBg: #5a7fc7;     // 主按钮背景色（柔和蓝色）
+$btnPrimaryText: #f4f7fa;   // 主按钮文字色（柔和白灰）
+$btnPrimaryHoverBg: #4c6ba6;// 主按钮悬停背景色（柔和深蓝）
+
+$borderColor: #2f333a;      // 通用边框色（柔和蓝灰）
+
 :export {
   menuText: $menuText;
   menuActiveText: $menuActiveText;
@@ -71,10 +92,10 @@ $--color-info: #909399;
   --sidebar-bg: #{$menuBg};
   --sidebar-text: #{$menuText};
   --menu-hover: #{$menuHover};
-  
+
   --navbar-bg: #ffffff;
   --navbar-text: #303133;
-  
+
   /* splitpanes default-theme 变量 */
   --splitpanes-default-bg: #ffffff;
 
@@ -119,7 +140,7 @@ html.dark {
   --blockquote-bg: #1d1e1f;
   --blockquote-border: #303030;
   --blockquote-text: #d0d0d0;
-  
+
   /* Cron 时间表达式 模式变量 */
   --cron-border: #303030;
 
@@ -199,7 +220,7 @@ html.dark {
       background-color: var(--el-bg-color-overlay);
     }
   }
-  
+
   /* 下拉菜单样式覆盖 */
   .el-dropdown-menu__item:not(.is-disabled):focus, .el-dropdown-menu__item:not(.is-disabled):hover{
     background-color: var(--navbar-hover) !important;
@@ -211,7 +232,7 @@ html.dark {
     border-left-color: var(--blockquote-border) !important;
     color: var(--blockquote-text) !important;
   }
-  
+
   /* 时间表达式标题样式覆盖 */
   .popup-result .title {
     background: var(--cron-border);
