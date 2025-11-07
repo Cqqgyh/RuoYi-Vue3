@@ -1,136 +1,3 @@
-<script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-
-// 定义数据模型
-interface ProductData {
-  name: string
-  sampleCategoryId: string
-  storageTime: string
-  clientId: string
-  factoryId: string
-  clientStyleNo: string
-  styleNo: string
-  factoryQuotation: string
-  usdQuotation: string
-  size: string
-  fabricCategoryId: string
-  fabricComposition: string
-  fabricWeight: string
-  fabricPrice: string
-  fabricSupplierId: string
-  liningCategory: string
-  liningIngredient: string
-  liningWeightPer: string
-  liningPrice: string
-  liningSupplierId: string
-  remark: string
-  fileUrlList: { name: string; url: string }[]
-}
-
-// 响应式数据
-const productData = ref<ProductData>({
-  name: '',
-  sampleCategoryId: '',
-  storageTime: '',
-  clientId: '',
-  factoryId: '',
-  clientStyleNo: '',
-  styleNo: '',
-  factoryQuotation: '',
-  usdQuotation: '',
-  size: '',
-  fabricCategoryId: '',
-  fabricComposition: '',
-  fabricWeight: '',
-  fabricPrice: '',
-  fabricSupplierId: '',
-  liningCategory: '',
-  liningIngredient: '',
-  liningWeightPer: '',
-  liningPrice: '',
-  liningSupplierId: '',
-  remark: '',
-  fileUrlList: []
-})
-
-// 字段标签映射
-const fieldLabels = {
-  name: '产品名称',
-  sampleCategoryId: '样品类别',
-  storageTime: '入库时间',
-  clientId: '客户',
-  factoryId: '工厂',
-  clientStyleNo: '客人款号',
-  styleNo: '公司款号',
-  factoryQuotation: '工厂报价',
-  usdQuotation: '美元报价',
-  size: '尺码',
-  fabricCategoryId: '面料种类',
-  fabricComposition: '面料成分',
-  fabricWeight: '面料克重',
-  fabricPrice: '面料价格',
-  fabricSupplierId: '面料供应商',
-  liningCategory: '里布种类',
-  liningIngredient: '里布成分',
-  liningWeightPer: '里布克重',
-  liningPrice: '里布价格',
-  liningSupplierId: '里布供应商',
-  remark: '备注',
-  fileUrlList: '照片'
-}
-
-// 获取路由参数并加载数据（示例）
-const route = useRoute()
-onMounted(() => {
-  // 这里应该从API获取实际数据，这里只是模拟
-  // const id = route.query.id
-  // fetchData(id)
-
-  // 模拟数据用于演示
-  productData.value = {
-    name: '夏季休闲衬衫',
-    sampleCategoryId: '男装',
-    storageTime: '2023-05-15',
-    clientId: 'ABC服装公司',
-    factoryId: 'DEF制造厂',
-    clientStyleNo: 'CS202305001',
-    styleNo: 'SS202305001',
-    factoryQuotation: '25.50',
-    usdQuotation: '3.50',
-    size: 'M/L/XL',
-    fabricCategoryId: '棉麻混纺',
-    fabricComposition: '60%棉 40%麻',
-    fabricWeight: '180g/m²',
-    fabricPrice: '28.00',
-    fabricSupplierId: 'GHI纺织有限公司',
-    liningCategory: '聚酯纤维',
-    liningIngredient: '100%聚酯纤维',
-    liningWeightPer: '60g/m²',
-    liningPrice: '8.00',
-    liningSupplierId: 'JKL衬布厂',
-    remark: '注意颜色搭配和尺寸标准',
-    fileUrlList: [
-      { name: '正面图', url: 'https://example.com/image1.jpg' },
-      { name: '背面图', url: 'https://example.com/image2.jpg' },
-      { name: '侧面图', url: 'https://example.com/image3.jpg' }
-    ]
-  }
-})
-
-// 格式化货币显示
-const formatCurrency = (value: string) => {
-  if (!value) return ''
-  return '¥' + parseFloat(value).toFixed(2)
-}
-
-// 格式化美元显示
-const formatUSD = (value: string) => {
-  if (!value) return ''
-  return '$' + parseFloat(value).toFixed(2)
-}
-</script>
-
 <template>
   <div class="h5-preview-container">
     <!-- 头部 -->
@@ -324,6 +191,153 @@ const formatUSD = (value: string) => {
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { getDicts } from '@/api/system/dict/data'
+// 定义数据模型
+interface ProductData {
+  name: string
+  sampleCategoryId: string
+  storageTime: string
+  clientId: string
+  factoryId: string
+  clientStyleNo: string
+  styleNo: string
+  factoryQuotation: string
+  usdQuotation: string
+  size: string
+  fabricCategoryId: string
+  fabricComposition: string
+  fabricWeight: string
+  fabricPrice: string
+  fabricSupplierId: string
+  liningCategory: string
+  liningIngredient: string
+  liningWeightPer: string
+  liningPrice: string
+  liningSupplierId: string
+  remark: string
+  fileUrlList: { name: string; url: string }[]
+}
+const { proxy } = getCurrentInstance()
+//#region <获取显示隐藏字典>
+const productShowConfigList =ref([])
+const getProductShowConfigList = async () => {
+  const res  = await getDicts("product_show_config")
+  productShowConfigList.value = res.data.map(item => ({
+    // 下划线转小驼峰
+    props: item.dictLabel.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase()),
+    show: item.status === '0'
+  }))
+  console.log('productShowConfigList',productShowConfigList.value)
+}
+getProductShowConfigList()
+//#endregion
+
+// 响应式数据
+const productData = ref<ProductData>({
+  name: '',
+  sampleCategoryId: '',
+  storageTime: '',
+  clientId: '',
+  factoryId: '',
+  clientStyleNo: '',
+  styleNo: '',
+  factoryQuotation: '',
+  usdQuotation: '',
+  size: '',
+  fabricCategoryId: '',
+  fabricComposition: '',
+  fabricWeight: '',
+  fabricPrice: '',
+  fabricSupplierId: '',
+  liningCategory: '',
+  liningIngredient: '',
+  liningWeightPer: '',
+  liningPrice: '',
+  liningSupplierId: '',
+  remark: '',
+  fileUrlList: []
+})
+
+// 字段标签映射
+const fieldLabels = {
+  name: '产品名称',
+  sampleCategoryId: '样品类别',
+  storageTime: '入库时间',
+  clientId: '客户',
+  factoryId: '工厂',
+  clientStyleNo: '客人款号',
+  styleNo: '公司款号',
+  factoryQuotation: '工厂报价',
+  usdQuotation: '美元报价',
+  size: '尺码',
+  fabricCategoryId: '面料种类',
+  fabricComposition: '面料成分',
+  fabricWeight: '面料克重',
+  fabricPrice: '面料价格',
+  fabricSupplierId: '面料供应商',
+  liningCategory: '里布种类',
+  liningIngredient: '里布成分',
+  liningWeightPer: '里布克重',
+  liningPrice: '里布价格',
+  liningSupplierId: '里布供应商',
+  remark: '备注',
+  fileUrlList: '照片'
+}
+
+// 获取路由参数并加载数据（示例）
+const route = useRoute()
+onMounted(() => {
+  // 这里应该从API获取实际数据，这里只是模拟
+  // const id = route.query.id
+  // fetchData(id)
+
+  // 模拟数据用于演示
+  productData.value = {
+    name: '夏季休闲衬衫',
+    sampleCategoryId: '男装',
+    storageTime: '2023-05-15',
+    clientId: 'ABC服装公司',
+    factoryId: 'DEF制造厂',
+    clientStyleNo: 'CS202305001',
+    styleNo: 'SS202305001',
+    factoryQuotation: '25.50',
+    usdQuotation: '3.50',
+    size: 'M/L/XL',
+    fabricCategoryId: '棉麻混纺',
+    fabricComposition: '60%棉 40%麻',
+    fabricWeight: '180g/m²',
+    fabricPrice: '28.00',
+    fabricSupplierId: 'GHI纺织有限公司',
+    liningCategory: '聚酯纤维',
+    liningIngredient: '100%聚酯纤维',
+    liningWeightPer: '60g/m²',
+    liningPrice: '8.00',
+    liningSupplierId: 'JKL衬布厂',
+    remark: '注意颜色搭配和尺寸标准',
+    fileUrlList: [
+      { name: '正面图', url: 'https://example.com/image1.jpg' },
+      { name: '背面图', url: 'https://example.com/image2.jpg' },
+      { name: '侧面图', url: 'https://example.com/image3.jpg' }
+    ]
+  }
+})
+
+// 格式化货币显示
+const formatCurrency = (value: string) => {
+  if (!value) return ''
+  return '¥' + parseFloat(value).toFixed(2)
+}
+
+// 格式化美元显示
+const formatUSD = (value: string) => {
+  if (!value) return ''
+  return '$' + parseFloat(value).toFixed(2)
+}
+</script>
 
 <style scoped lang="scss">
 .h5-preview-container {
