@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-<!--      可以根据样品类别查询、公司款号、客人款号、客户名称、工厂等各类产品信息查询产品信息。-->
-<!--      样品类别-->
+      <!--      可以根据样品类别查询、公司款号、客人款号、客户名称、工厂等各类产品信息查询产品信息。-->
+      <!--      样品类别-->
       <el-form-item label="样品类别" prop="sampleCategoryId">
         <el-select
             v-model="queryParams.sampleCategoryId"
@@ -13,7 +13,7 @@
                      :value="item.value"/>
         </el-select>
       </el-form-item>
-<!--      公司款号-->
+      <!--      公司款号-->
       <el-form-item label="公司款号" prop="styleNo">
         <el-input
             v-model.trim="queryParams.styleNo"
@@ -23,7 +23,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-<!--      客人款号-->
+      <!--      客人款号-->
       <el-form-item label="客人款号" prop="clientStyleNo">
         <el-input
             v-model.trim="queryParams.clientStyleNo"
@@ -33,7 +33,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-<!--      客户名称-->
+      <!--      客户名称-->
       <el-form-item label="客户名称" prop="clientName">
         <el-input
             v-model.trim="queryParams.clientName"
@@ -43,7 +43,7 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-<!--      工厂名称-->
+      <!--      工厂名称-->
       <el-form-item label="工厂名称" prop="factoryName">
         <el-input
             v-model.trim="queryParams.factoryName"
@@ -131,28 +131,36 @@
       <!--        备注  remark-->
       <!--        照片  fileUrlList-->
       <el-table-column label="产品名称" align="center" prop="name" :show-overflow-tooltip="true" width="180px"/>
-      <el-table-column label="样品类别" align="center" prop="sampleCategoryName" :show-overflow-tooltip="true" />
-      <el-table-column label="客人款号" align="center" prop="clientStyleNo" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="样品类别" align="center" prop="sampleCategoryName" :show-overflow-tooltip="true"/>
+      <el-table-column label="客人款号" align="center" prop="clientStyleNo" :show-overflow-tooltip="true"
+                       width="180px"/>
       <el-table-column label="公司款号" align="center" prop="styleNo" :show-overflow-tooltip="true" width="180px"/>
       <el-table-column label="客户名称" align="center" prop="clientName" :show-overflow-tooltip="true" width="180px"/>
       <el-table-column label="工厂名称" align="center" prop="factoryName" :show-overflow-tooltip="true" width="180px"/>
       <el-table-column label="入库时间" align="center" prop="storageTime" :show-overflow-tooltip="true" width="180px"/>
-      <el-table-column label="工厂报价" align="center" prop="factoryQuotation" :show-overflow-tooltip="true" />
+      <el-table-column label="工厂报价" align="center" prop="factoryQuotation" :show-overflow-tooltip="true"/>
       <el-table-column label="美元报价" align="center" prop="usdQuotation" :show-overflow-tooltip="true"/>
-      <el-table-column label="尺码" align="center" prop="size" :show-overflow-tooltip="true" />
-      <el-table-column label="面料种类" align="center" prop="fabricCategoryName" :show-overflow-tooltip="true" width="180px"/>
-      <el-table-column label="面料成分" align="center" prop="fabricComposition" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="尺码" align="center" prop="size" :show-overflow-tooltip="true"/>
+      <el-table-column label="面料种类" align="center" prop="fabricCategoryName" :show-overflow-tooltip="true"
+                       width="180px"/>
+      <el-table-column label="面料成分" align="center" prop="fabricComposition" :show-overflow-tooltip="true"
+                       width="180px"/>
       <el-table-column label="面料克重" align="center" prop="fabricWeight" :show-overflow-tooltip="true" width="180px"/>
       <el-table-column label="面料价格" align="center" prop="fabricPrice" :show-overflow-tooltip="true" width="180px"/>
-      <el-table-column label="面料供应商" align="center" prop="fabricSupplierName" :show-overflow-tooltip="true" width="180px"/>
-      <el-table-column label="里布种类" align="center" prop="liningCategory" :show-overflow-tooltip="true" width="180px"/>
-      <el-table-column label="里布成分" align="center" prop="liningIngredient" :show-overflow-tooltip="true" width="180px"/>
-      <el-table-column label="里布克重" align="center" prop="liningWeightPer" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="面料供应商" align="center" prop="fabricSupplierName" :show-overflow-tooltip="true"
+                       width="180px"/>
+      <el-table-column label="里布种类" align="center" prop="liningCategory" :show-overflow-tooltip="true"
+                       width="180px"/>
+      <el-table-column label="里布成分" align="center" prop="liningIngredient" :show-overflow-tooltip="true"
+                       width="180px"/>
+      <el-table-column label="里布克重" align="center" prop="liningWeightPer" :show-overflow-tooltip="true"
+                       width="180px"/>
       <el-table-column label="里布价格" align="center" prop="liningPrice" :show-overflow-tooltip="true" width="180px"/>
-      <el-table-column label="里布供应商" align="center" prop="liningSupplierName" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="里布供应商" align="center" prop="liningSupplierName" :show-overflow-tooltip="true"
+                       width="180px"/>
       <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" width="180px"/>
-<!--      悬浮操作列-->
-      <el-table-column label="操作"  fixed="right" align="center" width="160" class-name="small-padding fixed-width">
+      <!--      悬浮操作列-->
+      <el-table-column label="操作" fixed="right" align="center" width="200" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['system:product:edit']">
@@ -160,6 +168,15 @@
           </el-button>
           <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
                      v-hasPermi="['system:product:remove']">删除
+          </el-button>
+          <el-button link type="primary" icon="Share" @click="handleShareLink(scope.row)"
+                     v-hasPermi="['system:product:share']">
+            获取分享链接
+          </el-button>
+          <!--         icon是用符合二维码的icon-->
+          <el-button link type="primary" icon="Link" @click="handleShareLink(scope.row,true)"
+                     v-hasPermi="['system:product:share']">
+            下载二维码
           </el-button>
         </template>
       </el-table-column>
@@ -172,7 +189,7 @@
         v-model:limit="queryParams.pageSize"
         @pagination="getList"
     />
-
+<!--    <qr-code-vue :value="shareLink" :size="200" :key="shareLink" id="canvas-qrcode"></qr-code-vue>-->
     <!-- 添加或修改参数配置对话框 -->
     <el-dialog :title="title" v-model="open" width="900px" append-to-body>
 
@@ -204,7 +221,8 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="入库时间" prop="storageTime">
-              <el-date-picker style="width: 100%;" v-model="form.storageTime" type="datetime" value-format="YYYY-MM-DD HH:mm:ss" placeholder="请选择入库时间"/>
+              <el-date-picker style="width: 100%;" v-model="form.storageTime" type="datetime"
+                              value-format="YYYY-MM-DD HH:mm:ss" placeholder="请选择入库时间"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -354,23 +372,23 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="照片" prop="fileUrlList">
-             <image-upload v-model="form.fileUrlList" :limit="10" :fileSize="10"></image-upload>
+              <image-upload v-model="form.fileUrlList" :limit="10" :fileSize="10"></image-upload>
 
-<!--              <el-upload-->
-<!--                  class="avatar-uploader"-->
-<!--                  action="#"-->
-<!--                  :show-file-list="true"-->
-<!--                  list-type="picture-card"-->
-<!--                  :on-success="handleAvatarSuccess"-->
-<!--                  :file-list="form.fileUrlList"-->
-<!--              >-->
-<!--                <el-button size="small" type="primary">点击上传</el-button>-->
-<!--              </el-upload>-->
+              <!--              <el-upload-->
+              <!--                  class="avatar-uploader"-->
+              <!--                  action="#"-->
+              <!--                  :show-file-list="true"-->
+              <!--                  list-type="picture-card"-->
+              <!--                  :on-success="handleAvatarSuccess"-->
+              <!--                  :file-list="form.fileUrlList"-->
+              <!--              >-->
+              <!--                <el-button size="small" type="primary">点击上传</el-button>-->
+              <!--              </el-upload>-->
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="备注" prop="remark">
-              <el-input v-model.trim="form.remark" type="textarea"  placeholder="请输入备注"/>
+              <el-input v-model.trim="form.remark" type="textarea" placeholder="请输入备注"/>
             </el-form-item>
 
           </el-col>
@@ -390,11 +408,11 @@
 </template>
 
 <script setup name="Product">
-
 import { getListPage, getDetailRequest, addRequest, updateRequest, delRequest, delBatchRequest } from '@/api/product.js'
-import { getListPageAll  as getClientListAll } from '@/api/client.js'
+import { getListPageAll as getClientListAll } from '@/api/client.js'
 import { getListPageAll as getSupplierListAll } from '@/api/supplier.js'
 import ImageUpload from '@/components/ImageUpload/index.vue'
+// import QrCodeVue from '@/views/viewCard/qrCodeVue.vue's'
 
 const { proxy } = getCurrentInstance()
 
@@ -427,7 +445,7 @@ const data = reactive({
     styleNo: [
       { required: true, message: '请输入公司款号', trigger: 'blur' },
     ],
-  //   客户
+    //   客户
     // 客户id
     clientId: [
       { required: true, message: '请选择客户', trigger: 'change' },
@@ -439,22 +457,27 @@ const { queryParams, form, rules } = toRefs(data)
 //#region <供应商、客户>
 const supplierList = ref([])
 const clientList = ref([])
+
 /** 获取客户列表 */
 async function getClientList () {
- const res = await getClientListAll()
+  const res = await getClientListAll()
   clientList.value = res.data
 }
+
 async function getSupplierList () {
   const res = await getSupplierListAll()
   supplierList.value = res.data
 }
+
 getClientList()
 getSupplierList()
 //#endregion
 //#region <样品类别、面料种类>
-const { fabric_category : fabricCategoryList, sample_category : sampleCategoryList } = proxy.useDictForCode("fabric_category", "sample_category")
-console.log('fabricCategoryList',fabricCategoryList)
-console.log('sampleCategoryList',sampleCategoryList)
+const { fabric_category: fabricCategoryList, sample_category: sampleCategoryList } = proxy.useDictForCode(
+    'fabric_category', 'sample_category')
+console.log('fabricCategoryList', fabricCategoryList)
+console.log('sampleCategoryList', sampleCategoryList)
+
 //#endregion
 
 /** 查询字典类型列表 */
@@ -613,6 +636,28 @@ function handleUpdate (row) {
     open.value = true
     title.value = '修改字典类型'
   })
+}
+
+const shareLink = ref('')
+
+/** 分享链接按钮操作 */
+function handleShareLink (row, isDownload) {
+  // 获取当前域名
+  const origin = window.location.origin
+  // 拼接分享链接
+  shareLink.value = `${origin}/viewCard?id=${row.id}`
+  if (isDownload) {
+    //获取canvas标签
+    // setTimeout(() => {
+    //   exportCanvasAsPNG('canvas-qrcode', `${row.name}分享.png`)
+    // },1000)
+
+  } else {
+    // 复制分享链接到剪贴板
+    navigator.clipboard.writeText(shareLink.value)
+    proxy.$modal.msgSuccess('复制成功')
+  }
+
 }
 
 /** 提交按钮 */
