@@ -1,24 +1,59 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="产品名称" prop="name">
+<!--      可以根据样品类别查询、公司款号、客人款号、客户名称、工厂等各类产品信息查询产品信息。-->
+<!--      样品类别-->
+      <el-form-item label="样品类别" prop="sampleCategoryId">
+        <el-select
+            v-model="queryParams.sampleCategoryId"
+            placeholder="请选择样品类别"
+            style="width: 240px"
+        >
+          <el-option v-for="item in sampleCategoryList" :key="item.value" :label="item.label"
+                     :value="item.value"/>
+        </el-select>
+      </el-form-item>
+<!--      公司款号-->
+      <el-form-item label="公司款号" prop="styleNo">
         <el-input
-            v-model.trim="queryParams.name"
-            placeholder="请输入产品名称"
+            v-model.trim="queryParams.styleNo"
+            placeholder="请输入公司款号"
             clearable
             style="width: 240px"
             @keyup.enter="handleQuery"
         />
       </el-form-item>
+<!--      客人款号-->
+      <el-form-item label="客人款号" prop="clientStyleNo">
+        <el-input
+            v-model.trim="queryParams.clientStyleNo"
+            placeholder="请输入客人款号"
+            clearable
+            style="width: 240px"
+            @keyup.enter="handleQuery"
+        />
+      </el-form-item>
+<!--      客户名称-->
       <el-form-item label="客户名称" prop="clientName">
         <el-input
             v-model.trim="queryParams.clientName"
-            placeholder="请输入客客户名称"
+            placeholder="请输入客户名称"
             clearable
             style="width: 240px"
             @keyup.enter="handleQuery"
         />
       </el-form-item>
+<!--      工厂名称-->
+      <el-form-item label="工厂名称" prop="factoryName">
+        <el-input
+            v-model.trim="queryParams.factoryName"
+            placeholder="请输入工厂名称"
+            clearable
+            style="width: 240px"
+            @keyup.enter="handleQuery"
+        />
+      </el-form-item>
+
 
       <el-form-item label="创建时间" style="width: 308px">
         <el-date-picker
@@ -97,11 +132,11 @@
       <!--        照片  fileUrlList-->
       <el-table-column label="产品名称" align="center" prop="name" :show-overflow-tooltip="true" width="180px"/>
       <el-table-column label="样品类别" align="center" prop="sampleCategoryName" :show-overflow-tooltip="true" />
-      <el-table-column label="入库时间" align="center" prop="storageTime" :show-overflow-tooltip="true" width="180px"/>
-      <el-table-column label="客户名称" align="center" prop="clientName" :show-overflow-tooltip="true" width="180px"/>
-      <el-table-column label="工厂名称" align="center" prop="factoryName" :show-overflow-tooltip="true" width="180px"/>
       <el-table-column label="客人款号" align="center" prop="clientStyleNo" :show-overflow-tooltip="true" width="180px"/>
       <el-table-column label="公司款号" align="center" prop="styleNo" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="客户名称" align="center" prop="clientName" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="工厂名称" align="center" prop="factoryName" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="入库时间" align="center" prop="storageTime" :show-overflow-tooltip="true" width="180px"/>
       <el-table-column label="工厂报价" align="center" prop="factoryQuotation" :show-overflow-tooltip="true" />
       <el-table-column label="美元报价" align="center" prop="usdQuotation" :show-overflow-tooltip="true"/>
       <el-table-column label="尺码" align="center" prop="size" :show-overflow-tooltip="true" />
