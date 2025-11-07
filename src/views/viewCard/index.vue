@@ -1,9 +1,9 @@
 <template>
   <div class="h5-preview-container">
     <!-- 头部 -->
-    <div class="header">
-      <h1>产品详情预览</h1>
-    </div>
+<!--    <div class="header">-->
+<!--      <h1>产品详情预览</h1>-->
+<!--    </div>-->
 
     <!-- 内容区域 -->
     <div class="content" :key="productData.id">
