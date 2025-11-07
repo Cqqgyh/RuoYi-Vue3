@@ -6,13 +6,22 @@
     <div class="dashboard-container">
       <el-form ref="topFormRef" :model="form" label-width="90px">
         <el-row :gutter="20">
-          <el-col :span="12">
+          <el-col :span="8">
 <!--            动态rules，当tableData长度大于时，报价单号必填-->
-            <el-form-item label="报价单号" prop="quotationNo" :required="tableData.length > 1" :rules="tableData.length > 1 ? [{ required: true, message: '请输入报价单号', trigger: 'blur' }] : []">
+            <el-form-item label="报价单号" prop="quotationNo" :required="true" :rules="[{ required: true, message: '请输入报价单号', trigger: 'blur' }]">
               <el-input v-model.trim="form.quotationNo" placeholder="请输入报价单号"/>
             </el-form-item>
+
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
+            <el-form-item label="客户" prop="clientId" :required="true" :rules="[{ required: true, message: '请输入客户', trigger: 'blur' }]">
+              <el-select v-model="form.clientId" placeholder="请选择客户" filterable clearable>
+                <el-option v-for="item in clientList" :key="item.id" :label="item.clientName"
+                           :value="item.id"/>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
             <el-form-item label="报价日期" prop="quotationDate">
               <!--              默认是当日-->
               <el-date-picker
@@ -169,6 +178,9 @@ import {
 import {
   addRequest
 } from '@/api/quotation.js'
+import {
+  getListPageAll as getClientListAll
+} from '@/api/client.js'
 
 const { proxy } = getCurrentInstance()
 //#region <弹窗相关>
@@ -194,17 +206,27 @@ const form = ref({
   // 默认是当日 value-format="YYYY-MM-DD"
   quotationDate: dayjs().format('YYYY-MM-DD'),
   quotationNo: '',
+  clientId: '',
 })
 /** 表单重置 */
 function reset () {
   form.value ={
     quotationDate: dayjs().format('YYYY-MM-DD'),
     quotationNo: '',
+    clientId: '',
   }
   // 清空表格数据
   tableData.value=[]
   proxy?.resetForm('topFormRef')
 }
+const clientList = ref([])
+
+/** 获取客户列表 */
+async function getClientList () {
+  const res = await getClientListAll()
+  clientList.value = res.data
+}
+getClientList()
 //#endregion
 // 原始数据
 const allOptions = ref([]);
