@@ -238,7 +238,6 @@ const getProductShowConfigList = async () => {
   //   "props": "storageTime",
   //     "show": true
   // }
-  console.log('productShowConfigList',productShowConfigList.value)
 }
 getProductShowConfigList()
 //#endregion
@@ -356,7 +355,6 @@ const formatUSD = (value: string | number) => {
 const shouldShowField = (fieldName: string | number) => {
   // 查找字段配置
   const config = productShowConfigList.value.find(item => item.props === fieldName)
-  console.log('config',fieldName,config)
   // 如果没有配置，默认不显示
   if (!config) return false
 
