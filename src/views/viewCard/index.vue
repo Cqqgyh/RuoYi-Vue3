@@ -54,7 +54,7 @@
       </div>
 
       <!-- 报价信息卡片 -->
-      <div class="card" v-if="shouldShowSection(['factoryQuotation', 'usdQuotation'])">
+      <div class="card" v-if="shouldShowSection(['factoryQuotation', 'newestUsdQuotation'])">
         <div class="card-header">
           <h2>报价信息</h2>
         </div>
@@ -63,9 +63,9 @@
             <span class="field-label">{{ fieldLabels.factoryQuotation }}：</span>
             <span class="field-value price">{{ formatCurrency(productData.factoryQuotation) }}</span>
           </div>
-          <div class="field-item" v-if="shouldShowField('usdQuotation')">
-            <span class="field-label">{{ fieldLabels.usdQuotation }}：</span>
-            <span class="field-value price">{{ formatUSD(productData.usdQuotation) }}</span>
+          <div class="field-item" v-if="shouldShowField('newestUsdQuotation')">
+            <span class="field-label">{{ fieldLabels.newestUsdQuotation }}：</span>
+            <span class="field-value price">{{ formatUSD(productData.newestUsdQuotation) }}</span>
           </div>
         </div>
       </div>
@@ -176,9 +176,9 @@
                       :alt="img.name || '产品图片'"
                       class="carousel-image"
                   />
-                  <div class="image-name" v-if="img.name">
-                    {{ img.name }}
-                  </div>
+<!--                  <div class="image-name" v-if="img.name">-->
+<!--                    {{ img.name }}-->
+<!--                  </div>-->
                 </div>
               </el-carousel-item>
             </el-carousel>
@@ -208,7 +208,7 @@ interface ProductData {
   clientStyleNo: string | number
   styleNo: string | number
   factoryQuotation: string | number
-  usdQuotation: string | number
+  newestUsdQuotation: string | number
   size: string | number
   fabricCategoryName: string | number
   fabricComposition: string | number
@@ -253,7 +253,7 @@ const productData = ref<ProductData>({
   clientStyleNo: '',
   styleNo: '',
   factoryQuotation: '',
-  usdQuotation: '',
+  newestUsdQuotation: '',
   size: '',
   fabricCategoryName: '',
   fabricComposition: '',
@@ -276,15 +276,15 @@ async function fetchData (id) {
 
 // 字段标签映射
 const fieldLabels = {
-  // name: '产品名称',
+  name: '产品名称',
   sampleCategoryName: '样品类别',
   storageTime: '入库时间',
-  clientName: '客户',
-  factoryName: '工厂',
+  clientName: '客户名称',
+  factoryName: '工厂名称',
   clientStyleNo: '客人款号',
   styleNo: '公司款号',
   factoryQuotation: '工厂报价',
-  usdQuotation: '美元报价',
+  newestUsdQuotation: '美元报价',
   size: '尺码',
   fabricCategoryName: '面料种类',
   fabricComposition: '面料成分',
@@ -305,55 +305,7 @@ const route = useRoute()
 onMounted(() => {
   // 这里应该从API获取实际数据，这里只是模拟
   const id = route.query.id
-  // fetchData(id)
-  productData.value= {
-    "createBy": "consequat cillum velit anim",
-    "createTime": "2025-11-01 01:18:29",
-    "updateBy": "2025-04-15",
-    "updateTime": "2025-11-01 01:18:29",
-    "remark": "in adipisicing laboris do",
-    "createStartTime": null,
-    "createEndTime": null,
-    "userId": null,
-    "deptId": null,
-    "sysDictDataList": null,
-    "id": 65,
-    "delFlag": "0",
-    "name": "仪秀英",
-    "sampleCategoryId": 30,
-    "sampleCategoryName": "分类1",
-    "storageTime": "1974-03-31",
-    "clientId": 4,
-    "clientName": "禚一全",
-    "factoryId": 1,
-    "factoryName": "印子欣",
-    "clientStyleNo": "clientStyleNo",
-    "styleNo": "styleNo003",
-    "factoryQuotation": 92,
-    "usdQuotation": 8,
-    "newestUsdQuotation": 84,
-    "size": 21,
-    "fabricCategoryId": 33,
-    "fabricCategoryName": "面料种类1",
-    "fabricComposition": "laboris in tempor irure cillum",
-    "fabricWeight": 25,
-    "fabricPrice": 34.89,
-    "fabricSupplierId": 2,
-    "fabricSupplierName": "功鑫",
-    "liningCategory": "pariatur Duis",
-    "liningIngredient": "tempor",
-    "liningWeightPer": 35,
-    "liningPrice": 87.69,
-    "liningSupplierId": 4,
-    "liningSupplierName": "宛安琪",
-    "isShowFlag": "1",
-    "isShowFlagStr": "是",
-    "registrar": 1,
-    "registrarName": "admin",
-    "fileUrlList": null,
-    "qrCodeUrl": null,
-    "quotationRecordList": null
-  }
+  fetchData(id)
 
   // 模拟数据用于演示
   // productData.value = {
@@ -365,7 +317,7 @@ onMounted(() => {
   //   clientStyleNo: 'CS202305001',
   //   styleNo: 'SS202305001',
   //   factoryQuotation: '25.50',
-  //   usdQuotation: '3.50',
+  //   newestUsdQuotation: '3.50',
   //   size: 'M/L/XL',
   //   fabricCategoryName: '棉麻混纺',
   //   fabricComposition: '60%棉 40%麻',
