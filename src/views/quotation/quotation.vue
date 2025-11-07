@@ -74,6 +74,18 @@
 
     <el-table v-loading="loading" :data="typeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
+      <el-table-column type="expand">
+        <template #default="props">
+          <el-table :data="props.row.productList"  :max-height="200" style="margin-left: 55px">
+            <el-table-column prop="name" label="产品名称" :show-overflow-tooltip="true"/>
+            <el-table-column prop="clientStyleNo" label="客人款号" :show-overflow-tooltip="true"/>
+            <el-table-column prop="styleNo" label="公司款号" :show-overflow-tooltip="true"/>
+            <el-table-column prop="usdQuotation" label="美元报价" :show-overflow-tooltip="true"/>
+            <el-table-column prop="remark" label="备注" :show-overflow-tooltip="true"/>
+          </el-table>
+        </template>
+      </el-table-column>
+
       <el-table-column label="报价单号" align="center" prop="quotationNo" :show-overflow-tooltip="true"/>
       <el-table-column label="客户名称" align="center" prop="clientName" :show-overflow-tooltip="true"/>
       <el-table-column label="报价日期" align="center" prop="quotationDate" :show-overflow-tooltip="true"/>
@@ -98,43 +110,43 @@
         @pagination="getList"
     />
     <!--单个修改-->
-<!--    <el-dialog :title="title" v-model="open" width="500px" append-to-body>-->
+    <!--    <el-dialog :title="title" v-model="open" width="500px" append-to-body>-->
 
-<!--      <el-form ref="dictRef" :model="form" :rules="rules" label-width="100px">-->
-<!--        <el-form-item label="客户名称" prop="clientName">-->
-<!--          &lt;!&ndash;          <el-input v-model.trim="form.name" placeholder="请输入产品名称"/>&ndash;&gt;-->
-<!--          <el-text>{{ form.clientName }}</el-text>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="客人款号" prop="clientStyleNo">-->
-<!--          &lt;!&ndash;          <el-input v-model.trim="form.supplierName" placeholder="请输入客人款号"/>&ndash;&gt;-->
-<!--          <el-text>{{ form.clientStyleNo }}</el-text>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="公司款号" prop="styleNo">-->
-<!--          &lt;!&ndash;          <el-input v-model.trim="form.styleNo" placeholder="请输入公司款号"/>&ndash;&gt;-->
-<!--          <el-text>{{ form.clientStyleNo }}</el-text>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item label="美元报价" prop="usdQuotation">-->
-<!--          <el-input-->
-<!--              v-model.number="form.usdQuotation"-->
-<!--              placeholder="请输入美元报价"-->
-<!--              size="small"-->
-<!--              type="number"-->
-<!--          />-->
-<!--        </el-form-item>-->
-<!--        &lt;!&ndash;        // 备注&ndash;&gt;-->
-<!--        <el-form-item label="备注" prop="remark">-->
-<!--          <el-input v-model.trim="form.remark" type="textarea" placeholder="请输入备注"/>-->
-<!--        </el-form-item>-->
+    <!--      <el-form ref="dictRef" :model="form" :rules="rules" label-width="100px">-->
+    <!--        <el-form-item label="客户名称" prop="clientName">-->
+    <!--          &lt;!&ndash;          <el-input v-model.trim="form.name" placeholder="请输入产品名称"/>&ndash;&gt;-->
+    <!--          <el-text>{{ form.clientName }}</el-text>-->
+    <!--        </el-form-item>-->
+    <!--        <el-form-item label="客人款号" prop="clientStyleNo">-->
+    <!--          &lt;!&ndash;          <el-input v-model.trim="form.supplierName" placeholder="请输入客人款号"/>&ndash;&gt;-->
+    <!--          <el-text>{{ form.clientStyleNo }}</el-text>-->
+    <!--        </el-form-item>-->
+    <!--        <el-form-item label="公司款号" prop="styleNo">-->
+    <!--          &lt;!&ndash;          <el-input v-model.trim="form.styleNo" placeholder="请输入公司款号"/>&ndash;&gt;-->
+    <!--          <el-text>{{ form.clientStyleNo }}</el-text>-->
+    <!--        </el-form-item>-->
+    <!--        <el-form-item label="美元报价" prop="usdQuotation">-->
+    <!--          <el-input-->
+    <!--              v-model.number="form.usdQuotation"-->
+    <!--              placeholder="请输入美元报价"-->
+    <!--              size="small"-->
+    <!--              type="number"-->
+    <!--          />-->
+    <!--        </el-form-item>-->
+    <!--        &lt;!&ndash;        // 备注&ndash;&gt;-->
+    <!--        <el-form-item label="备注" prop="remark">-->
+    <!--          <el-input v-model.trim="form.remark" type="textarea" placeholder="请输入备注"/>-->
+    <!--        </el-form-item>-->
 
 
-<!--      </el-form>-->
-<!--      <template #footer>-->
-<!--        <div class="dialog-footer">-->
-<!--          <el-button type="primary" @click="submitForm">确 定</el-button>-->
-<!--          <el-button @click="cancel">取 消</el-button>-->
-<!--        </div>-->
-<!--      </template>-->
-<!--    </el-dialog>-->
+    <!--      </el-form>-->
+    <!--      <template #footer>-->
+    <!--        <div class="dialog-footer">-->
+    <!--          <el-button type="primary" @click="submitForm">确 定</el-button>-->
+    <!--          <el-button @click="cancel">取 消</el-button>-->
+    <!--        </div>-->
+    <!--      </template>-->
+    <!--    </el-dialog>-->
     <!-- 添加或修改参数配置对话框 -->
     <PopSelection
         @refresh="getList"
@@ -267,13 +279,10 @@ function handleSelectionChange (selection) {
 
 /** 修改按钮操作 */
 function handleUpdate (row) {
-  reset()
-  const id = row.id || ids.value
-  getDetailRequest(id).then(response => {
-    form.value = response.data
-    open.value = true
-    title.value = '修改报价'
-  })
+  title.value = '修改报价'
+  // 获取row.productList数组的id
+  visible.value = !visible.value
+  PopSelectionRef.value.open(row)
 }
 
 /** 提交按钮 */

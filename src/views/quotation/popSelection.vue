@@ -176,7 +176,7 @@ import {
   getListPageAll
 } from '@/api/product.js'
 import {
-  addRequest
+  addRequest,updateRequest
 } from '@/api/quotation.js'
 import {
   getListPageAll as getClientListAll
@@ -186,10 +186,24 @@ const { proxy } = getCurrentInstance()
 //#region <弹窗相关>
 const visible = ref(false);
 // 开启弹窗
-const open = () => {
+const open = async (row) => {
   visible.value = true;
   reset()
-  getList()
+  // 同步form.value 与 列表属性 的属性
+  Object.keys(form.value).forEach(key => {
+    form.value[key] = row?.[key] || ''
+  })
+  await getList()
+  // 找到allOptions 中 与productList 中id 相同的所有项目，将与productList的所有属性合并
+  row?.productList?.map(item => {
+     allOptions.value.find(opt => {
+      if(opt.id === item.id){
+        opt = Object.assign(opt, item)
+        tableData.value.push(opt)
+        return true
+      }
+    })
+  })
 };
 // 关闭弹窗
 const close = () => {
@@ -204,6 +218,7 @@ const topFormRef = ref()
 const form = ref({
   // 默认是当日
   // 默认是当日 value-format="YYYY-MM-DD"
+  id:'',
   quotationDate: dayjs().format('YYYY-MM-DD'),
   quotationNo: '',
   clientId: '',
@@ -211,6 +226,7 @@ const form = ref({
 /** 表单重置 */
 function reset () {
   form.value ={
+    id:'',
     quotationDate: dayjs().format('YYYY-MM-DD'),
     quotationNo: '',
     clientId: '',
@@ -410,7 +426,12 @@ const submitForm = async () => {
     }
 
     console.log("提交的表单数据：", formData);
-    await addRequest(formData);
+    // id存在则更新，不存在则新增
+    if (formData.id) {
+      await updateRequest(formData);
+    } else {
+      await addRequest(formData);
+    }
     // 刷新父组件数据
     emit("refresh");
     ElMessage.success(`成功提交 ${formData.productReqs.length} 条数据`);
