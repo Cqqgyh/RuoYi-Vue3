@@ -89,6 +89,7 @@
       <el-table-column label="报价单号" align="center" prop="quotationNo" :show-overflow-tooltip="true"/>
       <el-table-column label="客户名称" align="center" prop="clientName" :show-overflow-tooltip="true"/>
       <el-table-column label="报价日期" align="center" prop="quotationDate" :show-overflow-tooltip="true"/>
+      <el-table-column label="业务员名称" align="center" prop="salesPersonName" :show-overflow-tooltip="true"/>
       <el-table-column label="操作" fixed="right" align="center" width="160" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
@@ -278,11 +279,12 @@ function handleSelectionChange (selection) {
 }
 
 /** 修改按钮操作 */
-function handleUpdate (row) {
+async function handleUpdate (row) {
   title.value = '修改报价'
   // 获取row.productList数组的id
   visible.value = !visible.value
-  PopSelectionRef.value.open(row)
+  const res = await getDetailRequest(row.id)
+  PopSelectionRef.value.open(res.data)
 }
 
 /** 提交按钮 */
