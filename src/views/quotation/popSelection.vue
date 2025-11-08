@@ -22,7 +22,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="报价日期" prop="quotationDate">
+            <el-form-item label="报价日期" prop="quotationDate" :required="true" :rules="[{ required: true, message: '请选择报价日期', trigger: 'blur' }]">
               <!--              默认是当日-->
               <el-date-picker
                   v-model="form.quotationDate"
@@ -189,23 +189,26 @@ const visible = ref(false);
 const open = async (row) => {
   visible.value = true;
   reset()
-  // 同步form.value 与 列表属性 的属性
-  Object.keys(form.value).forEach(key => {
-    form.value[key] = row?.[key] || ''
-  })
   await getList()
-  // 找到allOptions 中 与productList 中id 相同的所有项目，将与productList的所有属性合并
-  row?.productList?.map(item => {
-    item.quotationId = item.id
-    item.id = item.productId
-     allOptions.value.find(opt => {
-      if(opt.id === item.id){
-        opt = Object.assign(opt, item)
-        tableData.value.push(opt)
-        return true
-      }
+  if(row){
+    // 同步form.value 与 列表属性 的属性
+    Object.keys(form.value).forEach(key => {
+      form.value[key] = row?.[key] || ''
     })
-  })
+    // 找到allOptions 中 与productList 中id 相同的所有项目，将与productList的所有属性合并
+    row?.productList?.map(item => {
+      item.quotationId = item.id
+      item.id = item.productId
+      allOptions.value.find(opt => {
+        if(opt.id === item.id){
+          opt = Object.assign(opt, item)
+          tableData.value.push(opt)
+          return true
+        }
+      })
+    })
+  }
+
 };
 // 关闭弹窗
 const close = () => {
@@ -227,6 +230,7 @@ const form = ref({
 })
 /** 表单重置 */
 function reset () {
+  proxy?.resetForm('topFormRef')
   form.value ={
     id:'',
     quotationDate: dayjs().format('YYYY-MM-DD'),
@@ -235,7 +239,6 @@ function reset () {
   }
   // 清空表格数据
   tableData.value=[]
-  proxy?.resetForm('topFormRef')
 }
 const clientList = ref([])
 
