@@ -179,11 +179,21 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="仅可见自己登记的产品" prop="isView">
+              <!--              0-否, 1-是-->
+              <el-radio-group v-model="form.isView">
+                <el-radio v-for="dict in [{value: 0, label: '否'}, {value: 1, label: '是'}]" :key="dict.value" :value="dict.value">{{ dict.label }}</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
           <el-button @click="cancel">取 消</el-button>
+          <el-button type="primary" @click="submitForm">确 定</el-button>
         </div>
       </template>
     </el-dialog>
@@ -205,8 +215,8 @@
       </el-upload>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="primary" @click="submitFileForm">确 定</el-button>
           <el-button @click="upload.open = false">取 消</el-button>
+          <el-button type="primary" @click="submitFileForm">确 定</el-button>
         </div>
       </template>
     </el-dialog>
@@ -487,6 +497,7 @@ function reset() {
     email: undefined,
     sex: undefined,
     status: "0",
+    isView: 1,
     remark: undefined,
     postIds: [],
     roleIds: []
@@ -532,7 +543,7 @@ function handleUpdate(row) {
 function submitForm() {
   proxy.$refs["userRef"].validate(valid => {
     if (valid) {
-      if (form.value.userId != undefined) {
+      if (form.value.userId) {
         updateUser(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功")
           open.value = false
