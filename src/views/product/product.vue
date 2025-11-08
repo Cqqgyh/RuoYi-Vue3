@@ -189,14 +189,11 @@
         v-model:limit="queryParams.pageSize"
         @pagination="getList"
     />
-<!--    <qr-code-vue :value="shareLink" :size="200" :key="shareLink" id="canvas-qrcode"></qr-code-vue>-->
+    <!--    <qr-code-vue :value="shareLink" :size="200" :key="shareLink" id="canvas-qrcode"></qr-code-vue>-->
     <!-- 添加或修改参数配置对话框 -->
     <el-dialog :title="title" v-model="open" width="900px" append-to-body>
 
       <el-form ref="dictRef" :model="form" :rules="rules" label-width="90px">
-
-
-
 
 
         <!--        产品名称 name-->
@@ -621,6 +618,23 @@ function resetQuery () {
   handleQuery()
 }
 
+const x = () => {
+  const digitalProjectId = params.formConfig.data?.digitalProjectId
+  const digitalProjectColumn = params.formConfig.columns.find(col => col.key === 'digitalProjectId')
+  if (digitalProjectId && digitalProjectColumn) {
+    const res = digitalProjectColumn.props.options?.find(item => item.value === digitalProjectId)
+    if (res) {
+      params.formConfig.data.firstName = res.secondName
+      params.formConfig.data.firstId = res.secondId
+    } else {
+      params.formConfig.data.firstName = ''
+      params.formConfig.data.firstId = null
+    }
+
+  }
+
+}
+
 /** 新增按钮操作 */
 function handleAdd () {
   reset()
@@ -655,7 +669,7 @@ async function handleShareLink (row, isDownload) {
   // 拼接分享链接
   shareLink.value = `${origin}/viewCard?id=${row.id}`
   if (isDownload) {
-    const res = await getQrcodeUrlRequest({url: shareLink.value})
+    const res = await getQrcodeUrlRequest({ url: shareLink.value })
     // 使用项目已有的下载方式
     const blob = new Blob([res], { type: 'image/png' })
     const fileName = `二维码_${row.name}.png`

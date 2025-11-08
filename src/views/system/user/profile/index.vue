@@ -14,7 +14,7 @@
                   </div>
                   <ul class="list-group list-group-striped">
                      <li class="list-group-item">
-                        <svg-icon icon-class="user" />用户名称
+                        <svg-icon icon-class="user" />业务员名称
                         <div class="pull-right">{{ state.user.userName }}</div>
                      </li>
                      <li class="list-group-item">
@@ -22,7 +22,7 @@
                         <div class="pull-right">{{ state.user.phonenumber }}</div>
                      </li>
                      <li class="list-group-item">
-                        <svg-icon icon-class="email" />用户邮箱
+                        <svg-icon icon-class="email" />邮箱
                         <div class="pull-right">{{ state.user.email }}</div>
                      </li>
 <!--                     <li class="list-group-item">-->
