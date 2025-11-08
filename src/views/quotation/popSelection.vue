@@ -45,7 +45,7 @@
                 <!-- 搜索输入框 -->
                 <el-input
                     v-model="searchQuery"
-                    placeholder="搜索姓名、部门或邮箱..."
+                    placeholder="请输入产品名称搜索"
                     prefix-icon="Search"
                     clearable
                     class="search-input"
