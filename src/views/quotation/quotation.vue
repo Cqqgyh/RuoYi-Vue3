@@ -10,6 +10,16 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="报价日期" prop="quotationDate">
+        <el-date-picker
+            v-model="queryParams.quotationDate"
+            value-format="YYYY-MM-DD"
+            type="date"
+            placeholder="请选择报价日期"
+            clearable
+            style="width: 240px"
+        ></el-date-picker>
+      </el-form-item>
       <el-form-item label="客户名称" prop="clientName">
         <el-input
             v-model.trim="queryParams.clientName"
@@ -260,6 +270,7 @@ function handleQuery () {
 /** 重置按钮操作 */
 function resetQuery () {
   dateRange.value = []
+  proxy.resetForm('queryRef')
   handleQuery()
 }
 
