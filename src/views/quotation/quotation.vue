@@ -99,7 +99,7 @@
       <el-table-column label="报价单号" align="center" prop="quotationNo" :show-overflow-tooltip="true"/>
       <el-table-column label="客户名称" align="center" prop="clientName" :show-overflow-tooltip="true"/>
       <el-table-column label="报价日期" align="center" prop="quotationDate" :show-overflow-tooltip="true"/>
-      <el-table-column label="报价商品个数" align="center" prop="productList" :show-overflow-tooltip="true">
+      <el-table-column label="报价产品个数" align="center" prop="productList" :show-overflow-tooltip="true">
         <template #default="scope">
           {{ scope?.row?.productList?.length || 0 }}
         </template>
