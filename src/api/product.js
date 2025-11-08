@@ -63,3 +63,12 @@ export function delBatchRequest(ids) {
     method: 'delete'
   })
 }
+/// 生成二维码并返回图片流 system/product/get-qrcode-url
+export function getQrcodeUrlRequest(data) {
+  return request({
+    url: '/system/product/get-qrcode-url',
+    method: 'get',
+    params: data,
+    responseType: 'blob'
+  })
+}

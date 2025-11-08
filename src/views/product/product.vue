@@ -408,7 +408,15 @@
 </template>
 
 <script setup name="Product">
-import { getListPage, getDetailRequest, addRequest, updateRequest, delRequest, delBatchRequest } from '@/api/product.js'
+import {
+  getListPage,
+  getDetailRequest,
+  addRequest,
+  updateRequest,
+  delRequest,
+  delBatchRequest,
+  getQrcodeUrlRequest,
+} from '@/api/product.js'
 import { getListPageAll as getClientListAll } from '@/api/client.js'
 import { getListPageAll as getSupplierListAll } from '@/api/supplier.js'
 import ImageUpload from '@/components/ImageUpload/index.vue'
@@ -641,20 +649,21 @@ function handleUpdate (row) {
 const shareLink = ref('')
 
 /** 分享链接按钮操作 */
-function handleShareLink (row, isDownload) {
+async function handleShareLink (row, isDownload) {
   // 获取当前域名
   const origin = window.location.origin
   // 拼接分享链接
   shareLink.value = `${origin}/viewCard?id=${row.id}`
   if (isDownload) {
-    //获取canvas标签
-    // setTimeout(() => {
-    //   exportCanvasAsPNG('canvas-qrcode', `${row.name}分享.png`)
-    // },1000)
-
+    const res = await getQrcodeUrlRequest({url: shareLink.value})
+    // 使用项目已有的下载方式
+    const blob = new Blob([res], { type: 'image/png' })
+    const fileName = `二维码_${row.name}.png`
+    saveAs(blob, fileName)
+    proxy.$modal.msgSuccess('下载成功')
   } else {
     // 复制分享链接到剪贴板
-    navigator.clipboard.writeText(shareLink.value)
+    await navigator.clipboard.writeText(shareLink.value)
     proxy.$modal.msgSuccess('复制成功')
   }
 
