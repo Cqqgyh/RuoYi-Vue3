@@ -196,7 +196,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { getDicts } from '@/api/system/dict/data.js'
-import {  getDetailRequest} from '@/api/product.js'
+import {  getDetailRequest,getViewDetailRequest} from '@/api/product.js'
 // 定义数据模型
 interface ProductData {
   id?:  number
@@ -225,22 +225,7 @@ interface ProductData {
   [key: string]: any
 }
 const { proxy } = getCurrentInstance()
-//#region <获取显示隐藏字典>
 const productShowConfigList =ref([])
-const getProductShowConfigList = async () => {
-  const res  = await getDicts("product_show_config")
-  productShowConfigList.value = res.data.map(item => ({
-    // 下划线转小驼峰
-    props: item.dictLabel.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase()),
-    show: item.status === '0'
-  }))
-  // {
-  //   "props": "storageTime",
-  //     "show": true
-  // }
-}
-getProductShowConfigList()
-//#endregion
 
 // 响应式数据
 const productData = ref<ProductData>({
@@ -269,8 +254,13 @@ const productData = ref<ProductData>({
 })
 /** 修改按钮操作 */
 async function fetchData (id) {
-  const res = await getDetailRequest(id)
+  const res = await getViewDetailRequest(id)
   productData.value = res.data
+  productShowConfigList.value = res.data?.sysDictDataList?.map(item => ({
+    // 下划线转小驼峰
+    props: item.dictValue.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase()),
+    show: item.status === '0'
+  }))
 }
 
 // 字段标签映射

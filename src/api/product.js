@@ -32,6 +32,13 @@ export function getDetailRequest(id) {
     method: 'get'
   })
 }
+// 查询预览详情页面
+export function getViewDetailRequest(id) {
+  return request({
+    url: `/system/product/view-card/${parseStrEmpty(id)}`,
+    method: 'get'
+  })
+}
 
 // 修改
 export function updateRequest(data) {
