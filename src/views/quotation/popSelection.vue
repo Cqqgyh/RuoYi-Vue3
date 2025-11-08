@@ -196,6 +196,8 @@ const open = async (row) => {
   await getList()
   // 找到allOptions 中 与productList 中id 相同的所有项目，将与productList的所有属性合并
   row?.productList?.map(item => {
+    item.quotationId = item.id
+    item.id = item.productId
      allOptions.value.find(opt => {
       if(opt.id === item.id){
         opt = Object.assign(opt, item)
@@ -418,6 +420,7 @@ const submitForm = async () => {
       ...form.value,
       productReqs:tableData.value.map(item => ({
         productId: item.id,
+        id: item.quotationId,
         clientStyleNo: item.clientStyleNo,
         styleNo: item.styleNo,
         usdQuotation: item.usdQuotation,

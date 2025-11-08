@@ -56,3 +56,11 @@ export function delBatchRequest(ids) {
     method: 'delete'
   })
 }
+// 发送邮件 /system/quotation/batch/send-mail
+export function sendMailRequest(query) {
+  return request({
+    url: '/system/quotation/batch/send-mail',
+    method: 'post',
+    params: query
+  })
+}

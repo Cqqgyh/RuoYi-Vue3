@@ -105,11 +105,14 @@
         </template>
       </el-table-column>
       <el-table-column label="业务员名称" align="center" prop="salesPersonName" :show-overflow-tooltip="true"/>
-      <el-table-column label="操作" fixed="right" align="center" width="160" class-name="small-padding fixed-width">
+      <el-table-column label="操作" fixed="right" align="center" width="240" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['system:batch:record:edit']">
             修改
+          </el-button>
+          <el-button link type="primary" icon="Message" @click="handleSendEmail(scope.row)"
+                     v-hasPermi="['system:record:mail']">发送邮件
           </el-button>
           <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
                      v-hasPermi="['system:batch:record:remove']">删除
@@ -183,7 +186,7 @@ import {
   addRequest,
   updateRequest,
   delRequest,
-  delBatchRequest,
+  delBatchRequest, sendMailRequest,
 } from '@/api/quotation.js'
 
 const { proxy } = getCurrentInstance()
@@ -334,6 +337,17 @@ function handleDelete (row) {
     proxy.$modal.msgSuccess('删除成功')
   }).catch(() => {})
 }
+// handleSendEmail
+/** 发送邮件按钮操作 */
+function handleSendEmail (row) {
+  proxy.$modal.confirm('是否确认发送邮件？').then(function () {
+    return sendMailRequest({ recordId: row.id })
+  }).then(() => {
+    proxy.$modal.msgSuccess('发送成功')
+  }).catch(() => {})
+}
+
+
 
 /** 导出按钮操作 */
 function handleExport () {
