@@ -87,7 +87,7 @@
       <el-table-column type="expand">
         <template #default="props">
           <el-table :data="props.row.productList"  :max-height="200" style="margin-left: 55px">
-            <el-table-column prop="name" label="产品名称" :show-overflow-tooltip="true"/>
+            <el-table-column prop="productName" label="产品名称" :show-overflow-tooltip="true"/>
             <el-table-column prop="clientStyleNo" label="客人款号" :show-overflow-tooltip="true"/>
             <el-table-column prop="styleNo" label="公司款号" :show-overflow-tooltip="true"/>
             <el-table-column prop="usdQuotation" label="美元报价" :show-overflow-tooltip="true"/>
