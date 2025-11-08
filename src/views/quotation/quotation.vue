@@ -99,6 +99,11 @@
       <el-table-column label="报价单号" align="center" prop="quotationNo" :show-overflow-tooltip="true"/>
       <el-table-column label="客户名称" align="center" prop="clientName" :show-overflow-tooltip="true"/>
       <el-table-column label="报价日期" align="center" prop="quotationDate" :show-overflow-tooltip="true"/>
+      <el-table-column label="报价商品个数" align="center" prop="productList" :show-overflow-tooltip="true">
+        <template #default="scope">
+          {{ scope?.row?.productList?.length || 0 }}
+        </template>
+      </el-table-column>
       <el-table-column label="业务员名称" align="center" prop="salesPersonName" :show-overflow-tooltip="true"/>
       <el-table-column label="操作" fixed="right" align="center" width="160" class-name="small-padding fixed-width">
         <template #default="scope">
