@@ -3,7 +3,7 @@ import path from 'path'
 import createVitePlugins from './vite/plugins'
 
 // const baseUrl = 'https://vue.ruoyi.vip/prod-api' // 后端接口
-// const baseUrl = 'http://120.79.93.118/api' // 后端接口
+const baseUrl = 'http://120.79.93.118' // 后端接口
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode, command }) => {
@@ -46,19 +46,19 @@ export default defineConfig(({ mode, command }) => {
       port: 80,
       host: true,
       open: true,
-      // proxy: {
-      //   // https://cn.vitejs.dev/config/#server-proxy
-      //   '/dev-api': {
-      //     target: baseUrl,
-      //     changeOrigin: true,
-      //     rewrite: (p) => p.replace(/^\/dev-api/, '')
-      //   },
-      //    // springdoc proxy
-      //    '^/v3/api-docs/(.*)': {
-      //     target: baseUrl,
-      //     changeOrigin: true,
-      //   }
-      // }
+      proxy: {
+        // https://cn.vitejs.dev/config/#server-proxy
+        '/api': {
+          target: baseUrl,
+          changeOrigin: true,
+          // rewrite: (p) => p.replace(/^\/dev-api/, '')
+        },
+         // springdoc proxy
+         '^/v3/api-docs/(.*)': {
+          target: baseUrl,
+          changeOrigin: true,
+        }
+      }
     },
     css: {
       postcss: {
