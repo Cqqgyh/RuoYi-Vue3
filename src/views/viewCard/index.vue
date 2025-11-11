@@ -1,14 +1,15 @@
 <template>
   <div class="h5-preview-container">
     <!-- 头部 -->
-<!--    <div class="header">-->
-<!--      <h1>产品详情预览</h1>-->
-<!--    </div>-->
+    <!--    <div class="header">-->
+    <!--      <h1>产品详情预览</h1>-->
+    <!--    </div>-->
 
     <!-- 内容区域 -->
     <div class="content" :key="productData.id">
       <!-- 产品基本信息卡片 -->
-      <div class="card" v-if="shouldShowSection(['name', 'sampleCategoryName', 'storageTime', 'clientName', 'factoryName'])">
+      <div class="card"
+           v-if="shouldShowSection(['name', 'sampleCategoryName', 'storageTime', 'clientName', 'factoryName'])">
         <div class="card-header">
           <h2>基本信息</h2>
         </div>
@@ -84,7 +85,8 @@
       </div>
 
       <!-- 面料信息卡片 -->
-      <div class="card" v-if="shouldShowSection(['fabricCategoryName', 'fabricComposition', 'fabricWeight', 'fabricPrice', 'fabricSupplierName'])">
+      <div class="card"
+           v-if="shouldShowSection(['fabricCategoryName', 'fabricComposition', 'fabricWeight', 'fabricPrice', 'fabricSupplierName'])">
         <div class="card-header">
           <h2>面料信息</h2>
         </div>
@@ -113,7 +115,8 @@
       </div>
 
       <!-- 里布信息卡片 -->
-      <div class="card" v-if="shouldShowSection(['liningCategory', 'liningIngredient', 'liningWeightPer', 'liningPrice', 'liningSupplierName'])">
+      <div class="card"
+           v-if="shouldShowSection(['liningCategory', 'liningIngredient', 'liningWeightPer', 'liningPrice', 'liningSupplierName'])">
         <div class="card-header">
           <h2>里布信息</h2>
         </div>
@@ -160,28 +163,41 @@
           <h2>{{ fieldLabels.fileUrlList }}</h2>
         </div>
         <div class="card-body">
-          <div v-if="productData.fileUrlList && productData.fileUrlList.length > 0 && shouldShowField('fileUrlList')" class="image-gallery">
-            <el-carousel
-                height="200px"
-                indicator-position="outside"
-                arrow="always"
-            >
-              <el-carousel-item
-                  v-for="(img, index) in productData.fileUrlList"
-                  :key="index"
-              >
-                <div class="carousel-item">
-                  <img
-                      :src="img.url"
-                      :alt="img.name || '产品图片'"
-                      class="carousel-image"
-                  />
-<!--                  <div class="image-name" v-if="img.name">-->
-<!--                    {{ img.name }}-->
-<!--                  </div>-->
-                </div>
-              </el-carousel-item>
-            </el-carousel>
+          <div v-if="productData.fileUrlList && productData.fileUrlList.length > 0 && shouldShowField('fileUrlList')"
+               class="image-gallery">
+            <!--            <el-carousel-->
+            <!--                height="200px"-->
+            <!--                indicator-position="outside"-->
+            <!--                arrow="always"-->
+            <!--            >-->
+            <!--              <el-carousel-item-->
+            <!--                  v-for="(img, index) in productData.fileUrlList"-->
+            <!--                  :key="index"-->
+            <!--              >-->
+            <!--                <div class="carousel-item">-->
+            <!--                  <img-->
+            <!--                      :src="img.url"-->
+            <!--                      :alt="img.name || '产品图片'"-->
+            <!--                      class="carousel-image"-->
+            <!--                  />-->
+            <!--&lt;!&ndash;                  <div class="image-name" v-if="img.name">&ndash;&gt;-->
+            <!--&lt;!&ndash;                    {{ img.name }}&ndash;&gt;-->
+            <!--&lt;!&ndash;                  </div>&ndash;&gt;-->
+            <!--                </div>-->
+            <!--              </el-carousel-item>-->
+            <!--            </el-carousel>-->
+            <Swipe :autoplay="3000" indicator-color="white">
+              <SwipeItem class="carousel-item" v-for="(img, index) in productData.fileUrlList" :key="index">
+                <VanImage
+                    class="carousel-image"
+                    fit="contain"
+                    :src="img.url"
+                    :alt="img.name || '产品图片'"
+                    @click="handleImagePreview(index)"
+                />
+              </SwipeItem>
+            </Swipe>
+
           </div>
           <div v-else-if="shouldShowField('fileUrlList')" class="no-image">
             暂无图片
@@ -193,13 +209,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import { getDicts } from '@/api/system/dict/data.js'
-import {  getDetailRequest,getViewDetailRequest} from '@/api/product.js'
+import {ref, onMounted} from 'vue'
+import {useRoute} from 'vue-router'
+import {Swipe, SwipeItem, Image as VanImage, ImagePreview, showImagePreview} from 'vant';
+import {getViewDetailRequest} from '@/api/product.js'
+
 // 定义数据模型
 interface ProductData {
-  id?:  number
+  id?: number
   name: string | number
   sampleCategoryName: string | number
   storageTime: string | number
@@ -221,11 +238,13 @@ interface ProductData {
   liningPrice: string | number
   liningSupplierName: string | number
   remark: string | number
-  fileUrlList: { name: string; url: string  }[]
+  fileUrlList: { name: string; url: string }[]
+
   [key: string]: any
 }
-const { proxy } = getCurrentInstance()
-const productShowConfigList =ref([])
+
+const {proxy} = getCurrentInstance()
+const productShowConfigList = ref([])
 
 // 响应式数据
 const productData = ref<ProductData>({
@@ -252,8 +271,9 @@ const productData = ref<ProductData>({
   remark: '',
   fileUrlList: []
 })
+
 /** 修改按钮操作 */
-async function fetchData (id) {
+async function fetchData(id) {
   const res = await getViewDetailRequest(id)
   productData.value = res.data
   productShowConfigList.value = res.data?.sysDictDataList?.map(item => ({
@@ -331,7 +351,7 @@ onMounted(() => {
 const formatCurrency = (value: string | number) => {
   if (!value) return ''
   // return '¥' + parseFloat(value).toFixed(2)
-  return '¥' +value
+  return '¥' + value
 }
 
 // 格式化美元显示
@@ -366,6 +386,14 @@ const shouldShowField = (fieldName: string | number) => {
 // 判断模块是否应该显示（至少有一个字段需要显示）
 const shouldShowSection = (fieldNames: string[]) => {
   return fieldNames.some(fieldName => shouldShowField(fieldName))
+}
+// 预览图片
+const handleImagePreview = (startPosition: number) => {
+  showImagePreview({
+    images: productData.value.fileUrlList.map(item => item.url),
+    closeable: true,
+    startPosition: startPosition,
+  })
 }
 </script>
 
