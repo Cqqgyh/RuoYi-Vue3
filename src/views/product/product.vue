@@ -683,10 +683,44 @@ async function handleShareLink (row, isDownload) {
     proxy.$modal.msgSuccess('下载成功')
   } else {
     // 复制分享链接到剪贴板
-    await navigator.clipboard.writeText(shareLink.value)
+    await copyToClipboard(shareLink.value)
+    // await navigator.clipboard.writeText(shareLink.value)
     proxy.$modal.msgSuccess('复制成功')
   }
 
+}
+function copyToClipboard(text) {
+  // 优先尝试 Clipboard API（仅在安全上下文可用）
+  if (navigator.clipboard && window.isSecureContext) {
+    return navigator.clipboard.writeText(text);
+  } else {
+    // 降级：使用 execCommand（可在 HTTP 下工作）
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+
+    // 隐藏元素
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    textarea.style.top = '-9999px';
+
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+
+    try {
+      const success = document.execCommand('copy');
+      document.body.removeChild(textarea);
+      if (success) {
+        return Promise.resolve();
+      } else {
+        throw new Error('execCommand 复制失败');
+      }
+    } catch (err) {
+      document.body.removeChild(textarea);
+      console.error('复制失败:', err);
+      return Promise.reject(err);
+    }
+  }
 }
 
 /** 提交按钮 */
