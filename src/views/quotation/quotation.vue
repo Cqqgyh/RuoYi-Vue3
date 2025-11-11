@@ -105,6 +105,11 @@
         </template>
       </el-table-column>
       <el-table-column label="业务员名称" align="center" prop="salesPersonName" :show-overflow-tooltip="true"/>
+      <el-table-column label="创建时间" align="center" prop="createTime"  width="160">
+        <template #default="scope">
+          <span>{{ parseTime(scope.row.createTime) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" fixed="right" align="center" width="240" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
@@ -188,6 +193,7 @@ import {
   delRequest,
   delBatchRequest, sendMailRequest,
 } from '@/api/quotation.js'
+import { parseTime } from '@/utils/ruoyi.js'
 
 const { proxy } = getCurrentInstance()
 

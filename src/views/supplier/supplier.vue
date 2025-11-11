@@ -80,6 +80,11 @@
       <el-table-column label="传真" align="center" prop="fax" :show-overflow-tooltip="true"/>
       <el-table-column label="邮件" align="center" prop="email" :show-overflow-tooltip="true"/>
       <el-table-column label="微信号" align="center" prop="wxCode" :show-overflow-tooltip="true"/>
+      <el-table-column label="创建时间" align="center" prop="createTime"  width="160">
+        <template #default="scope">
+          <span>{{ parseTime(scope.row.createTime) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" fixed="right" align="center" width="160" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
@@ -148,6 +153,7 @@ import {
   delRequest,
   delBatchRequest,
 } from '@/api/supplier.js'
+import { parseTime } from '../../utils/ruoyi.js'
 
 const { proxy } = getCurrentInstance()
 

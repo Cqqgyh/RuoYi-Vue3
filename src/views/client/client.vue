@@ -77,9 +77,14 @@
       <el-table-column label="客户名称" align="center" prop="clientName" :show-overflow-tooltip="true"/>
       <el-table-column label="国别" align="center" prop="country" :show-overflow-tooltip="true"/>
       <el-table-column label="联系人" align="center" prop="contact" :show-overflow-tooltip="true"/>
-      <el-table-column label="电话" align="center" prop="telphone" :show-overflow-tooltip="true"/>
+      <el-table-column label="电话" align="center" prop="telphone" :show-overflow-tooltip="true" width="160"/>
       <el-table-column label="传真" align="center" prop="fax" :show-overflow-tooltip="true"/>
-      <el-table-column label="邮件" align="center" prop="email" :show-overflow-tooltip="true"/>
+      <el-table-column label="邮件" align="center" prop="email" :show-overflow-tooltip="true" width="180"/>
+      <el-table-column label="创建时间" align="center" prop="createTime"  width="160">
+        <template #default="scope">
+          <span>{{ parseTime(scope.row.createTime) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" fixed="right" align="center" width="160" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
@@ -141,6 +146,7 @@
 <script setup name="Client">
 
 import { getListPage, getDetailRequest, addRequest, updateRequest, delRequest, delBatchRequest } from '@/api/client.js'
+import { parseTime } from '@/utils/ruoyi.js'
 
 const { proxy } = getCurrentInstance()
 

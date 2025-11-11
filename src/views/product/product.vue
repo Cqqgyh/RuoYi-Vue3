@@ -159,6 +159,11 @@
       <el-table-column label="里布供应商" align="center" prop="liningSupplierName" :show-overflow-tooltip="true"
                        width="180px"/>
       <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" width="180px"/>
+      <el-table-column label="创建时间" align="center" prop="createTime"  width="160">
+        <template #default="scope">
+          <span>{{ parseTime(scope.row.createTime) }}</span>
+        </template>
+      </el-table-column>
       <!--      悬浮操作列-->
       <el-table-column label="操作" fixed="right" align="center" width="200" class-name="small-padding fixed-width">
         <template #default="scope">
@@ -417,6 +422,7 @@ import {
 import { getListPageAll as getClientListAll } from '@/api/client.js'
 import { getListPageAll as getSupplierListAll } from '@/api/supplier.js'
 import ImageUpload from '@/components/ImageUpload/index.vue'
+import { parseTime } from '../../utils/ruoyi.js'
 // import QrCodeVue from '@/views/viewCard/qrCodeVue.vue's'
 
 const { proxy } = getCurrentInstance()
