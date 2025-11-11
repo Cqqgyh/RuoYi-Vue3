@@ -30,14 +30,14 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-        <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+        <el-button  v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+        <el-button  v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
+        <el-button  v-btnPreventRepeat
           type="primary"
           plain
           icon="Download"
@@ -47,7 +47,7 @@
         >生成</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
+        <el-button  v-btnPreventRepeat
           type="primary"
           plain
           icon="Plus"
@@ -56,7 +56,7 @@
         >创建</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
+        <el-button  v-btnPreventRepeat
           type="info"
           plain
           icon="Upload"
@@ -65,7 +65,7 @@
         >导入</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
+        <el-button  v-btnPreventRepeat
           type="success"
           plain
           icon="Edit"
@@ -75,7 +75,7 @@
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
+        <el-button  v-btnPreventRepeat
           type="danger"
           plain
           icon="Delete"
@@ -102,19 +102,19 @@
       <el-table-column label="操作" align="center" width="330" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-tooltip content="预览" placement="top">
-            <el-button link type="primary" icon="View" @click="handlePreview(scope.row)" v-hasPermi="['tool:gen:preview']"></el-button>
+            <el-button  v-btnPreventRepeat link type="primary" icon="View" @click="handlePreview(scope.row)" v-hasPermi="['tool:gen:preview']"></el-button>
           </el-tooltip>
           <el-tooltip content="编辑" placement="top">
-            <el-button link type="primary" icon="Edit" @click="handleEditTable(scope.row)" v-hasPermi="['tool:gen:edit']"></el-button>
+            <el-button  v-btnPreventRepeat link type="primary" icon="Edit" @click="handleEditTable(scope.row)" v-hasPermi="['tool:gen:edit']"></el-button>
           </el-tooltip>
           <el-tooltip content="删除" placement="top">
-            <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['tool:gen:remove']"></el-button>
+            <el-button  v-btnPreventRepeat link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['tool:gen:remove']"></el-button>
           </el-tooltip>
           <el-tooltip content="同步" placement="top">
-            <el-button link type="primary" icon="Refresh" @click="handleSynchDb(scope.row)" v-hasPermi="['tool:gen:edit']"></el-button>
+            <el-button  v-btnPreventRepeat link type="primary" icon="Refresh" @click="handleSynchDb(scope.row)" v-hasPermi="['tool:gen:edit']"></el-button>
           </el-tooltip>
           <el-tooltip content="生成代码" placement="top">
-            <el-button link type="primary" icon="Download" @click="handleGenTable(scope.row)" v-hasPermi="['tool:gen:code']"></el-button>
+            <el-button  v-btnPreventRepeat link type="primary" icon="Download" @click="handleGenTable(scope.row)" v-hasPermi="['tool:gen:code']"></el-button>
           </el-tooltip>
         </template>
       </el-table-column>

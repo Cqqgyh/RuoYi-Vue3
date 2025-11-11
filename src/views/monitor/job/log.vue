@@ -51,14 +51,14 @@
             ></el-date-picker>
          </el-form-item>
          <el-form-item>
-            <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+            <el-button  v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+            <el-button  v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
          </el-form-item>
       </el-form>
 
       <el-row :gutter="10" class="mb8">
          <el-col :span="1.5">
-            <el-button
+            <el-button  v-btnPreventRepeat
                type="danger"
                plain
                icon="Delete"
@@ -68,7 +68,7 @@
             >删除</el-button>
          </el-col>
          <el-col :span="1.5">
-            <el-button
+            <el-button  v-btnPreventRepeat
                type="danger"
                plain
                icon="Delete"
@@ -77,7 +77,7 @@
             >清空</el-button>
          </el-col>
          <el-col :span="1.5">
-            <el-button
+            <el-button  v-btnPreventRepeat
                type="warning"
                plain
                icon="Download"
@@ -86,9 +86,9 @@
             >导出</el-button>
          </el-col>
          <el-col :span="1.5">
-            <el-button 
-               type="warning" 
-               plain 
+            <el-button  v-btnPreventRepeat
+               type="warning"
+               plain
                icon="Close"
                @click="handleClose"
             >关闭</el-button>
@@ -119,7 +119,7 @@
          </el-table-column>
          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
             <template #default="scope">
-               <el-button link type="primary" icon="View" @click="handleView(scope.row)" v-hasPermi="['monitor:job:query']">详细</el-button>
+               <el-button  v-btnPreventRepeat link type="primary" icon="View" @click="handleView(scope.row)" v-hasPermi="['monitor:job:query']">详细</el-button>
             </template>
          </el-table-column>
       </el-table>
@@ -163,7 +163,7 @@
          </el-form>
          <template #footer>
             <div class="dialog-footer">
-               <el-button @click="open = false">关 闭</el-button>
+               <el-button  v-btnPreventRepeat @click="open = false">关 闭</el-button>
             </div>
          </template>
       </el-dialog>

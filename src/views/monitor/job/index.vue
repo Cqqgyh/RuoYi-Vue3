@@ -31,14 +31,14 @@
             </el-select>
          </el-form-item>
          <el-form-item>
-            <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+            <el-button  v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+            <el-button  v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
          </el-form-item>
       </el-form>
 
       <el-row :gutter="10" class="mb8">
          <el-col :span="1.5">
-            <el-button
+            <el-button  v-btnPreventRepeat
                type="primary"
                plain
                icon="Plus"
@@ -47,7 +47,7 @@
             >新增</el-button>
          </el-col>
          <el-col :span="1.5">
-            <el-button
+            <el-button  v-btnPreventRepeat
                type="success"
                plain
                icon="Edit"
@@ -57,7 +57,7 @@
             >修改</el-button>
          </el-col>
          <el-col :span="1.5">
-            <el-button
+            <el-button  v-btnPreventRepeat
                type="danger"
                plain
                icon="Delete"
@@ -67,7 +67,7 @@
             >删除</el-button>
          </el-col>
          <el-col :span="1.5">
-            <el-button
+            <el-button  v-btnPreventRepeat
                type="warning"
                plain
                icon="Download"
@@ -76,7 +76,7 @@
             >导出</el-button>
          </el-col>
          <el-col :span="1.5">
-            <el-button
+            <el-button  v-btnPreventRepeat
                type="info"
                plain
                icon="Operation"
@@ -111,19 +111,19 @@
          <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
             <template #default="scope">
                <el-tooltip content="修改" placement="top">
-                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['monitor:job:edit']"></el-button>
+                  <el-button  v-btnPreventRepeat link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['monitor:job:edit']"></el-button>
                </el-tooltip>
                <el-tooltip content="删除" placement="top">
-                  <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['monitor:job:remove']"></el-button>
+                  <el-button  v-btnPreventRepeat link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['monitor:job:remove']"></el-button>
                </el-tooltip>
                <el-tooltip content="执行一次" placement="top">
-                  <el-button link type="primary" icon="CaretRight" @click="handleRun(scope.row)" v-hasPermi="['monitor:job:changeStatus']"></el-button>
+                  <el-button  v-btnPreventRepeat link type="primary" icon="CaretRight" @click="handleRun(scope.row)" v-hasPermi="['monitor:job:changeStatus']"></el-button>
                </el-tooltip>
                <el-tooltip content="任务详细" placement="top">
-                  <el-button link type="primary" icon="View" @click="handleView(scope.row)" v-hasPermi="['monitor:job:query']"></el-button>
+                  <el-button  v-btnPreventRepeat link type="primary" icon="View" @click="handleView(scope.row)" v-hasPermi="['monitor:job:query']"></el-button>
                </el-tooltip>
                <el-tooltip content="调度日志" placement="top">
-                  <el-button link type="primary" icon="Operation" @click="handleJobLog(scope.row)" v-hasPermi="['monitor:job:query']"></el-button>
+                  <el-button  v-btnPreventRepeat link type="primary" icon="Operation" @click="handleJobLog(scope.row)" v-hasPermi="['monitor:job:query']"></el-button>
                </el-tooltip>
             </template>
          </el-table-column>
@@ -182,7 +182,7 @@
                   <el-form-item label="cron表达式" prop="cronExpression">
                      <el-input v-model="form.cronExpression" placeholder="请输入cron执行表达式">
                         <template #append>
-                           <el-button type="primary" @click="handleShowCron">
+                           <el-button  v-btnPreventRepeat type="primary" @click="handleShowCron">
                               生成表达式
                               <i class="el-icon-time el-icon--right"></i>
                            </el-button>
@@ -222,8 +222,8 @@
          </el-form>
          <template #footer>
             <div class="dialog-footer">
-               <el-button type="primary" @click="submitForm">确 定</el-button>
-               <el-button @click="cancel">取 消</el-button>
+               <el-button  v-btnPreventRepeat type="primary" @click="submitForm">确 定</el-button>
+               <el-button  v-btnPreventRepeat @click="cancel">取 消</el-button>
             </div>
          </template>
       </el-dialog>
@@ -277,7 +277,7 @@
          </el-form>
          <template #footer>
             <div class="dialog-footer">
-               <el-button @click="openView = false">关 闭</el-button>
+               <el-button  v-btnPreventRepeat @click="openView = false">关 闭</el-button>
             </div>
          </template>
       </el-dialog>

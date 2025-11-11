@@ -5,7 +5,7 @@
         <el-card style="height: calc(100vh - 125px)">
           <template #header>
             <Collection style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">缓存列表</span>
-            <el-button
+            <el-button  v-btnPreventRepeat
               style="float: right; padding: 3px 0"
               link
               type="primary"
@@ -48,7 +48,7 @@
               class-name="small-padding fixed-width"
             >
               <template #default="scope">
-                <el-button
+                <el-button  v-btnPreventRepeat
                   link
                   type="primary"
                   icon="Delete"
@@ -64,7 +64,7 @@
         <el-card style="height: calc(100vh - 125px)">
           <template #header>
             <Key style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">键名列表</span>
-            <el-button
+            <el-button  v-btnPreventRepeat
               style="float: right; padding: 3px 0"
               link
               type="primary"
@@ -99,7 +99,7 @@
               class-name="small-padding fixed-width"
             >
               <template #default="scope">
-                <el-button
+                <el-button  v-btnPreventRepeat
                   link
                   type="primary"
                   icon="Delete"
@@ -115,7 +115,7 @@
         <el-card :bordered="false" style="height: calc(100vh - 125px)">
           <template #header>
             <Document style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">缓存内容</span>
-            <el-button
+            <el-button  v-btnPreventRepeat
               style="float: right; padding: 3px 0"
               link
               type="primary"

@@ -58,13 +58,13 @@
     </div>
     <div class="center-board">
       <div class="action-bar">
-        <el-button icon="Download" type="primary" text @click="download">
+        <el-button  v-btnPreventRepeat icon="Download" type="primary" text @click="download">
           导出vue文件
         </el-button>
-        <el-button class="copy-btn-main" icon="DocumentCopy" type="primary" text @click="copy">
+        <el-button  v-btnPreventRepeat class="copy-btn-main" icon="DocumentCopy" type="primary" text @click="copy">
           复制代码
         </el-button>
-        <el-button class="delete-btn" icon="Delete" text @click="empty" type="danger">
+        <el-button  v-btnPreventRepeat class="delete-btn" icon="Delete" text @click="empty" type="danger">
           清空
         </el-button>
       </div>

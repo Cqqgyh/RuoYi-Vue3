@@ -24,8 +24,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="primary" @click="handelConfirm">确 定</el-button>
-          <el-button @click="onClose">取 消</el-button>
+          <el-button  v-btnPreventRepeat type="primary" @click="handelConfirm">确 定</el-button>
+          <el-button  v-btnPreventRepeat @click="onClose">取 消</el-button>
         </div>
       </template>
     </el-dialog>

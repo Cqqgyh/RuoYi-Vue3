@@ -46,14 +46,14 @@
             ></el-date-picker>
          </el-form-item>
          <el-form-item>
-            <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+            <el-button  v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+            <el-button  v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
          </el-form-item>
       </el-form>
 
       <el-row :gutter="10" class="mb8">
          <el-col :span="1.5">
-            <el-button
+            <el-button  v-btnPreventRepeat
                type="danger"
                plain
                icon="Delete"
@@ -63,7 +63,7 @@
             >删除</el-button>
          </el-col>
          <el-col :span="1.5">
-            <el-button
+            <el-button  v-btnPreventRepeat
                type="danger"
                plain
                icon="Delete"
@@ -72,7 +72,7 @@
             >清空</el-button>
          </el-col>
          <el-col :span="1.5">
-            <el-button
+            <el-button  v-btnPreventRepeat
                type="primary"
                plain
                icon="Unlock"
@@ -82,7 +82,7 @@
             >解锁</el-button>
          </el-col>
          <el-col :span="1.5">
-            <el-button
+            <el-button  v-btnPreventRepeat
                type="warning"
                plain
                icon="Download"

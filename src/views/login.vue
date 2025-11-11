@@ -42,7 +42,7 @@
       </el-form-item>
       <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
       <el-form-item style="width:100%;">
-        <el-button
+        <el-button  v-btnPreventRepeat
           :loading="loading"
           size="large"
           type="primary"

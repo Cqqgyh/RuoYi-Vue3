@@ -53,9 +53,9 @@
 
                 <!-- 操作按钮组 -->
                 <div class="action-buttons">
-                  <el-button size="small" @click="clearSelection">清空选择</el-button>
-                  <el-button size="small" @click="selectAllFiltered">全选</el-button>
-                  <el-button size="small" @click="reverseSelection">反选</el-button>
+                  <el-button  v-btnPreventRepeat size="small" @click="clearSelection">清空选择</el-button>
+                  <el-button  v-btnPreventRepeat size="small" @click="selectAllFiltered">全选</el-button>
+                  <el-button  v-btnPreventRepeat size="small" @click="reverseSelection">反选</el-button>
                 </div>
 
                 <!-- 虚拟化列表控件 -->
@@ -139,7 +139,7 @@
                     <!-- 操作列 -->
                     <el-table-column label="操作" width="80">
                       <template #default="scope">
-                        <el-button
+                        <el-button  v-btnPreventRepeat
                             size="small"
                             type="danger"
                             @click="deleteRow(scope.row)"
@@ -159,8 +159,8 @@
     </div>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="close">取消</el-button>
-        <el-button type="primary" @click="submitForm">
+        <el-button  v-btnPreventRepeat @click="close">取消</el-button>
+        <el-button  v-btnPreventRepeat type="primary" @click="submitForm">
           确认
         </el-button>
       </div>

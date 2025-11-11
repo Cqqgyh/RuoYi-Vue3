@@ -66,14 +66,14 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-        <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+        <el-button  v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+        <el-button  v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
+        <el-button  v-btnPreventRepeat
             type="primary"
             plain
             icon="Plus"
@@ -83,7 +83,7 @@
         </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
+        <el-button  v-btnPreventRepeat
             type="danger"
             plain
             icon="Delete"
@@ -94,7 +94,7 @@
         </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
+        <el-button  v-btnPreventRepeat
             type="warning"
             plain
             icon="Download"
@@ -167,19 +167,19 @@
       <!--      悬浮操作列-->
       <el-table-column label="操作" fixed="right" align="center" width="200" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
+          <el-button  v-btnPreventRepeat link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['system:product:edit']">
             修改
           </el-button>
-          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
+          <el-button  v-btnPreventRepeat link type="primary" icon="Delete" @click="handleDelete(scope.row)"
                      v-hasPermi="['system:product:remove']">删除
           </el-button>
-          <el-button link type="primary" icon="Share" @click="handleShareLink(scope.row)"
+          <el-button  v-btnPreventRepeat link type="primary" icon="Share" @click="handleShareLink(scope.row)"
                      v-hasPermi="['system:product:share']">
             获取分享链接
           </el-button>
           <!--         icon是用符合二维码的icon-->
-          <el-button link type="primary" icon="Link" @click="handleShareLink(scope.row,true)"
+          <el-button  v-btnPreventRepeat link type="primary" icon="Link" @click="handleShareLink(scope.row,true)"
                      v-hasPermi="['system:product:share']">
             下载二维码
           </el-button>
@@ -384,7 +384,7 @@
               <!--                  :on-success="handleAvatarSuccess"-->
               <!--                  :file-list="form.fileUrlList"-->
               <!--              >-->
-              <!--                <el-button size="small" type="primary">点击上传</el-button>-->
+              <!--                <el-button  v-btnPreventRepeat size="small" type="primary">点击上传</el-button>-->
               <!--              </el-upload>-->
             </el-form-item>
           </el-col>
@@ -401,8 +401,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="cancel">取 消</el-button>
+          <el-button  v-btnPreventRepeat type="primary" @click="submitForm">确 定</el-button>
+          <el-button  v-btnPreventRepeat @click="cancel">取 消</el-button>
         </div>
       </template>
     </el-dialog>

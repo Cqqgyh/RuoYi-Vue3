@@ -113,7 +113,7 @@
           <el-input v-model="info.genPath">
             <template #append>
               <el-dropdown>
-                <el-button type="primary">
+                <el-button  v-btnPreventRepeat type="primary">
                   最近路径快速选择
                   <i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
@@ -128,7 +128,7 @@
         </el-form-item>
       </el-col>
     </el-row>
-    
+
     <template v-if="info.tplCategory == 'tree'">
       <h4 class="form-header">其他信息</h4>
       <el-row v-show="info.tplCategory == 'tree'">
