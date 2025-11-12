@@ -677,7 +677,7 @@ async function handleShareLink (row, isDownload) {
   if (isDownload) {
     const res = await getQrcodeUrlRequest({ url: shareLink.value })
 
-    if(window.navigator.userAgent.includes('miniProgram')  || window.navigator.userAgent.includes('wechat')){
+    if(window.navigator.userAgent.includes('miniProgram')  || window.navigator.userAgent.includes('wechat') || window.navigator.userAgent.includes('chat')|| window.navigator.userAgent.includes('Chat')){
       // 获取元素 class van-image-preview__index 内容修改为：请手动截图下载
       //
       const base64url = URL.createObjectURL(new Blob([res], { type: 'image/png' }))
