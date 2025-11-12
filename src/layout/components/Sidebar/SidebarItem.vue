@@ -2,7 +2,7 @@
   <div v-if="!item.hidden">
     <template v-if="hasOneShowingChild(item.children, item) && (!onlyOneChild.children || onlyOneChild.noShowingChildren) && !item.alwaysShow">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path, onlyOneChild.query)">
-        <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{ 'submenu-title-noDropdown': !isNest }">
+        <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{ 'submenu-title-noDropdown': !isNest }" @click="handleClick">
           <svg-icon :icon-class="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"/>
           <template #title><span class="menu-title" :title="hasTitle(onlyOneChild.meta.title)">{{ onlyOneChild.meta.title }}</span></template>
         </el-menu-item>
@@ -31,6 +31,7 @@
 import { isExternal } from '@/utils/validate'
 import AppLink from './Link'
 import { getNormalPath } from '@/utils/ruoyi'
+import useAppStore from '@/store/modules/app.js'
 
 const props = defineProps({
   // route object
@@ -95,6 +96,14 @@ function hasTitle(title){
     return title
   } else {
     return ""
+  }
+}
+/** 点击菜单 */
+function handleClick() {
+//   根据媒体查询条件，判断是否关闭菜单
+  if (window.innerWidth <= 768) {
+    // 小于等于768px时，关闭菜单
+    useAppStore().toggleSideBar()
   }
 }
 </script>
