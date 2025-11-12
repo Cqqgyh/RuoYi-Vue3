@@ -423,7 +423,7 @@ import { getListPageAll as getClientListAll } from '@/api/client.js'
 import { getListPageAll as getSupplierListAll } from '@/api/supplier.js'
 import ImageUpload from '@/components/ImageUpload/index.vue'
 import { parseTime } from '../../utils/ruoyi.js'
-// import QrCodeVue from '@/views/viewCard/qrCodeVue.vue's'
+import {  showImagePreview} from 'vant';
 
 const { proxy } = getCurrentInstance()
 
@@ -676,11 +676,31 @@ async function handleShareLink (row, isDownload) {
   shareLink.value = `${origin}/viewCard?id=${row.id}`
   if (isDownload) {
     const res = await getQrcodeUrlRequest({ url: shareLink.value })
-    // 使用项目已有的下载方式
-    const blob = new Blob([res], { type: 'image/png' })
-    const fileName = `二维码_${row.name}.png`
-    saveAs(blob, fileName)
-    proxy.$modal.msgSuccess('下载成功')
+
+    if(window.navigator.userAgent.includes('miniProgram')  || window.navigator.userAgent.includes('wechat')){
+      // 获取元素 class van-image-preview__index 内容修改为：请手动截图下载
+      //
+      const base64url = URL.createObjectURL(new Blob([res], { type: 'image/png' }))
+      showImagePreview({
+        images: [base64url],
+        closeable: true,
+        startPosition: 0,
+      })
+      setTimeout(() => {
+        const indexElement = document.querySelector('.van-image-preview__index')
+        if (indexElement) {
+          indexElement.innerHTML = '&nbsp&nbsp&nbsp&nbsp请手动截图下载<br/>或者长按保存到手机 <br/> '
+
+        }
+      })
+    } else {
+      // 使用项目已有的下载方式
+      const blob = new Blob([res], { type: 'image/png' })
+      const fileName = `二维码_${row.name}.png`
+      saveAs(blob, fileName)
+      proxy.$modal.msgSuccess('下载成功')
+    }
+
   } else {
     // 复制分享链接到剪贴板
     await copyToClipboard(shareLink.value)
