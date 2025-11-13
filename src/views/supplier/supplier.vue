@@ -13,7 +13,7 @@
       <el-form-item label="供应商名称" prop="supplierName">
         <el-input
             v-model.trim="queryParams.supplierName"
-            placeholder="请输入客供应商名称"
+            placeholder="请输入供应商名称"
             clearable
             style="width: 240px"
             @keyup.enter="handleQuery"
