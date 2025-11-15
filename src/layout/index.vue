@@ -5,7 +5,10 @@
 <!--    <sidebar v-if="!sidebar.hide" class="sidebar-container" />-->
     <div :class="{ hasTagsView: needTagsView, sidebarHide: sidebar.hide }" class="main-container">
       <div :class="{ 'fixed-header': true }" v-if="settingsStore.title">
-            <NavBar :title="settingsStore.title" />
+            <NavBar
+                     left-text="返回"
+                     left-arrow
+                     @click-left="()=>{router.back()}" :title="settingsStore.title" />
       </div>
       <app-main />
     </div>
@@ -19,6 +22,8 @@ import { AppMain, Navbar, Settings, TagsView } from './components'
 import useAppStore from '@/store/modules/app'
 import useSettingsStore from '@/store/modules/settings'
 import { NavBar } from 'vant';
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 const settingsStore = useSettingsStore()
 const theme = computed(() => settingsStore.theme)
