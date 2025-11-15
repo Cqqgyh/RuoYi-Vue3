@@ -63,11 +63,13 @@ function addIframe() {
   .app-main {
     /* 84 = navbar + tags-view = 50 + 34 */
     min-height: calc(100vh - 84px);
+    //min-height: calc(100vh);
   }
 
   .fixed-header + .app-main {
-    margin-top: 84px;
+    //margin-top: 84px;
     height: calc(100vh - 84px);
+    //height: calc(100vh);
     min-height: 0px;
   }
 }

@@ -1,14 +1,13 @@
 <template>
   <div :class="classObj" class="app-wrapper" :style="{ '--current-color': theme }">
+
     <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
-    <sidebar v-if="!sidebar.hide" class="sidebar-container" />
+<!--    <sidebar v-if="!sidebar.hide" class="sidebar-container" />-->
     <div :class="{ hasTagsView: needTagsView, sidebarHide: sidebar.hide }" class="main-container">
-      <div :class="{ 'fixed-header': fixedHeader }">
-        <navbar @setLayout="setLayout" />
-        <tags-view v-if="needTagsView" />
+      <div :class="{ 'fixed-header': true }" v-if="settingsStore.title">
+            <NavBar :title="settingsStore.title" />
       </div>
       <app-main />
-      <settings ref="settingRef" />
     </div>
   </div>
 </template>
@@ -19,6 +18,7 @@ import Sidebar from './components/Sidebar/index.vue'
 import { AppMain, Navbar, Settings, TagsView } from './components'
 import useAppStore from '@/store/modules/app'
 import useSettingsStore from '@/store/modules/settings'
+import { NavBar } from 'vant';
 
 const settingsStore = useSettingsStore()
 const theme = computed(() => settingsStore.theme)
@@ -27,7 +27,7 @@ const sidebar = computed(() => useAppStore().sidebar)
 const device = computed(() => useAppStore().device)
 const needTagsView = computed(() => settingsStore.tagsView)
 const fixedHeader = computed(() => settingsStore.fixedHeader)
-
+console.log('settingsStore',settingsStore)
 const classObj = computed(() => ({
   hideSidebar: !sidebar.value.opened,
   openSidebar: sidebar.value.opened,
@@ -69,6 +69,7 @@ function setLayout() {
 
 .app-wrapper {
   @include mix.clearfix;
+  box-sizing: border-box;
   position: relative;
   height: 100%;
   width: 100%;

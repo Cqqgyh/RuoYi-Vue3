@@ -1,40 +1,40 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="客户编码" prop="clientCode">
-        <el-input
-            v-model.trim="queryParams.clientCode"
-            placeholder="请输入客户编码"
-            clearable
-            style="width: 240px"
-            @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="客户名称" prop="clientName">
-        <el-input
-            v-model.trim="queryParams.clientName"
-            placeholder="请输入客客户名称"
-            clearable
-            style="width: 240px"
-            @keyup.enter="handleQuery"
-        />
-      </el-form-item>
+<!--    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">-->
+<!--      <el-form-item label="客户编码" prop="clientCode">-->
+<!--        <el-input-->
+<!--            v-model.trim="queryParams.clientCode"-->
+<!--            placeholder="请输入客户编码"-->
+<!--            clearable-->
+<!--            style="width: 240px"-->
+<!--            @keyup.enter="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="客户名称" prop="clientName">-->
+<!--        <el-input-->
+<!--            v-model.trim="queryParams.clientName"-->
+<!--            placeholder="请输入客客户名称"-->
+<!--            clearable-->
+<!--            style="width: 240px"-->
+<!--            @keyup.enter="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
 
-      <el-form-item label="创建时间" style="width: 308px">
-        <el-date-picker
-            v-model="dateRange"
-            value-format="YYYY-MM-DD"
-            type="daterange"
-            range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-        ></el-date-picker>
-      </el-form-item>
-      <el-form-item>
-        <el-button  v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-        <el-button  v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+<!--      <el-form-item label="创建时间" style="width: 308px">-->
+<!--        <el-date-picker-->
+<!--            v-model="dateRange"-->
+<!--            value-format="YYYY-MM-DD"-->
+<!--            type="daterange"-->
+<!--            range-separator="-"-->
+<!--            start-placeholder="开始日期"-->
+<!--            end-placeholder="结束日期"-->
+<!--        ></el-date-picker>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item>-->
+<!--        <el-button  v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>-->
+<!--        <el-button  v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>-->
+<!--      </el-form-item>-->
+<!--    </el-form>-->
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
@@ -68,10 +68,10 @@
         >导出
         </el-button>
       </el-col>
-      <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
+<!--      <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>-->
     </el-row>
 
-    <el-table v-loading="loading" :data="typeList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="typeList"  @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="客户编码" align="center" prop="clientCode" :show-overflow-tooltip="true"/>
       <el-table-column label="客户名称" align="center" prop="clientName" :show-overflow-tooltip="true"/>
@@ -85,7 +85,7 @@
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" fixed="right" align="center" width="160" class-name="small-padding fixed-width">
+      <el-table-column label="操作"  align="center" width="160" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button  v-btnPreventRepeat link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['system:client:edit']">
@@ -147,6 +147,7 @@
 
 import { getListPage, getDetailRequest, addRequest, updateRequest, delRequest, delBatchRequest } from '@/api/client.js'
 import { parseTime } from '@/utils/ruoyi.js'
+import { NavBar } from 'vant'
 
 const { proxy } = getCurrentInstance()
 

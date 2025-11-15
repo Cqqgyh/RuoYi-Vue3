@@ -42,7 +42,7 @@
                </div>
             </el-card>
          </el-col>
-         <el-col :span="18" :xs="24">
+         <el-col :span="18" :xs="24" class="mt20">
             <el-card>
                <template v-slot:header>
                  <div class="clearfix">

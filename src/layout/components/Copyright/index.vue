@@ -1,16 +1,17 @@
 <template>
-  <footer v-if="visible" class="copyright">
-    <span>{{ content }}</span>
+  <footer class="copyright">
+    <van-tabbar v-model="active">
+      <van-tabbar-item to="/index" icon="home-o">首页</van-tabbar-item>
+      <van-tabbar-item to="/user/profile" icon="friends-o">个人中心</van-tabbar-item>
+    </van-tabbar>
   </footer>
 </template>
 
 <script setup>
-import useSettingsStore from '@/store/modules/settings'
+import { ref } from 'vue'
+import { Tabbar as VanTabbar, TabbarItem as VanTabbarItem } from 'vant';
 
-const settingsStore = useSettingsStore()
-
-const visible = computed(() => settingsStore.footerVisible)
-const content = computed(() => settingsStore.footerContent)
+const active = ref(0)
 </script>
 
 <style scoped>
