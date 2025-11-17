@@ -88,7 +88,20 @@ export const constantRoutes = [
         meta: { title: '个人中心', icon: 'user' }
       }
     ]
-  }
+  },
+
+  {
+    path: '/clientAddOrEdit',
+    component: Layout,
+    children: [
+      {
+        path: '/clientAddOrEdit',
+        component: () => import('@/views/client/add'),
+        name: 'ClientAddOrEdit',
+        meta: { title: '新增客户', icon: 'user' }
+      }
+    ]
+  },
 ]
 
 // 动态路由，基于用户权限动态去加载

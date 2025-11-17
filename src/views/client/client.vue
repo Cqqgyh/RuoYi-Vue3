@@ -147,7 +147,7 @@
 
 import { getListPage, getDetailRequest, addRequest, updateRequest, delRequest, delBatchRequest } from '@/api/client.js'
 import { parseTime } from '@/utils/ruoyi.js'
-import { NavBar } from 'vant'
+import router from '@/router/index.js'
 
 const { proxy } = getCurrentInstance()
 
@@ -253,9 +253,10 @@ function resetQuery () {
 
 /** 新增按钮操作 */
 function handleAdd () {
-  reset()
-  open.value = true
-  title.value = '添加客户'
+  // reset()
+  // open.value = true
+  // title.value = '添加客户'
+  router.push({ path: '/clientAddOrEdit' })
 }
 
 /** 多选框选中数据 */
@@ -267,13 +268,14 @@ function handleSelectionChange (selection) {
 
 /** 修改按钮操作 */
 function handleUpdate (row) {
-  reset()
-  const id = row.id || ids.value
-  getDetailRequest(id).then(response => {
-    form.value = response.data
-    open.value = true
-    title.value = '修改客户'
-  })
+  router.push({ path: '/clientAddOrEdit', query: { id: row.id } })
+  // reset()
+  // const id = row.id || ids.value
+  // getDetailRequest(id).then(response => {
+  //   form.value = response.data
+  //   open.value = true
+  //   title.value = '修改客户'
+  // })
 }
 
 /** 提交按钮 */
