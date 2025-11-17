@@ -32,18 +32,6 @@
       </template>
       的文件
     </div>
-
-    <el-dialog
-      v-model="dialogVisible"
-      title="预览"
-      width="800px"
-      append-to-body
-    >
-      <img
-        :src="dialogImageUrl"
-        style="display: block; max-width: 100%; margin: 0 auto"
-      />
-    </el-dialog>
   </div>
 </template>
 
@@ -51,6 +39,7 @@
 import { getToken } from "@/utils/auth"
 import { isExternal } from "@/utils/validate"
 import Sortable from 'sortablejs'
+import { showImagePreview } from 'vant'
 
 const props = defineProps({
   modelValue: [String, Object, Array],
@@ -66,12 +55,12 @@ const props = defineProps({
   // 图片数量限制
   limit: {
     type: Number,
-    default: 5
+    default: 20
   },
   // 大小限制(MB)
   fileSize: {
     type: Number,
-    default: 5
+    default: 10
   },
   // 文件类型, 例如['png', 'jpg', 'jpeg']
   fileType: {
@@ -99,8 +88,6 @@ const { proxy } = getCurrentInstance()
 const emit = defineEmits()
 const number = ref(0)
 const uploadList = ref([])
-const dialogImageUrl = ref("")
-const dialogVisible = ref(false)
 const baseUrl = import.meta.env.VITE_APP_BASE_API
 const uploadImgUrl = ref(import.meta.env.VITE_APP_BASE_API + props.action) // 上传的图片服务器地址
 const headers = ref({ Authorization: "Bearer " + getToken() })
@@ -213,8 +200,13 @@ function handleUploadError() {
 
 // 预览
 function handlePictureCardPreview(file) {
-  dialogImageUrl.value = file.url
-  dialogVisible.value = true
+  const images = fileList.value.map(item => item.url)
+  const startIndex = fileList.value.findIndex(item => item.url === file.url)
+  showImagePreview({
+    images,
+    closeable: true,
+    startPosition: startIndex > -1 ? startIndex : 0,
+  })
 }
 
 // 对象转成指定字符串分隔
@@ -255,5 +247,81 @@ onMounted(() => {
 
 :deep(.el-upload.el-upload--picture-card.is-disabled) {
   display: none !important;
+}
+
+
+  :deep(.el-upload-list--picture-card) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  :deep(.el-upload-list--picture-card .el-upload-list__item) {
+    margin: 0;
+    width: 100% !important;
+  }
+  :deep(.el-upload-list--picture-card .el-upload-list__item-thumbnail) {
+    border-radius: 10px;
+  }
+  :deep(.el-upload-list--picture-card .el-upload-list__item-status-label) {
+    border-radius: 10px;
+  }
+  :deep(.el-upload-list--picture-card .el-upload-list__item-actions) {
+    padding: 4px;
+  }
+
+
+/* H5统一网格，将加号与图片并排显示 */
+:deep(.component-upload-image .el-upload) {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  align-items: stretch;
+}
+:deep(.component-upload-image .el-upload-list) {
+  display: contents;
+}
+:deep(.component-upload-image .el-upload--picture-card) {
+  width: 100% !important;
+  margin: 0 !important;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  border: 1px dashed #dadee3;
+  background: #fff;
+  color: #909399;
+}
+:deep(.component-upload-image .el-upload--picture-card:hover) {
+  border-color: #409EFF;
+  color: #409EFF;
+}
+:deep(.component-upload-image .el-upload-list__item) {
+  margin: 0 !important;
+  width: 100% !important;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+}
+:deep(.component-upload-image .el-upload-list__item-thumbnail) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+:deep(.component-upload-image .el-upload-list__item-status-label) {
+  backdrop-filter: blur(6px);
+  background: rgba(0,0,0,0.35);
+}
+:deep(.component-upload-image .el-upload-list__item-actions) {
+  padding: 6px;
+  background: rgba(255,255,255,0.85);
+}
+
+@media (max-width: 360px) {
+  :deep(.component-upload-image .el-upload) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 481px) and (max-width: 768px) {
+  :deep(.component-upload-image .el-upload) {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 </style>

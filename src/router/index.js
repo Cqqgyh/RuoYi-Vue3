@@ -114,6 +114,18 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/productAddOrEdit',
+    component: Layout,
+    children: [
+      {
+        path: '/productAddOrEdit',
+        component: () => import('@/views/product/add'),
+        name: 'ProductAddOrEdit',
+        meta: { title: '产品', icon: 'user' }
+      }
+    ]
+  },
 ]
 
 // 动态路由，基于用户权限动态去加载

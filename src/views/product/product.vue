@@ -422,11 +422,12 @@ import {
 import { getListPageAll as getClientListAll } from '@/api/client.js'
 import { getListPageAll as getSupplierListAll } from '@/api/supplier.js'
 import ImageUpload from '@/components/ImageUpload/index.vue'
+import { useRouter } from 'vue-router'
 import { parseTime } from '../../utils/ruoyi.js'
 import {  showImagePreview} from 'vant';
 
 const { proxy } = getCurrentInstance()
-
+const router = useRouter()
 const typeList = ref([])
 const open = ref(false)
 const loading = ref(true)
@@ -643,9 +644,10 @@ const x = () => {
 
 /** 新增按钮操作 */
 function handleAdd () {
-  reset()
-  open.value = true
-  title.value = '添加客户'
+  router.push({ path: '/productAddOrEdit' })
+  // reset()
+  // open.value = true
+  // title.value = '添加客户'
 }
 
 /** 多选框选中数据 */
@@ -657,13 +659,14 @@ function handleSelectionChange (selection) {
 
 /** 修改按钮操作 */
 function handleUpdate (row) {
-  reset()
-  const id = row.id || ids.value
-  getDetailRequest(id).then(response => {
-    form.value = response.data
-    open.value = true
-    title.value = '修改字典类型'
-  })
+  router.push({ path: '/productAddOrEdit', query: { id: row.id } })
+  // reset()
+  // const id = row.id || ids.value
+  // getDetailRequest(id).then(response => {
+  //   form.value = response.data
+  //   open.value = true
+  //   title.value = '修改字典类型'
+  // })
 }
 
 const shareLink = ref('')
