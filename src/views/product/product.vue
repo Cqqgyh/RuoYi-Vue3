@@ -374,7 +374,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="照片" prop="fileUrlList">
-              <image-upload v-model="form.fileUrlList" :limit="10" :fileSize="10"></image-upload>
+              <image-upload v-model="form.fileUrlList"></image-upload>
 
               <!--              <el-upload-->
               <!--                  class="avatar-uploader"-->
