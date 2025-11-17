@@ -16,20 +16,20 @@
     </header>
 
     <!-- 快速统计，可自行删减/修改 -->
-    <section class="home-summary">
-      <div class="summary-card">
-        <div class="summary-label">今日新增客户</div>
-        <div class="summary-value">12</div>
-      </div>
-      <div class="summary-card">
-        <div class="summary-label">待处理报价</div>
-        <div class="summary-value">5</div>
-      </div>
-      <div class="summary-card">
-        <div class="summary-label">本月订单</div>
-        <div class="summary-value">36</div>
-      </div>
-    </section>
+<!--    <section class="home-summary">-->
+<!--      <div class="summary-card">-->
+<!--        <div class="summary-label">今日新增客户</div>-->
+<!--        <div class="summary-value">12</div>-->
+<!--      </div>-->
+<!--      <div class="summary-card">-->
+<!--        <div class="summary-label">待处理报价</div>-->
+<!--        <div class="summary-value">5</div>-->
+<!--      </div>-->
+<!--      <div class="summary-card">-->
+<!--        <div class="summary-label">本月订单</div>-->
+<!--        <div class="summary-value">36</div>-->
+<!--      </div>-->
+<!--    </section>-->
 
     <!-- 功能区 -->
     <section class="home-section">
@@ -139,9 +139,9 @@ const go = (path) => {
 <style scoped>
 /* 整体布局适配移动端 */
 .home-page {
-  min-height: 100vh;
+  min-height:100%;
   background: #f5f6f8;
-  padding: 12px 12px 20px;
+  padding: 12px 12px 12px 12px;
   box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'PingFang SC',
   'Microsoft YaHei', sans-serif;
