@@ -139,7 +139,7 @@ function reset () {
     telphone: '',
     country: null,
   }
-  formRef.value?.resetValidation()
+  formRef.value?.clearValidate()
 }
 
 async function initDetail () {
@@ -156,7 +156,7 @@ async function initDetail () {
       country: null,
       ...res.data,
     }
-    formRef.value?.resetValidation()
+    formRef.value?.clearValidate()
   } else {
     reset()
   }
