@@ -265,7 +265,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="工厂报价" prop="factoryQuotation">
-              <el-input-number precision="2" v-model.trim="form.factoryQuotation" placeholder="请输入工厂报价"/>
+              <el-input-number :precision="2" v-model.trim="form.factoryQuotation" placeholder="请输入工厂报价"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -274,7 +274,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="美元报价" prop="usdQuotation">
-              <el-input-number precision="2" v-model.trim="form.usdQuotation" placeholder="请输入美元报价"/>
+              <el-input-number :precision="2" v-model.trim="form.usdQuotation" placeholder="请输入美元报价"/>
             </el-form-item>
 
           </el-col>
@@ -308,13 +308,13 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="面料克重" prop="fabricWeight">
-              <el-input-number precision="2" v-model.trim="form.fabricWeight" placeholder="请输入面料克重"/>
+              <el-input-number :precision="2" v-model.trim="form.fabricWeight" placeholder="请输入面料克重"/>
             </el-form-item>
 
           </el-col>
           <el-col :span="12">
             <el-form-item label="面料价格" prop="fabricPrice">
-              <el-input-number precision="2" v-model.trim="form.fabricPrice" placeholder="请输入面料价格"/>
+              <el-input-number :precision="2" v-model.trim="form.fabricPrice" placeholder="请输入面料价格"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -347,7 +347,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="里布克重" prop="liningWeightPer">
-              <el-input-number precision="2" v-model.trim="form.liningWeightPer" placeholder="请输入里布克重"/>
+              <el-input-number :precision="2" v-model.trim="form.liningWeightPer" placeholder="请输入里布克重"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -356,7 +356,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="里布价格" prop="liningPrice">
-              <el-input-number precision="2" v-model.trim="form.liningPrice" placeholder="请输入里布价格"/>
+              <el-input-number :precision="2" v-model.trim="form.liningPrice" placeholder="请输入里布价格"/>
             </el-form-item>
 
           </el-col>
