@@ -121,7 +121,7 @@ const data = reactive({
 
 const { form, rules } = toRefs(data)
 
-const pageTitle = computed(() => form.value.id ? '修改客户' : '添加客户')
+const pageTitle = computed(() => route.query?.id ? '修改客户' : '添加客户')
 const settingsStore = useSettingsStore()
 settingsStore.title = pageTitle.value
 
