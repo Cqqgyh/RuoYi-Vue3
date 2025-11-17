@@ -66,40 +66,40 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button  v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-        <el-button  v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
+        <el-button v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+        <el-button v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button  v-btnPreventRepeat
-            type="primary"
-            plain
-            icon="Plus"
-            @click="handleAdd"
-            v-hasPermi="['system:product:add']"
+        <el-button v-btnPreventRepeat
+                   type="primary"
+                   plain
+                   icon="Plus"
+                   @click="handleAdd"
+                   v-hasPermi="['system:product:add']"
         >新增
         </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button  v-btnPreventRepeat
-            type="danger"
-            plain
-            icon="Delete"
-            :disabled="multiple"
-            @click="handleDelete"
-            v-hasPermi="['system:product:remove']"
+        <el-button v-btnPreventRepeat
+                   type="danger"
+                   plain
+                   icon="Delete"
+                   :disabled="multiple"
+                   @click="handleDelete"
+                   v-hasPermi="['system:product:remove']"
         >批量删除
         </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button  v-btnPreventRepeat
-            type="warning"
-            plain
-            icon="Download"
-            @click="handleExport"
-            v-hasPermi="['system:product:export']"
+        <el-button v-btnPreventRepeat
+                   type="warning"
+                   plain
+                   icon="Download"
+                   @click="handleExport"
+                   v-hasPermi="['system:product:export']"
         >导出
         </el-button>
       </el-col>
@@ -159,7 +159,7 @@
       <el-table-column label="里布供应商" align="center" prop="liningSupplierName" :show-overflow-tooltip="true"
                        width="180px"/>
       <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" width="180px"/>
-      <el-table-column label="创建时间" align="center" prop="createTime"  width="160">
+      <el-table-column label="创建时间" align="center" prop="createTime" width="160">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
@@ -167,19 +167,19 @@
       <!--      悬浮操作列-->
       <el-table-column label="操作" fixed="right" align="center" width="200" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button  v-btnPreventRepeat link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
+          <el-button v-btnPreventRepeat link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['system:product:edit']">
             修改
           </el-button>
-          <el-button  v-btnPreventRepeat link type="primary" icon="Delete" @click="handleDelete(scope.row)"
+          <el-button v-btnPreventRepeat link type="primary" icon="Delete" @click="handleDelete(scope.row)"
                      v-hasPermi="['system:product:remove']">删除
           </el-button>
-          <el-button  v-btnPreventRepeat link type="primary" icon="Share" @click="handleShareLink(scope.row)"
+          <el-button v-btnPreventRepeat link type="primary" icon="Share" @click="handleShareLink(scope.row)"
                      v-hasPermi="['system:product:share']">
             获取分享链接
           </el-button>
           <!--         icon是用符合二维码的icon-->
-          <el-button  v-btnPreventRepeat link type="primary" icon="Link" @click="handleShareLink(scope.row,true)"
+          <el-button v-btnPreventRepeat link type="primary" icon="Link" @click="handleShareLink(scope.row,true)"
                      v-hasPermi="['system:product:share']">
             下载二维码
           </el-button>
@@ -265,7 +265,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="工厂报价" prop="factoryQuotation">
-              <el-input-number v-model.trim="form.factoryQuotation" placeholder="请输入工厂报价"/>
+              <el-input-number precision="2" v-model.trim="form.factoryQuotation" placeholder="请输入工厂报价"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -274,7 +274,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="美元报价" prop="usdQuotation">
-              <el-input-number v-model.trim="form.usdQuotation" placeholder="请输入美元报价"/>
+              <el-input-number precision="2" v-model.trim="form.usdQuotation" placeholder="请输入美元报价"/>
             </el-form-item>
 
           </el-col>
@@ -308,13 +308,13 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="面料克重" prop="fabricWeight">
-              <el-input-number v-model.trim="form.fabricWeight" placeholder="请输入面料克重"/>
+              <el-input-number precision="2" v-model.trim="form.fabricWeight" placeholder="请输入面料克重"/>
             </el-form-item>
 
           </el-col>
           <el-col :span="12">
             <el-form-item label="面料价格" prop="fabricPrice">
-              <el-input-number v-model.trim="form.fabricPrice" placeholder="请输入面料价格"/>
+              <el-input-number precision="2" v-model.trim="form.fabricPrice" placeholder="请输入面料价格"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -347,7 +347,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="里布克重" prop="liningWeightPer">
-              <el-input-number v-model.trim="form.liningWeightPer" placeholder="请输入里布克重"/>
+              <el-input-number precision="2" v-model.trim="form.liningWeightPer" placeholder="请输入里布克重"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -356,7 +356,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="里布价格" prop="liningPrice">
-              <el-input-number v-model.trim="form.liningPrice" placeholder="请输入里布价格"/>
+              <el-input-number precision="2" v-model.trim="form.liningPrice" placeholder="请输入里布价格"/>
             </el-form-item>
 
           </el-col>
@@ -401,8 +401,8 @@
       </el-form>
       <template #footer>
         <div class="dialog-footer">
-          <el-button  v-btnPreventRepeat type="primary" @click="submitForm">确 定</el-button>
-          <el-button  v-btnPreventRepeat @click="cancel">取 消</el-button>
+          <el-button v-btnPreventRepeat type="primary" @click="submitForm">确 定</el-button>
+          <el-button v-btnPreventRepeat @click="cancel">取 消</el-button>
         </div>
       </template>
     </el-dialog>
@@ -423,7 +423,7 @@ import { getListPageAll as getClientListAll } from '@/api/client.js'
 import { getListPageAll as getSupplierListAll } from '@/api/supplier.js'
 import ImageUpload from '@/components/ImageUpload/index.vue'
 import { parseTime } from '../../utils/ruoyi.js'
-import {  showImagePreview} from 'vant';
+import { showImagePreview } from 'vant'
 
 const { proxy } = getCurrentInstance()
 
@@ -529,7 +529,7 @@ function reset () {
     /**
      * 面料价格
      */
-    fabricPrice: '',
+    fabricPrice: null,
     /**
      * 面料供应商id
      */
@@ -537,7 +537,7 @@ function reset () {
     /**
      * 面料克重
      */
-    fabricWeight: '',
+    fabricWeight: null,
     /**
      * 工厂id
      */
@@ -545,7 +545,7 @@ function reset () {
     /**
      * 工厂报价
      */
-    factoryQuotation: '',
+    factoryQuotation: null,
     /**
      * 附件列表-附件url
      */
@@ -565,7 +565,7 @@ function reset () {
     /**
      * 里布价格
      */
-    liningPrice: '',
+    liningPrice: null,
     /**
      * 里布供应商id
      */
@@ -573,7 +573,7 @@ function reset () {
     /**
      * 里布克重
      */
-    liningWeightPer: '',
+    liningWeightPer: null,
     /**
      * 产品名称
      */
@@ -606,9 +606,9 @@ function reset () {
     /**
      * 美元报价
      */
-    usdQuotation: '',
+    usdQuotation: null,
   }
-  proxy.resetForm('dictRef')
+  proxy.$refs['dictRef']?.clearValidate()
 }
 
 /** 搜索按钮操作 */
@@ -620,7 +620,7 @@ function handleQuery () {
 /** 重置按钮操作 */
 function resetQuery () {
   dateRange.value = []
-  proxy.resetForm('queryRef')
+  reset()
   handleQuery()
 }
 
@@ -677,7 +677,8 @@ async function handleShareLink (row, isDownload) {
   if (isDownload) {
     const res = await getQrcodeUrlRequest({ url: shareLink.value })
 
-    if(window.navigator.userAgent.includes('miniProgram')  || window.navigator.userAgent.includes('wechat') || window.navigator.userAgent.includes('chat')|| window.navigator.userAgent.includes('Chat')){
+    if (window.navigator.userAgent.includes('miniProgram') || window.navigator.userAgent.includes('wechat') ||
+        window.navigator.userAgent.includes('chat') || window.navigator.userAgent.includes('Chat')) {
       // 获取元素 class van-image-preview__index 内容修改为：请手动截图下载
       //
       const base64url = URL.createObjectURL(new Blob([res], { type: 'image/png' }))
@@ -709,36 +710,37 @@ async function handleShareLink (row, isDownload) {
   }
 
 }
-function copyToClipboard(text) {
+
+function copyToClipboard (text) {
   // 优先尝试 Clipboard API（仅在安全上下文可用）
   if (navigator.clipboard && window.isSecureContext) {
-    return navigator.clipboard.writeText(text);
+    return navigator.clipboard.writeText(text)
   } else {
     // 降级：使用 execCommand（可在 HTTP 下工作）
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
+    const textarea = document.createElement('textarea')
+    textarea.value = text
 
     // 隐藏元素
-    textarea.style.position = 'fixed';
-    textarea.style.left = '-9999px';
-    textarea.style.top = '-9999px';
+    textarea.style.position = 'fixed'
+    textarea.style.left = '-9999px'
+    textarea.style.top = '-9999px'
 
-    document.body.appendChild(textarea);
-    textarea.focus();
-    textarea.select();
+    document.body.appendChild(textarea)
+    textarea.focus()
+    textarea.select()
 
     try {
-      const success = document.execCommand('copy');
-      document.body.removeChild(textarea);
+      const success = document.execCommand('copy')
+      document.body.removeChild(textarea)
       if (success) {
-        return Promise.resolve();
+        return Promise.resolve()
       } else {
-        throw new Error('execCommand 复制失败');
+        throw new Error('execCommand 复制失败')
       }
     } catch (err) {
-      document.body.removeChild(textarea);
-      console.error('复制失败:', err);
-      return Promise.reject(err);
+      document.body.removeChild(textarea)
+      console.error('复制失败:', err)
+      return Promise.reject(err)
     }
   }
 }
