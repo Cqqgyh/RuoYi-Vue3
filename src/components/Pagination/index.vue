@@ -39,7 +39,7 @@ const props = defineProps({
   // 移动端页码按钮的数量端默认值5
   pagerCount: {
     type: Number,
-    default: document.body.clientWidth < 992 ? 5 : 7
+    default: document.body.clientWidth < 992 ? 3 : 7
   },
   layout: {
     type: String,
