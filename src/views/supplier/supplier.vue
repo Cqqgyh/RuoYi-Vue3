@@ -154,9 +154,10 @@ import {
   delBatchRequest,
 } from '@/api/supplier.js'
 import { parseTime } from '../../utils/ruoyi.js'
+import { useRouter } from 'vue-router'
 
 const { proxy } = getCurrentInstance()
-
+const router = useRouter()
 const typeList = ref([])
 const open = ref(false)
 const loading = ref(true)
@@ -259,9 +260,10 @@ function resetQuery () {
 
 /** 新增按钮操作 */
 function handleAdd () {
-  reset()
-  open.value = true
-  title.value = '添加供应商'
+  router.push({ path: '/supplierAddOrEdit' })
+  // reset()
+  // open.value = true
+  // title.value = '添加供应商'
 }
 
 /** 多选框选中数据 */
@@ -274,13 +276,14 @@ function handleSelectionChange (selection) {
 
 /** 修改按钮操作 */
 function handleUpdate (row) {
-  reset()
-  const id = row.id || ids.value
-  getDetailRequest(id).then(response => {
-    form.value = response.data
-    open.value = true
-    title.value = '修改字典类型'
-  })
+  router.push({ path: '/supplierAddOrEdit' ,query: { id: row.id }})
+  // reset()
+  // const id = row.id || ids.value
+  // getDetailRequest(id).then(response => {
+  //   form.value = response.data
+  //   open.value = true
+  //   title.value = '修改字典类型'
+  // })
 }
 
 /** 提交按钮 */

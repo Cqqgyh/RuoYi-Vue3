@@ -98,7 +98,19 @@ export const constantRoutes = [
         path: '/clientAddOrEdit',
         component: () => import('@/views/client/add'),
         name: 'ClientAddOrEdit',
-        meta: { title: '新增客户', icon: 'user' }
+        meta: { title: '客户', icon: 'user' }
+      }
+    ]
+  },
+  {
+    path: '/supplierAddOrEdit',
+    component: Layout,
+    children: [
+      {
+        path: '/supplierAddOrEdit',
+        component: () => import('@/views/supplier/add'),
+        name: 'SupplierAddOrEdit',
+        meta: { title: '供应商', icon: 'user' }
       }
     ]
   },
