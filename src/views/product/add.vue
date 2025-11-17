@@ -43,10 +43,10 @@
           <el-input v-model.trim="form.styleNo" placeholder="请输入公司款号" clearable/>
         </el-form-item>
         <el-form-item label="工厂报价" prop="factoryQuotation">
-          <el-input-number v-model.trim="form.factoryQuotation" placeholder="请输入工厂报价" precision="2"/>
+          <el-input-number v-model.trim="form.factoryQuotation" placeholder="请输入工厂报价" :precision="2"/>
         </el-form-item>
         <el-form-item label="美元报价" prop="usdQuotation">
-          <el-input-number v-model.trim="form.usdQuotation" placeholder="请输入美元报价" precision="2"/>
+          <el-input-number v-model.trim="form.usdQuotation" placeholder="请输入美元报价" :precision="2"/>
         </el-form-item>
         <el-form-item label="尺码" prop="size">
           <el-input v-model.trim="form.size" placeholder="请输入尺码" clearable/>
@@ -60,10 +60,10 @@
           <el-input v-model.trim="form.fabricComposition" placeholder="请输入面料成分" clearable/>
         </el-form-item>
         <el-form-item label="面料克重" prop="fabricWeight">
-          <el-input-number v-model.trim="form.fabricWeight" placeholder="请输入面料克重" precision="2"/>
+          <el-input-number v-model.trim="form.fabricWeight" placeholder="请输入面料克重" :precision="2"/>
         </el-form-item>
         <el-form-item label="面料价格" prop="fabricPrice">
-          <el-input-number v-model.trim="form.fabricPrice" placeholder="请输入面料价格" precision="2"/>
+          <el-input-number v-model.trim="form.fabricPrice" placeholder="请输入面料价格" :precision="2"/>
         </el-form-item>
         <el-form-item label="面料供应商" prop="fabricSupplierId">
           <el-select v-model="form.fabricSupplierId" placeholder="请选择面料供应商" filterable clearable>
@@ -77,10 +77,10 @@
           <el-input v-model.trim="form.liningIngredient" placeholder="请输入里布成分" clearable/>
         </el-form-item>
         <el-form-item label="里布克重" prop="liningWeightPer">
-          <el-input-number v-model.trim="form.liningWeightPer" placeholder="请输入里布克重" precision="2"/>
+          <el-input-number v-model.trim="form.liningWeightPer" placeholder="请输入里布克重" :precision="2"/>
         </el-form-item>
         <el-form-item label="里布价格" prop="liningPrice">
-          <el-input-number v-model.trim="form.liningPrice" placeholder="请输入里布价格" precision="2"/>
+          <el-input-number v-model.trim="form.liningPrice" placeholder="请输入里布价格" :precision="2"/>
         </el-form-item>
         <el-form-item label="里布供应商" prop="liningSupplierId">
           <el-select v-model="form.liningSupplierId" placeholder="请选择里布供应商" filterable clearable>
@@ -138,30 +138,102 @@ function cancel () {
 
 function reset () {
   form.value = {
+    /* 客户id
+    */
     clientId: '',
+    /**
+     * 客人款号
+     */
     clientStyleNo: '',
+    /**
+     * 面料种类
+     */
     fabricCategoryId: '',
+    /**
+     * 面料成分
+     */
     fabricComposition: '',
-    fabricPrice: '',
+    /**
+     * 面料价格
+     */
+    fabricPrice: null,
+    /**
+     * 面料供应商id
+     */
     fabricSupplierId: '',
-    fabricWeight: '',
+    /**
+     * 面料克重
+     */
+    fabricWeight: null,
+    /**
+     * 工厂id
+     */
     factoryId: '',
-    factoryQuotation: '',
+    /**
+     * 工厂报价
+     */
+    factoryQuotation: null,
+    /**
+     * 附件列表-附件url
+     */
     fileUrlList: [],
+    /**
+     * 是否可以展示给客户：是、否
+     */
     isShowFlag: '',
+    /**
+     * 里布种类
+     */
     liningCategory: '',
+    /**
+     * 里布成分
+     */
     liningIngredient: '',
-    liningPrice: '',
+    /**
+     * 里布价格
+     */
+    liningPrice: null,
+    /**
+     * 里布供应商id
+     */
     liningSupplierId: '',
-    liningWeightPer: '',
+    /**
+     * 里布克重
+     */
+    liningWeightPer: null,
+    /**
+     * 产品名称
+     */
     name: '',
+    /**
+     * 最新美元报价-多次报价取最新
+     */
     newestUsdQuotation: '',
+
+    /**
+     * 备注
+     */
     remark: '',
+    /**
+     * 样品类别id-字典取
+     */
     sampleCategoryId: '',
+    /**
+     * 尺码
+     */
     size: '',
+    /**
+     * 入库时间
+     */
     storageTime: '',
+    /**
+     * 公司款号
+     */
     styleNo: '',
-    usdQuotation: '',
+    /**
+     * 美元报价
+     */
+    usdQuotation: null,
   }
   setTimeout(() => {
     formRef.value?.clearValidate()
@@ -188,30 +260,102 @@ async function initDetail () {
   if (id) {
     const res = await getDetailRequest(id)
     form.value = {
+      /* 客户id
+ */
       clientId: '',
+      /**
+       * 客人款号
+       */
       clientStyleNo: '',
+      /**
+       * 面料种类
+       */
       fabricCategoryId: '',
+      /**
+       * 面料成分
+       */
       fabricComposition: '',
-      fabricPrice: '',
+      /**
+       * 面料价格
+       */
+      fabricPrice: null,
+      /**
+       * 面料供应商id
+       */
       fabricSupplierId: '',
-      fabricWeight: '',
+      /**
+       * 面料克重
+       */
+      fabricWeight: null,
+      /**
+       * 工厂id
+       */
       factoryId: '',
-      factoryQuotation: '',
+      /**
+       * 工厂报价
+       */
+      factoryQuotation: null,
+      /**
+       * 附件列表-附件url
+       */
       fileUrlList: [],
+      /**
+       * 是否可以展示给客户：是、否
+       */
       isShowFlag: '',
+      /**
+       * 里布种类
+       */
       liningCategory: '',
+      /**
+       * 里布成分
+       */
       liningIngredient: '',
-      liningPrice: '',
+      /**
+       * 里布价格
+       */
+      liningPrice: null,
+      /**
+       * 里布供应商id
+       */
       liningSupplierId: '',
-      liningWeightPer: '',
+      /**
+       * 里布克重
+       */
+      liningWeightPer: null,
+      /**
+       * 产品名称
+       */
       name: '',
+      /**
+       * 最新美元报价-多次报价取最新
+       */
       newestUsdQuotation: '',
+
+      /**
+       * 备注
+       */
       remark: '',
+      /**
+       * 样品类别id-字典取
+       */
       sampleCategoryId: '',
+      /**
+       * 尺码
+       */
       size: '',
+      /**
+       * 入库时间
+       */
       storageTime: '',
+      /**
+       * 公司款号
+       */
       styleNo: '',
-      usdQuotation: '',
+      /**
+       * 美元报价
+       */
+      usdQuotation: null,
       ...res.data,
     }
     setTimeout(() => {
