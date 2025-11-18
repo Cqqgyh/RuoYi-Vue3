@@ -1,40 +1,40 @@
 <template>
   <div class="app-container">
-<!--    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">-->
-<!--      <el-form-item label="客户编码" prop="clientCode">-->
-<!--        <el-input-->
-<!--            v-model.trim="queryParams.clientCode"-->
-<!--            placeholder="请输入客户编码"-->
-<!--            clearable-->
-<!--            style="width: 240px"-->
-<!--            @keyup.enter="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-<!--      <el-form-item label="客户名称" prop="clientName">-->
-<!--        <el-input-->
-<!--            v-model.trim="queryParams.clientName"-->
-<!--            placeholder="请输入客客户名称"-->
-<!--            clearable-->
-<!--            style="width: 240px"-->
-<!--            @keyup.enter="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
+    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form-item label="客户编码" prop="clientCode">
+        <el-input
+            v-model.trim="queryParams.clientCode"
+            placeholder="请输入客户编码"
+            clearable
+            style="width: 240px"
+            @keyup.enter="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item label="客户名称" prop="clientName">
+        <el-input
+            v-model.trim="queryParams.clientName"
+            placeholder="请输入客客户名称"
+            clearable
+            style="width: 240px"
+            @keyup.enter="handleQuery"
+        />
+      </el-form-item>
 
-<!--      <el-form-item label="创建时间" style="width: 308px">-->
-<!--        <el-date-picker-->
-<!--            v-model="dateRange"-->
-<!--            value-format="YYYY-MM-DD"-->
-<!--            type="daterange"-->
-<!--            range-separator="-"-->
-<!--            start-placeholder="开始日期"-->
-<!--            end-placeholder="结束日期"-->
-<!--        ></el-date-picker>-->
-<!--      </el-form-item>-->
-<!--      <el-form-item>-->
-<!--        <el-button  v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>-->
-<!--        <el-button  v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>-->
-<!--      </el-form-item>-->
-<!--    </el-form>-->
+      <el-form-item label="创建时间" style="width: 308px">
+        <el-date-picker
+            v-model="dateRange"
+            value-format="YYYY-MM-DD"
+            type="daterange"
+            range-separator="-"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+        ></el-date-picker>
+      </el-form-item>
+      <el-form-item>
+        <el-button  v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+        <el-button  v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
+      </el-form-item>
+    </el-form>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
@@ -105,47 +105,12 @@
         v-model:limit="queryParams.pageSize"
         @pagination="getList"
     />
-
-    <!-- 添加或修改参数配置对话框 -->
-    <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-
-      <el-form ref="dictRef" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="客户编码" prop="clientCode">
-          <el-input v-model.trim="form.clientCode" placeholder="请输入客户编码"/>
-        </el-form-item>
-        <el-form-item label="客户名称" prop="clientName">
-          <el-input v-model.trim="form.clientName" placeholder="请输入客户名称"/>
-        </el-form-item>
-        <el-form-item label="国别" prop="country">
-          <el-input v-model.trim="form.country" placeholder="请输入国别"/>
-        </el-form-item>
-        <el-form-item label="联系人" prop="contact">
-          <el-input v-model.trim="form.contact" placeholder="请输入联系人"/>
-        </el-form-item>
-        <el-form-item label="电话" prop="telphone">
-          <el-input v-model.trim="form.telphone" placeholder="请输入电话"/>
-        </el-form-item>
-        <el-form-item label="传真" prop="fax">
-          <el-input v-model.trim="form.fax" placeholder="请输入传真"/>
-        </el-form-item>
-        <el-form-item label="邮件" prop="email">
-          <el-input v-model.trim="form.email" placeholder="请输入邮件"/>
-        </el-form-item>
-
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button  v-btnPreventRepeat type="primary" @click="submitForm">确 定</el-button>
-          <el-button  v-btnPreventRepeat @click="cancel">取 消</el-button>
-        </div>
-      </template>
-    </el-dialog>
   </div>
 </template>
 
 <script setup name="Client">
 
-import { getListPage, getDetailRequest, addRequest, updateRequest, delRequest, delBatchRequest } from '@/api/client.js'
+import { getListPage, addRequest, updateRequest, delRequest, delBatchRequest } from '@/api/client.js'
 import { parseTime } from '@/utils/ruoyi.js'
 import router from '@/router/index.js'
 
