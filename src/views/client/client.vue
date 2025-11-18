@@ -37,6 +37,22 @@
               @keyup.enter="handleQuery"
           />
         </el-form-item>
+        <el-form-item label="创建时间">
+          <el-date-picker
+              v-model="dateRange[0]"
+              value-format="YYYY-MM-DD"
+              type="date"
+              placeholder="请选择开始日期"
+              style="margin-bottom: 3px;width: 100%;"
+          />
+          <el-date-picker
+              v-model="dateRange[1]"
+              value-format="YYYY-MM-DD"
+              type="date"
+              placeholder="请选择结束日期"
+              style="margin-bottom: 3px;width: 100%;"
+          />
+        </el-form-item>
         <el-form-item label="客户名称" prop="clientName">
           <el-input
               v-model.trim="queryParams.clientName"
@@ -45,20 +61,10 @@
               @keyup.enter="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="创建时间">
-          <el-date-picker
-              v-model="dateRange"
-              value-format="YYYY-MM-DD"
-              type="daterange"
-              range-separator="-"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期"
-          />
-        </el-form-item>
+
         <div class="h5-drawer-actions">
           <el-button v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
           <el-button v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
-          <el-button v-btnPreventRepeat icon="Close" @click="closeMore">关闭</el-button>
         </div>
       </el-form>
     </el-drawer>
@@ -244,6 +250,7 @@ function reset () {
 function handleQuery () {
   queryParams.value.pageNum = 1
   getList()
+  closeMore()
 }
 
 /** 重置按钮操作 */
