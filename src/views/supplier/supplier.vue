@@ -1,40 +1,69 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="90px">
-      <el-form-item label="供应商编码" prop="supplierCode">
-        <el-input
-            v-model.trim="queryParams.supplierCode"
-            placeholder="请输入供应商编码"
-            clearable
-            style="width: 240px"
-            @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="供应商名称" prop="supplierName">
-        <el-input
-            v-model.trim="queryParams.supplierName"
-            placeholder="请输入供应商名称"
-            clearable
-            style="width: 240px"
-            @keyup.enter="handleQuery"
-        />
-      </el-form-item>
+    <Teleport v-if="flag" to="#searchContainer">
+      <div class="h5-filter-bar" v-show="showSearch">
+        <el-form :model="queryParams" ref="queryRef" :inline="false" label-position="top" class="h5-filter-inline">
+          <el-form-item label="" prop="supplierName" style="margin-bottom: 0;">
+            <div class="h5-filter-primary">
+              <el-input
+                  v-model.trim="queryParams.supplierName"
+                  placeholder="请输入供应商名称"
+                  clearable
+                  class="h5-input"
+                  @keyup.enter="handleQuery"
+              />
+              <div class="h5-actions">
+                <el-button v-btnPreventRepeat type="primary" icon="Search" size="small" @click="handleQuery"></el-button>
+                <el-button v-btnPreventRepeat icon="Refresh" size="small" @click="resetQuery"></el-button>
+                <el-button v-btnPreventRepeat link icon="MoreFilled" size="small" @click="openMore"></el-button>
+              </div>
+            </div>
+          </el-form-item>
+        </el-form>
+      </div>
+    </Teleport>
 
-      <el-form-item label="创建时间" style="width: 308px">
-        <el-date-picker
-            v-model="addDateRangeMode"
-            value-format="YYYY-MM-DD"
-            type="daterange"
-            range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-        ></el-date-picker>
-      </el-form-item>
-      <el-form-item>
-        <el-button  v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-        <el-button  v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+    <el-drawer v-model="moreVisible" title="更多筛选" direction="rtl" size="80%">
+      <el-form :model="queryParams" ref="queryMoreRef" :inline="false" label-position="top" class="h5-filter-more">
+               <el-form-item label="供应商名称" prop="supplierName">
+          <el-input
+              v-model.trim="queryParams.supplierName"
+              placeholder="请输入供应商名称"
+              clearable
+              @keyup.enter="handleQuery"
+          />
+        </el-form-item>
+        <el-form-item label="创建时间">
+          <el-date-picker
+              v-model="addDateRangeMode[0]"
+              value-format="YYYY-MM-DD"
+              type="date"
+              placeholder="请选择开始日期"
+              style="margin-bottom: 3px;width: 100%;"
+          />
+          <el-date-picker
+              v-model="addDateRangeMode[1]"
+              value-format="YYYY-MM-DD"
+              type="date"
+              placeholder="请选择结束日期"
+              style="margin-bottom: 3px;width: 100%;"
+          />
+        </el-form-item>
+       <el-form-item label="供应商编码" prop="supplierCode">
+          <el-input
+              v-model.trim="queryParams.supplierCode"
+              placeholder="请输入供应商编码"
+              clearable
+              @keyup.enter="handleQuery"
+          />
+        </el-form-item>
+
+        <div class="h5-drawer-actions">
+          <el-button v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+          <el-button v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
+        </div>
+      </el-form>
+    </el-drawer>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
@@ -68,7 +97,7 @@
         >导出
         </el-button>
       </el-col>
-      <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
+      <!--      <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>-->
     </el-row>
 
     <el-table v-loading="loading" :data="typeList" @selection-change="handleSelectionChange">
@@ -106,40 +135,6 @@
         @pagination="getList"
     />
 
-    <!-- 添加或修改参数配置对话框 -->
-    <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-
-      <el-form ref="dictRef" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="供应商编码" prop="supplierCode">
-          <el-input v-model.trim="form.supplierCode" placeholder="请输入供应商编码"/>
-        </el-form-item>
-        <el-form-item label="供应商名称" prop="supplierName">
-          <el-input v-model.trim="form.supplierName" placeholder="请输入供应商名称"/>
-        </el-form-item>
-        <el-form-item label="联系人" prop="contact">
-          <el-input v-model.trim="form.contact" placeholder="请输入联系人"/>
-        </el-form-item>
-        <el-form-item label="电话" prop="telphone">
-          <el-input v-model.trim="form.telphone" placeholder="请输入电话"/>
-        </el-form-item>
-        <el-form-item label="传真" prop="fax">
-          <el-input v-model.trim="form.fax" placeholder="请输入传真"/>
-        </el-form-item>
-        <el-form-item label="邮件" prop="email">
-          <el-input v-model.trim="form.email" placeholder="请输入邮件"/>
-        </el-form-item>
-        <el-form-item label="微信号" prop="wxCode">
-          <el-input v-model.trim="form.wxCode" placeholder="请输入邮件"/>
-        </el-form-item>
-
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button  v-btnPreventRepeat type="primary" @click="submitForm">确 定</el-button>
-          <el-button  v-btnPreventRepeat @click="cancel">取 消</el-button>
-        </div>
-      </template>
-    </el-dialog>
   </div>
 </template>
 
@@ -158,10 +153,17 @@ import { useRouter } from 'vue-router'
 
 const { proxy } = getCurrentInstance()
 const router = useRouter()
+let flag = ref(false)
+onMounted(() => {
+  if (document.getElementById('searchContainer')) {
+    flag.value = true
+  }
+})
 const typeList = ref([])
 const open = ref(false)
 const loading = ref(true)
 const showSearch = ref(true)
+const moreVisible = ref(false)
 const ids = ref([])
 const single = ref(true)
 const multiple = ref(true)
@@ -249,12 +251,14 @@ function reset () {
 function handleQuery () {
   queryParams.value.pageNum = 1
   getList()
+  closeMore()
 }
 
 /** 重置按钮操作 */
 function resetQuery () {
   addDateRangeMode.value = []
   proxy.resetForm('queryRef')
+  proxy.resetForm('queryMoreRef')
   handleQuery()
 }
 
@@ -284,6 +288,14 @@ function handleUpdate (row) {
   //   open.value = true
   //   title.value = '修改字典类型'
   // })
+}
+
+function openMore () {
+  moreVisible.value = true
+}
+
+function closeMore () {
+  moreVisible.value = false
 }
 
 /** 提交按钮 */
@@ -327,3 +339,48 @@ function handleExport () {
 
 getList()
 </script>
+
+<style scoped>
+.h5-filter-bar {
+  padding: 10px 12px;
+  background: var(--el-fill-color-light);
+  border-radius: 8px;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.h5-filter-inline {
+  display: block;
+}
+
+.h5-filter-primary {
+  display: flex;
+  width: 100%;
+}
+
+.h5-input {
+  width: 100%;
+  min-width: 200px;
+}
+
+.h5-actions {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+}
+
+.h5-drawer-actions {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  gap: 8px;
+  padding: 10px 0;
+  background: var(--el-bg-color);
+  border-top: 1px solid var(--el-border-color-light);
+}
+</style>
