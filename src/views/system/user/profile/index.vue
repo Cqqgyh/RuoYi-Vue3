@@ -6,13 +6,13 @@
                <template v-slot:header>
                  <div class="clearfix">
                    <span>个人信息</span>
+               </div>
+              </template>
+              <div>
+                 <div class="text-center">
+                    <userAvatar />
                  </div>
-               </template>
-               <div>
-                  <div class="text-center">
-                     <userAvatar />
-                  </div>
-                  <ul class="list-group list-group-striped">
+                 <ul class="list-group list-group-striped">
                      <li class="list-group-item">
                         <svg-icon icon-class="user" />业务员名称
                         <div class="pull-right">{{ state.user.userName }}</div>
@@ -39,9 +39,12 @@
                         <div class="pull-right">{{ state.user.createTime }}</div>
                      </li>
                   </ul>
-               </div>
-            </el-card>
-         </el-col>
+                  <div class="text-center" style="margin-top: 12px;">
+                    <el-button v-btnPreventRepeat type="danger" icon="SwitchButton" @click="handleLogout">退出登录</el-button>
+                  </div>
+              </div>
+           </el-card>
+        </el-col>
          <el-col :span="18" :xs="24" class="mt20">
             <el-card>
                <template v-slot:header>
@@ -68,6 +71,7 @@ import userAvatar from "./userAvatar"
 import userInfo from "./userInfo"
 import resetPwd from "./resetPwd"
 import { getUserProfile } from "@/api/system/user"
+import  useUserStore  from "@/store/modules/user.js"
 
 const route = useRoute()
 const selectedTab = ref("userinfo")
@@ -76,6 +80,8 @@ const state = reactive({
   roleGroup: {},
   postGroup: {}
 })
+const { proxy } = getCurrentInstance()
+const userStore = useUserStore()
 
 function getUser() {
   getUserProfile().then(response => {
@@ -92,4 +98,12 @@ onMounted(() => {
   }
   getUser()
 })
+
+function handleLogout() {
+  proxy.$modal.confirm('确定注销并退出系统吗？').then(() => {
+    userStore.logOut().then(() => {
+      location.href = '/index'
+    })
+  }).catch(() => {})
+}
 </script>
