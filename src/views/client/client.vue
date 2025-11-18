@@ -1,77 +1,107 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="客户编码" prop="clientCode">
-        <el-input
-            v-model.trim="queryParams.clientCode"
-            placeholder="请输入客户编码"
-            clearable
-            style="width: 240px"
-            @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="客户名称" prop="clientName">
-        <el-input
-            v-model.trim="queryParams.clientName"
-            placeholder="请输入客客户名称"
-            clearable
-            style="width: 240px"
-            @keyup.enter="handleQuery"
-        />
-      </el-form-item>
+    <!--    <Teleport to="#searchContainer">-->
+    <Teleport v-if="flag" to="#searchContainer">
 
-      <el-form-item label="创建时间" style="width: 308px">
-        <el-date-picker
-            v-model="dateRange"
-            value-format="YYYY-MM-DD"
-            type="daterange"
-            range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-        ></el-date-picker>
-      </el-form-item>
-      <el-form-item>
-        <el-button  v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-        <el-button  v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+      <div class="h5-filter-bar" v-show="showSearch">
+        <el-form :model="queryParams" ref="queryRef" :inline="false" label-position="top" class="h5-filter-inline">
+          <el-form-item label="" prop="clientName" style="margin-bottom: 0;">
+            <div class="h5-filter-primary">
+              <el-input
+                  v-model.trim="queryParams.clientName"
+                  placeholder="请输入客户名称"
+                  clearable
+                  class="h5-input"
+                  @keyup.enter="handleQuery"
+              />
+              <div class="h5-actions">
+                <el-button v-btnPreventRepeat type="primary" icon="Search" size="small"
+                           @click="handleQuery"></el-button>
+                <el-button v-btnPreventRepeat icon="Refresh" size="small" @click="resetQuery"></el-button>
+                <el-button v-btnPreventRepeat link icon="MoreFilled" size="small" @click="openMore"></el-button>
+              </div>
+            </div>
+
+          </el-form-item>
+        </el-form>
+      </div>
+    </Teleport>
+
+    <el-drawer v-model="moreVisible" title="更多筛选" direction="rtl" size="80%">
+      <el-form :model="queryParams" ref="queryMoreRef" :inline="false" label-position="top" class="h5-filter-more">
+        <el-form-item label="客户编码" prop="clientCode">
+          <el-input
+              v-model.trim="queryParams.clientCode"
+              placeholder="请输入客户编码"
+              clearable
+              @keyup.enter="handleQuery"
+          />
+        </el-form-item>
+        <el-form-item label="客户名称" prop="clientName">
+          <el-input
+              v-model.trim="queryParams.clientName"
+              placeholder="请输入客户名称"
+              clearable
+              @keyup.enter="handleQuery"
+          />
+        </el-form-item>
+        <el-form-item label="创建时间">
+          <el-date-picker
+              v-model="dateRange"
+              value-format="YYYY-MM-DD"
+              type="daterange"
+              range-separator="-"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+          />
+        </el-form-item>
+        <div class="h5-drawer-actions">
+          <el-button v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+          <el-button v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
+          <el-button v-btnPreventRepeat icon="Close" @click="closeMore">关闭</el-button>
+        </div>
+      </el-form>
+    </el-drawer>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button  v-btnPreventRepeat
-            type="primary"
-            plain
-            icon="Plus"
-            @click="handleAdd"
-            v-hasPermi="['system:client:add']"
+        <el-button v-btnPreventRepeat
+                   type="primary"
+                   plain
+                   icon="Plus"
+                   size="small"
+                   @click="handleAdd"
+                   v-hasPermi="['system:client:add']"
         >新增
         </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button  v-btnPreventRepeat
-            type="danger"
-            plain
-            icon="Delete"
-            :disabled="multiple"
-            @click="handleDelete"
-            v-hasPermi="['system:client:remove']"
+        <el-button v-btnPreventRepeat
+                   type="danger"
+                   plain
+                   icon="Delete"
+                   size="small"
+                   :disabled="multiple"
+                   @click="handleDelete"
+                   v-hasPermi="['system:client:remove']"
         >批量删除
         </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button  v-btnPreventRepeat
-            type="warning"
-            plain
-            icon="Download"
-            @click="handleExport"
-            v-hasPermi="['system:client:export']"
+        <el-button v-btnPreventRepeat
+                   type="warning"
+                   plain
+                   icon="Download"
+                   size="small"
+                   @click="handleExport"
+                   v-hasPermi="['system:client:export']"
         >导出
         </el-button>
       </el-col>
-<!--      <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>-->
+      <!--      <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>-->
     </el-row>
 
-    <el-table v-loading="loading" :data="typeList"  @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="typeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="客户编码" align="center" prop="clientCode" :show-overflow-tooltip="true"/>
       <el-table-column label="客户名称" align="center" prop="clientName" :show-overflow-tooltip="true"/>
@@ -80,18 +110,18 @@
       <el-table-column label="电话" align="center" prop="telphone" :show-overflow-tooltip="true" width="160"/>
       <el-table-column label="传真" align="center" prop="fax" :show-overflow-tooltip="true"/>
       <el-table-column label="邮件" align="center" prop="email" :show-overflow-tooltip="true" width="180"/>
-      <el-table-column label="创建时间" align="center" prop="createTime"  width="160">
+      <el-table-column label="创建时间" align="center" prop="createTime" width="160">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作"  align="center" width="160" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button  v-btnPreventRepeat link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
+          <el-button v-btnPreventRepeat link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['system:client:edit']">
             修改
           </el-button>
-          <el-button  v-btnPreventRepeat link type="primary" icon="Delete" @click="handleDelete(scope.row)"
+          <el-button v-btnPreventRepeat link type="primary" icon="Delete" @click="handleDelete(scope.row)"
                      v-hasPermi="['system:client:remove']">删除
           </el-button>
         </template>
@@ -115,11 +145,18 @@ import { parseTime } from '@/utils/ruoyi.js'
 import router from '@/router/index.js'
 
 const { proxy } = getCurrentInstance()
+let flag = ref(false)
+onMounted(() => {
+  if (document.getElementById('searchContainer')) {
+    flag.value = true
+  }
+})
 
 const typeList = ref([])
 const open = ref(false)
 const loading = ref(true)
 const showSearch = ref(true)
+const moreVisible = ref(false)
 const ids = ref([])
 const single = ref(true)
 const multiple = ref(true)
@@ -213,6 +250,7 @@ function handleQuery () {
 function resetQuery () {
   dateRange.value = []
   proxy.resetForm('queryRef')
+  proxy.resetForm('queryMoreRef')
   handleQuery()
 }
 
@@ -222,6 +260,14 @@ function handleAdd () {
   // open.value = true
   // title.value = '添加客户'
   router.push({ path: '/clientAddOrEdit' })
+}
+
+function openMore () {
+  moreVisible.value = true
+}
+
+function closeMore () {
+  moreVisible.value = false
 }
 
 /** 多选框选中数据 */
@@ -284,3 +330,48 @@ function handleExport () {
 
 getList()
 </script>
+
+<style scoped>
+.h5-filter-bar {
+  padding: 10px 12px;
+  background: var(--el-fill-color-light);
+  border-radius: 8px;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.h5-filter-inline {
+  display: block;
+}
+
+.h5-filter-primary {
+  display: flex;
+  width: 100%;
+}
+
+.h5-input {
+  width: 100%;
+  min-width: 200px;
+}
+
+.h5-actions {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+}
+
+.h5-drawer-actions {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  gap: 8px;
+  padding: 10px 0;
+  background: var(--el-bg-color);
+  border-top: 1px solid var(--el-border-color-light);
+}
+</style>

@@ -1,5 +1,6 @@
 <template>
   <section class="app-main">
+    <div id="searchContainer"></div>
     <router-view v-slot="{ Component, route }">
       <transition name="fade-transform" mode="out-in">
         <keep-alive :include="tagsViewStore.cachedViews">
@@ -38,7 +39,7 @@ function addIframe() {
 <style lang="scss" scoped>
 .app-main {
   /* 50= navbar  50  */
-  min-height: calc(100vh - 50px);
+  min-height: calc(100vh - 70px);
   width: 100%;
   position: relative;
   overflow: hidden;
@@ -47,7 +48,7 @@ function addIframe() {
 .fixed-header + .app-main {
   overflow-y: auto;
   scrollbar-gutter: auto;
-  height: calc(100vh - 50px);
+  height: calc(100vh - 70px);
   min-height: 0px;
 }
 
