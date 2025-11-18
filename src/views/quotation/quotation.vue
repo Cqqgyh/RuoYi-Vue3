@@ -1,92 +1,107 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="90px">
-      <el-form-item label="报价单号" prop="quotationNo">
-        <el-input
-            v-model.trim="queryParams.quotationNo"
-            placeholder="请输入报价单号"
-            clearable
-            style="width: 240px"
-            @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="报价日期" prop="quotationDate">
-        <el-date-picker
-            v-model="queryParams.quotationDate"
-            value-format="YYYY-MM-DD"
-            type="date"
-            placeholder="请选择报价日期"
-            clearable
-            style="width: 240px"
-        ></el-date-picker>
-      </el-form-item>
-      <el-form-item label="客户名称" prop="clientName">
-        <el-input
-            v-model.trim="queryParams.clientName"
-            placeholder="请输入客户名称"
-            clearable
-            style="width: 240px"
-            @keyup.enter="handleQuery"
-        />
-      </el-form-item>
+    <Teleport v-if="flag" to="#searchContainer">
+      <div class="h5-filter-bar" v-show="showSearch">
+        <el-form :model="queryParams" ref="queryRef" :inline="false" label-position="top" class="h5-filter-inline">
+          <el-form-item label="" prop="quotationNo" style="margin-bottom: 0;">
+            <div class="h5-filter-primary">
+              <el-input
+                  v-model.trim="queryParams.quotationNo"
+                  placeholder="请输入报价单号"
+                  clearable
+                  class="h5-input"
+                  @keyup.enter="handleQuery"
+              />
+              <div class="h5-actions">
+                <el-button v-btnPreventRepeat type="primary" icon="Search" size="small"
+                           @click="handleQuery"></el-button>
+                <el-button v-btnPreventRepeat icon="Refresh" size="small" @click="resetQuery"></el-button>
+                <el-button v-btnPreventRepeat link icon="MoreFilled" size="small" @click="openMore"></el-button>
+              </div>
+            </div>
+          </el-form-item>
+        </el-form>
+      </div>
+    </Teleport>
 
+    <el-drawer v-model="moreVisible" title="更多筛选" direction="rtl" size="80%">
+      <el-form :model="queryParams" ref="queryMoreRef" :inline="false" label-position="top" class="h5-filter-more">
+        <el-form-item label="报价单号" prop="quotationNo">
+          <el-input v-model.trim="queryParams.quotationNo" placeholder="请输入报价单号" clearable
+                    @keyup.enter="handleQuery"/>
+        </el-form-item>
+        <el-form-item label="创建时间">
+          <el-date-picker
+              v-model="dateRange[0]"
+              value-format="YYYY-MM-DD"
+              type="date"
+              placeholder="请选择开始日期"
+              style="margin-bottom: 3px;width: 100%;"
+          />
+          <el-date-picker
+              v-model="dateRange[1]"
+              value-format="YYYY-MM-DD"
+              type="date"
+              placeholder="请选择结束日期"
+              style="margin-bottom: 3px;width: 100%;"
+          />
+        </el-form-item>
+        <el-form-item label="报价日期" prop="quotationDate">
+          <el-date-picker v-model="queryParams.quotationDate" value-format="YYYY-MM-DD" type="date"
+                          placeholder="请选择报价日期" style="margin-bottom: 3px;width: 100%;"/>
+        </el-form-item>
+        <el-form-item label="客户名称" prop="clientName">
+          <el-input v-model.trim="queryParams.clientName" placeholder="请输入客户名称" clearable
+                    @keyup.enter="handleQuery"/>
+        </el-form-item>
 
-      <el-form-item label="创建时间" style="width: 308px">
-        <el-date-picker
-            v-model="dateRange"
-            value-format="YYYY-MM-DD"
-            type="daterange"
-            range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-        ></el-date-picker>
-      </el-form-item>
-      <el-form-item>
-        <el-button  v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-        <el-button  v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+        <div class="h5-drawer-actions">
+          <el-button v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+          <el-button v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
+        </div>
+      </el-form>
+    </el-drawer>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button  v-btnPreventRepeat
-            type="primary"
-            plain
-            icon="Plus"
-            @click="handleAdd"
-            v-hasPermi="['system:batch:record:add']"
+        <el-button v-btnPreventRepeat
+                   type="primary"
+                   plain
+                   icon="Plus"
+                   @click="handleAdd"
+                   v-hasPermi="['system:batch:record:add']"
         >新增
         </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button  v-btnPreventRepeat
-            type="danger"
-            plain
-            icon="Delete"
-            :disabled="multiple"
-            @click="()=>handleDelete()"
-            v-hasPermi="['system:batch:record:remove']"
+        <el-button v-btnPreventRepeat
+                   type="danger"
+                   plain
+                   icon="Delete"
+                   :disabled="multiple"
+                   @click="()=>handleDelete()"
+                   v-hasPermi="['system:batch:record:remove']"
         >批量删除
         </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button  v-btnPreventRepeat
-            type="warning"
-            plain
-            icon="Download"
-            @click="handleExport"
-            v-hasPermi="['system:batch:record:export']"
+        <el-button v-btnPreventRepeat
+                   type="warning"
+                   plain
+                   icon="Download"
+                   @click="handleExport"
+                   v-hasPermi="['system:batch:record:export']"
         >导出
         </el-button>
       </el-col>
-      <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
+      <!--      <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>-->
     </el-row>
 
     <el-table v-loading="loading" :data="typeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column type="expand">
         <template #default="props">
-          <el-table :data="props.row.productList"  :max-height="200" style="margin-left: 55px">
+          <el-table :data="props.row.productList" :max-height="200" style="margin-left: 55px">
             <el-table-column prop="productName" label="产品名称" :show-overflow-tooltip="true"/>
             <el-table-column prop="clientStyleNo" label="客人款号" :show-overflow-tooltip="true"/>
             <el-table-column prop="styleNo" label="公司款号" :show-overflow-tooltip="true"/>
@@ -105,21 +120,21 @@
         </template>
       </el-table-column>
       <el-table-column label="业务员名称" align="center" prop="salesPersonName" :show-overflow-tooltip="true"/>
-      <el-table-column label="创建时间" align="center" prop="createTime"  width="160">
+      <el-table-column label="创建时间" align="center" prop="createTime" width="160">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" fixed="right" align="center" width="240" class-name="small-padding fixed-width">
+      <el-table-column label="操作"  align="center" width="240" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button  v-btnPreventRepeat link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
+          <el-button v-btnPreventRepeat link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['system:batch:record:edit']">
             修改
           </el-button>
-          <el-button  v-btnPreventRepeat link type="primary" icon="Message" @click="handleSendEmail(scope.row)"
+          <el-button v-btnPreventRepeat link type="primary" icon="Message" @click="handleSendEmail(scope.row)"
                      v-hasPermi="['system:record:mail']">发送邮件
           </el-button>
-          <el-button  v-btnPreventRepeat link type="primary" icon="Delete" @click="handleDelete(scope.row)"
+          <el-button v-btnPreventRepeat link type="primary" icon="Delete" @click="handleDelete(scope.row)"
                      v-hasPermi="['system:batch:record:remove']">删除
           </el-button>
         </template>
@@ -201,6 +216,13 @@ const typeList = ref([])
 const open = ref(false)
 const loading = ref(true)
 const showSearch = ref(true)
+let flag = ref(false)
+onMounted(() => {
+  if (document.getElementById('searchContainer')) {
+    flag.value = true
+  }
+})
+const moreVisible = ref(false)
 const ids = ref([])
 const single = ref(true)
 const multiple = ref(true)
@@ -279,12 +301,14 @@ function reset () {
 function handleQuery () {
   queryParams.value.pageNum = 1
   getList()
+  closeMore()
 }
 
 /** 重置按钮操作 */
 function resetQuery () {
   dateRange.value = []
   proxy.resetForm('queryRef')
+  proxy.resetForm('queryMoreRef')
   handleQuery()
 }
 
@@ -293,6 +317,14 @@ function handleAdd () {
   title.value = '添加报价'
   visible.value = !visible.value
   PopSelectionRef.value.open()
+}
+
+function openMore () {
+  moreVisible.value = true
+}
+
+function closeMore () {
+  moreVisible.value = false
 }
 
 /** 多选框选中数据 */
@@ -343,6 +375,7 @@ function handleDelete (row) {
     proxy.$modal.msgSuccess('删除成功')
   }).catch(() => {})
 }
+
 // handleSendEmail
 /** 发送邮件按钮操作 */
 function handleSendEmail (row) {
@@ -353,8 +386,6 @@ function handleSendEmail (row) {
   }).catch(() => {})
 }
 
-
-
 /** 导出按钮操作 */
 function handleExport () {
   proxy.download('/system/quotation/batch/export', {
@@ -364,3 +395,53 @@ function handleExport () {
 
 getList()
 </script>
+
+<style scoped>
+.h5-filter-bar {
+  padding: 10px 12px;
+  background: var(--el-fill-color-light);
+  border-radius: 8px;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.h5-filter-inline {
+  display: block;
+}
+
+.h5-filter-primary {
+  display: flex;
+  width: 100%;
+}
+
+.h5-input {
+  width: 100%;
+  min-width: 200px;
+}
+
+.h5-actions {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+}
+
+.h5-drawer-actions {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  gap: 8px;
+  padding: 10px 0;
+  background: var(--el-bg-color);
+  border-top: 1px solid var(--el-border-color-light);
+  z-index: 10;
+}
+
+.h5-filter-more {
+  padding-bottom: 60px;
+}
+</style>
