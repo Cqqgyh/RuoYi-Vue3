@@ -53,11 +53,11 @@ function addIframe() {
 }
 
 .app-main:has(.copyright) {
-  padding-bottom: 36px;
+  padding-bottom: 15px;
 }
 
 .fixed-header + .app-main {
-  margin-top: 50px;
+  margin-top: 45px;
 }
 
 .hasTagsView {
