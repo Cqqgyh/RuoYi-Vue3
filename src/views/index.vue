@@ -55,27 +55,34 @@
     <section class="home-section">
       <div class="section-title">常用操作</div>
       <div class="quick-list">
-        <div class="quick-item" @click="go('/product')">
+        <div class="quick-item" @click="go('/productAddOrEdit')">
           <div class="quick-main">
             <div class="quick-title">新建产品</div>
             <div class="quick-desc">快速录入新的产品信息</div>
           </div>
           <div class="quick-arrow">›</div>
         </div>
-        <div class="quick-item" @click="go('/cilent')">
+        <div class="quick-item" @click="go('/clientAddOrEdit')">
           <div class="quick-main">
             <div class="quick-title">新增客户</div>
             <div class="quick-desc">记录新的合作客户</div>
           </div>
           <div class="quick-arrow">›</div>
         </div>
-        <div class="quick-item" @click="go('/batch')">
+        <div class="quick-item" @click="go('/supplierAddOrEdit')">
           <div class="quick-main">
-            <div class="quick-title">发起报价</div>
-            <div class="quick-desc">根据客户需求快速报价</div>
+            <div class="quick-title">新增供应商</div>
+            <div class="quick-desc">记录新的供应商</div>
           </div>
           <div class="quick-arrow">›</div>
         </div>
+<!--        <div class="quick-item" @click="go('/batchAddOrEdit')">-->
+<!--          <div class="quick-main">-->
+<!--            <div class="quick-title">发起报价</div>-->
+<!--            <div class="quick-desc">根据客户需求快速报价</div>-->
+<!--          </div>-->
+<!--          <div class="quick-arrow">›</div>-->
+<!--        </div>-->
       </div>
     </section>
   </div>
