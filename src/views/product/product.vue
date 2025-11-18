@@ -1,109 +1,112 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <!--      可以根据样品类别查询、公司款号、客人款号、客户名称、工厂等各类产品信息查询产品信息。-->
-      <!--      样品类别-->
-      <el-form-item label="样品类别" prop="sampleCategoryId">
-        <el-select
-            v-model="queryParams.sampleCategoryId"
-            placeholder="请选择样品类别"
-            style="width: 240px"
-        >
-          <el-option v-for="item in sampleCategoryList" :key="item.value" :label="item.label"
-                     :value="item.value"/>
-        </el-select>
-      </el-form-item>
-      <!--      公司款号-->
-      <el-form-item label="公司款号" prop="styleNo">
-        <el-input
-            v-model.trim="queryParams.styleNo"
-            placeholder="请输入公司款号"
-            clearable
-            style="width: 240px"
-            @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <!--      客人款号-->
-      <el-form-item label="客人款号" prop="clientStyleNo">
-        <el-input
-            v-model.trim="queryParams.clientStyleNo"
-            placeholder="请输入客人款号"
-            clearable
-            style="width: 240px"
-            @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <!--      客户名称-->
-      <el-form-item label="客户名称" prop="clientName">
-        <el-input
-            v-model.trim="queryParams.clientName"
-            placeholder="请输入客户名称"
-            clearable
-            style="width: 240px"
-            @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <!--      工厂名称-->
-      <el-form-item label="工厂名称" prop="factoryName">
-        <el-input
-            v-model.trim="queryParams.factoryName"
-            placeholder="请输入工厂名称"
-            clearable
-            style="width: 240px"
-            @keyup.enter="handleQuery"
-        />
-      </el-form-item>
+    <Teleport v-if="flag" to="#searchContainer">
+      <div class="h5-filter-bar" v-show="showSearch">
+        <el-form :model="queryParams" ref="queryRef" :inline="false" label-position="top" class="h5-filter-inline">
+          <el-form-item label="" prop="name" style="margin-bottom: 0;">
+            <div class="h5-filter-primary">
+              <el-input
+                  v-model.trim="queryParams.name"
+                  placeholder="请输入产品名称"
+                  clearable
+                  class="h5-input"
+                  @keyup.enter="handleQuery"
+              />
+              <div class="h5-actions">
+                <el-button v-btnPreventRepeat type="primary" icon="Search" size="small"
+                           @click="handleQuery"></el-button>
+                <el-button v-btnPreventRepeat icon="Refresh" size="small" @click="resetQuery"></el-button>
+                <el-button v-btnPreventRepeat link icon="MoreFilled" size="small" @click="openMore"></el-button>
+              </div>
+            </div>
+          </el-form-item>
+        </el-form>
+      </div>
+    </Teleport>
 
-
-      <el-form-item label="创建时间" style="width: 308px">
-        <el-date-picker
-            v-model="dateRange"
-            value-format="YYYY-MM-DD"
-            type="daterange"
-            range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-        ></el-date-picker>
-      </el-form-item>
-      <el-form-item>
-        <el-button  v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-        <el-button  v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+    <el-drawer v-model="moreVisible" title="更多筛选" direction="rtl" size="80%">
+      <el-form :model="queryParams" ref="queryMoreRef" :inline="false" label-position="top" class="h5-filter-more">
+        <el-form-item label="产品名称" prop="name">
+          <el-input v-model.trim="queryParams.name" placeholder="请输入产品名称" clearable
+                    @keyup.enter="handleQuery"/>
+        </el-form-item>
+        <el-form-item label="创建时间">
+          <el-date-picker
+              v-model="dateRange[0]"
+              value-format="YYYY-MM-DD"
+              type="date"
+              placeholder="请选择开始日期"
+              style="margin-bottom: 3px;width: 100%;"
+          />
+          <el-date-picker
+              v-model="dateRange[1]"
+              value-format="YYYY-MM-DD"
+              type="date"
+              placeholder="请选择结束日期"
+              style="margin-bottom: 3px;width: 100%;"
+          />
+        </el-form-item>
+        <el-form-item label="样品类别" prop="sampleCategoryId">
+          <el-select v-model="queryParams.sampleCategoryId" placeholder="请选择样品类别">
+            <el-option v-for="item in sampleCategoryList" :key="item.value" :label="item.label" :value="item.value"/>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="公司款号" prop="styleNo">
+          <el-input v-model.trim="queryParams.styleNo" placeholder="请输入公司款号" clearable
+                    @keyup.enter="handleQuery"/>
+        </el-form-item>
+        <el-form-item label="客人款号" prop="clientStyleNo">
+          <el-input v-model.trim="queryParams.clientStyleNo" placeholder="请输入客人款号" clearable
+                    @keyup.enter="handleQuery"/>
+        </el-form-item>
+        <el-form-item label="客户名称" prop="clientName">
+          <el-input v-model.trim="queryParams.clientName" placeholder="请输入客户名称" clearable
+                    @keyup.enter="handleQuery"/>
+        </el-form-item>
+        <el-form-item label="工厂名称" prop="factoryName">
+          <el-input v-model.trim="queryParams.factoryName" placeholder="请输入工厂名称" clearable
+                    @keyup.enter="handleQuery"/>
+        </el-form-item>
+      </el-form>
+      <div class="h5-drawer-actions">
+        <el-button v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+        <el-button v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
+      </div>
+    </el-drawer>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button  v-btnPreventRepeat
-            type="primary"
-            plain
-            icon="Plus"
-            @click="handleAdd"
-            v-hasPermi="['system:product:add']"
+        <el-button v-btnPreventRepeat
+                   type="primary"
+                   plain
+                   icon="Plus"
+                   @click="handleAdd"
+                   v-hasPermi="['system:product:add']"
         >新增
         </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button  v-btnPreventRepeat
-            type="danger"
-            plain
-            icon="Delete"
-            :disabled="multiple"
-            @click="handleDelete"
-            v-hasPermi="['system:product:remove']"
+        <el-button v-btnPreventRepeat
+                   type="danger"
+                   plain
+                   icon="Delete"
+                   :disabled="multiple"
+                   @click="handleDelete"
+                   v-hasPermi="['system:product:remove']"
         >批量删除
         </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button  v-btnPreventRepeat
-            type="warning"
-            plain
-            icon="Download"
-            @click="handleExport"
-            v-hasPermi="['system:product:export']"
+        <el-button v-btnPreventRepeat
+                   type="warning"
+                   plain
+                   icon="Download"
+                   @click="handleExport"
+                   v-hasPermi="['system:product:export']"
         >导出
         </el-button>
       </el-col>
-      <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
+      <!--      <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>-->
     </el-row>
 
     <el-table v-loading="loading" :data="typeList" @selection-change="handleSelectionChange">
@@ -159,27 +162,27 @@
       <el-table-column label="里布供应商" align="center" prop="liningSupplierName" :show-overflow-tooltip="true"
                        width="180px"/>
       <el-table-column label="备注" align="center" prop="remark" :show-overflow-tooltip="true" width="180px"/>
-      <el-table-column label="创建时间" align="center" prop="createTime"  width="160">
+      <el-table-column label="创建时间" align="center" prop="createTime" width="160">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
       <!--      悬浮操作列-->
-      <el-table-column label="操作" fixed="right" align="center" width="200" class-name="small-padding fixed-width">
+      <el-table-column label="操作"  align="center" width="400" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button  v-btnPreventRepeat link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
+          <el-button v-btnPreventRepeat link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['system:product:edit']">
             修改
           </el-button>
-          <el-button  v-btnPreventRepeat link type="primary" icon="Delete" @click="handleDelete(scope.row)"
+          <el-button v-btnPreventRepeat link type="primary" icon="Delete" @click="handleDelete(scope.row)"
                      v-hasPermi="['system:product:remove']">删除
           </el-button>
-          <el-button  v-btnPreventRepeat link type="primary" icon="Share" @click="handleShareLink(scope.row)"
+          <el-button v-btnPreventRepeat link type="primary" icon="Share" @click="handleShareLink(scope.row)"
                      v-hasPermi="['system:product:share']">
             获取分享链接
           </el-button>
           <!--         icon是用符合二维码的icon-->
-          <el-button  v-btnPreventRepeat link type="primary" icon="Link" @click="handleShareLink(scope.row,true)"
+          <el-button v-btnPreventRepeat link type="primary" icon="Link" @click="handleShareLink(scope.row,true)"
                      v-hasPermi="['system:product:share']">
             下载二维码
           </el-button>
@@ -194,218 +197,6 @@
         v-model:limit="queryParams.pageSize"
         @pagination="getList"
     />
-    <!--    <qr-code-vue :value="shareLink" :size="200" :key="shareLink" id="canvas-qrcode"></qr-code-vue>-->
-    <!-- 添加或修改参数配置对话框 -->
-    <el-dialog :title="title" v-model="open" width="900px" append-to-body>
-
-      <el-form ref="dictRef" :model="form" :rules="rules" label-width="90px">
-
-
-        <!--        产品名称 name-->
-        <!--        样品类别id	sampleCategoryId 下拉列表-->
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="产品名称" prop="name">
-              <el-input v-model.trim="form.name" placeholder="请输入产品名称"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="样品类别" prop="sampleCategoryId">
-              <el-select v-model="form.sampleCategoryId" placeholder="请选择样品类别" filterable clearable>
-                <el-option v-for="item in sampleCategoryList" :key="item.value" :label="item.label"
-                           :value="item.value"/>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <!--        入库时间	storageTime-->
-        <!--        客户	clientId  客户下拉列表-->
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="入库时间" prop="storageTime">
-              <el-date-picker style="width: 100%;" v-model="form.storageTime" type="datetime"
-                              value-format="YYYY-MM-DD HH:mm:ss" placeholder="请选择入库时间"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="客户" prop="clientId">
-              <el-select v-model="form.clientId" placeholder="请选择客户" filterable clearable>
-                <el-option v-for="item in clientList" :key="item.id" :label="item.clientName"
-                           :value="item.id"/>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <!--        工厂	factoryId 供应商下拉列表-->
-        <!--        客人款号	clientStyleNo.-->
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="工厂" prop="factoryId">
-              <el-select v-model="form.factoryId" placeholder="请选择供应商" filterable clearable>
-                <el-option v-for="item in supplierList" :key="item.id" :label="item.supplierName"
-                           :value="item.id"/>
-              </el-select>
-            </el-form-item>
-
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="客人款号" prop="clientStyleNo">
-              <el-input v-model.trim="form.clientStyleNo" placeholder="请输入客人款号"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <!--        公司款号	styleNo.-->
-        <!--        工厂报价	factoryQuotation-->
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="公司款号" prop="styleNo">
-              <el-input v-model.trim="form.styleNo" placeholder="请输入公司款号"/>
-            </el-form-item>
-
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="工厂报价" prop="factoryQuotation">
-              <el-input-number v-model.trim="form.factoryQuotation" placeholder="请输入工厂报价"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <!--        美元报价	usdQuotation/newestUsdQuotation-->
-        <!--        尺码	size-->
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="美元报价" prop="usdQuotation">
-              <el-input-number v-model.trim="form.usdQuotation" placeholder="请输入美元报价"/>
-            </el-form-item>
-
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="尺码" prop="size">
-              <el-input v-model.trim="form.size" placeholder="请输入尺码"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <!--        面料种类	fabricCategoryId	下拉列表-->
-        <!--        面料成分	fabricComposition-->
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="面料种类" prop="fabricCategoryId">
-              <el-select v-model="form.fabricCategoryId" placeholder="请选择面料种类" filterable clearable>
-                <el-option v-for="item in fabricCategoryList" :key="item.fabricCategoryId"
-                           :label="item.label"
-                           :value="item.value"/>
-              </el-select>
-            </el-form-item>
-
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="面料成分" prop="fabricComposition">
-              <el-input v-model.trim="form.fabricComposition" placeholder="请输入面料成分"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <!--        面料克重	fabricWeight-->
-        <!--        面料价格	fabricPrice-->
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="面料克重" prop="fabricWeight">
-              <el-input-number v-model.trim="form.fabricWeight" placeholder="请输入面料克重"/>
-            </el-form-item>
-
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="面料价格" prop="fabricPrice">
-              <el-input-number v-model.trim="form.fabricPrice" placeholder="请输入面料价格"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <!--        面料供应商	fabricSupplierId	供应商下拉列表-->
-        <!--        里布种类	liningCategory-->
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="面料供应商" prop="fabricSupplierId">
-              <el-select v-model="form.fabricSupplierId" placeholder="请选择面料供应商" filterable clearable>
-                <el-option v-for="item in supplierList" :key="item.id" :label="item.supplierName"
-                           :value="item.id"/>
-              </el-select>
-            </el-form-item>
-
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="里布种类" prop="liningCategory">
-              <el-input v-model.trim="form.liningCategory" placeholder="请输入里布种类"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <!--        里布成分	liningIngredient-->
-        <!--        里布克重	liningWeightPer-->
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="里布成分" prop="liningIngredient">
-              <el-input v-model.trim="form.liningIngredient" placeholder="请输入里布成分"/>
-            </el-form-item>
-
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="里布克重" prop="liningWeightPer">
-              <el-input-number v-model.trim="form.liningWeightPer" placeholder="请输入里布克重"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <!--        里布价格	liningPrice-->
-        <!--        里布供应商	liningSupplierId	供应商下拉列表-->
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="里布价格" prop="liningPrice">
-              <el-input-number v-model.trim="form.liningPrice" placeholder="请输入里布价格"/>
-            </el-form-item>
-
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="里布供应商" prop="liningSupplierId">
-              <el-select v-model="form.liningSupplierId" placeholder="请选择里布供应商" filterable clearable>
-                <el-option v-for="item in supplierList" :key="item.id" :label="item.supplierName"
-                           :value="item.id"/>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <!--        照片  fileUrlList-->
-        <!--        备注  remark-->
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="照片" prop="fileUrlList">
-              <image-upload v-model="form.fileUrlList" :limit="10" :fileSize="10"></image-upload>
-
-              <!--              <el-upload-->
-              <!--                  class="avatar-uploader"-->
-              <!--                  action="#"-->
-              <!--                  :show-file-list="true"-->
-              <!--                  list-type="picture-card"-->
-              <!--                  :on-success="handleAvatarSuccess"-->
-              <!--                  :file-list="form.fileUrlList"-->
-              <!--              >-->
-              <!--                <el-button  v-btnPreventRepeat size="small" type="primary">点击上传</el-button>-->
-              <!--              </el-upload>-->
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="备注" prop="remark">
-              <el-input v-model.trim="form.remark" type="textarea" placeholder="请输入备注"/>
-            </el-form-item>
-
-          </el-col>
-
-        </el-row>
-
-
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button  v-btnPreventRepeat type="primary" @click="submitForm">确 定</el-button>
-          <el-button  v-btnPreventRepeat @click="cancel">取 消</el-button>
-        </div>
-      </template>
-    </el-dialog>
   </div>
 </template>
 
@@ -424,14 +215,21 @@ import { getListPageAll as getSupplierListAll } from '@/api/supplier.js'
 import ImageUpload from '@/components/ImageUpload/index.vue'
 import { useRouter } from 'vue-router'
 import { parseTime } from '../../utils/ruoyi.js'
-import {  showImagePreview} from 'vant';
+import { showImagePreview } from 'vant'
 
 const { proxy } = getCurrentInstance()
 const router = useRouter()
+let flag = ref(false)
+onMounted(() => {
+  if (document.getElementById('searchContainer')) {
+    flag.value = true
+  }
+})
 const typeList = ref([])
 const open = ref(false)
 const loading = ref(true)
 const showSearch = ref(true)
+const moreVisible = ref(false)
 const ids = ref([])
 const single = ref(true)
 const multiple = ref(true)
@@ -616,12 +414,14 @@ function reset () {
 function handleQuery () {
   queryParams.value.pageNum = 1
   getList()
+  closeMore()
 }
 
 /** 重置按钮操作 */
 function resetQuery () {
   dateRange.value = []
   proxy.resetForm('queryRef')
+  proxy.resetForm('queryMoreRef')
   handleQuery()
 }
 
@@ -640,6 +440,14 @@ const x = () => {
 
   }
 
+}
+
+function openMore () {
+  moreVisible.value = true
+}
+
+function closeMore () {
+  moreVisible.value = false
 }
 
 /** 新增按钮操作 */
@@ -680,7 +488,8 @@ async function handleShareLink (row, isDownload) {
   if (isDownload) {
     const res = await getQrcodeUrlRequest({ url: shareLink.value })
 
-    if(window.navigator.userAgent.includes('miniProgram')  || window.navigator.userAgent.includes('wechat') || window.navigator.userAgent.includes('chat')|| window.navigator.userAgent.includes('Chat')){
+    if (window.navigator.userAgent.includes('miniProgram') || window.navigator.userAgent.includes('wechat') ||
+        window.navigator.userAgent.includes('chat') || window.navigator.userAgent.includes('Chat')) {
       // 获取元素 class van-image-preview__index 内容修改为：请手动截图下载
       //
       const base64url = URL.createObjectURL(new Blob([res], { type: 'image/png' }))
@@ -712,36 +521,37 @@ async function handleShareLink (row, isDownload) {
   }
 
 }
-function copyToClipboard(text) {
+
+function copyToClipboard (text) {
   // 优先尝试 Clipboard API（仅在安全上下文可用）
   if (navigator.clipboard && window.isSecureContext) {
-    return navigator.clipboard.writeText(text);
+    return navigator.clipboard.writeText(text)
   } else {
     // 降级：使用 execCommand（可在 HTTP 下工作）
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
+    const textarea = document.createElement('textarea')
+    textarea.value = text
 
     // 隐藏元素
-    textarea.style.position = 'fixed';
-    textarea.style.left = '-9999px';
-    textarea.style.top = '-9999px';
+    textarea.style.position = 'fixed'
+    textarea.style.left = '-9999px'
+    textarea.style.top = '-9999px'
 
-    document.body.appendChild(textarea);
-    textarea.focus();
-    textarea.select();
+    document.body.appendChild(textarea)
+    textarea.focus()
+    textarea.select()
 
     try {
-      const success = document.execCommand('copy');
-      document.body.removeChild(textarea);
+      const success = document.execCommand('copy')
+      document.body.removeChild(textarea)
       if (success) {
-        return Promise.resolve();
+        return Promise.resolve()
       } else {
-        throw new Error('execCommand 复制失败');
+        throw new Error('execCommand 复制失败')
       }
     } catch (err) {
-      document.body.removeChild(textarea);
-      console.error('复制失败:', err);
-      return Promise.reject(err);
+      document.body.removeChild(textarea)
+      console.error('复制失败:', err)
+      return Promise.reject(err)
     }
   }
 }
@@ -787,3 +597,64 @@ function handleExport () {
 
 getList()
 </script>
+
+<style scoped lang="scss">
+.h5-filter-bar {
+  padding: 10px 12px;
+  background: var(--el-fill-color-light);
+  border-radius: 8px;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.h5-filter-inline {
+  display: block;
+}
+
+.h5-filter-primary {
+  display: flex;
+  width: 100%;
+}
+
+.h5-input {
+  width: 100%;
+  min-width: 200px;
+}
+
+.h5-actions {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+}
+
+
+.h5-drawer-actions {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  gap: 8px;
+  padding: 10px 0 10px 0;
+  background: var(--el-bg-color);
+  border-top: 1px solid var(--el-border-color-light);
+  z-index: 100;
+}
+.h5-filter-more {
+  padding-bottom: 60px;
+}
+.h5-drawer-actions::after {
+  overflow: hidden;
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  width: 100%;
+  height: 25px;
+  background: var(--el-bg-color);
+  z-index: 100;
+}
+</style>
