@@ -35,127 +35,100 @@
           </el-col>
         </el-row>
       </el-form>
-      <splitpanes>
-        <pane>
-          <splitpanes>
-            <!-- 左侧选择器区域 -->
-            <pane size="30">
-              <div class="selector-panel">
+      <div class="table-panel">
+        <div class="action-buttons" style="margin-bottom: 10px;">
+          <el-button v-btnPreventRepeat type="primary"  @click="selectorVisible = true">选择产品</el-button>
+        </div>
 
-                <!-- 搜索输入框 -->
-                <el-input
-                    v-model="searchQuery"
-                    placeholder="请输入产品名称搜索"
-                    prefix-icon="Search"
-                    clearable
-                    class="search-input"
-                />
-
-                <!-- 操作按钮组 -->
-                <div class="action-buttons">
-                  <el-button  v-btnPreventRepeat size="small" @click="clearSelection">清空选择</el-button>
-                  <el-button  v-btnPreventRepeat size="small" @click="selectAllFiltered">全选</el-button>
-                  <el-button  v-btnPreventRepeat size="small" @click="reverseSelection">反选</el-button>
-                </div>
-
-                <!-- 虚拟化列表控件 -->
-                <div class="tree-container">
-                  <el-tree-v2
-                      ref="treeRef"
-                      :data="listData"
-                      :props="{ label: 'name' }"
-                      :show-checkbox="true"
-                      :height="400"
-                      :check-strictly="false"
-                      @check="handleCheckChange"
-                      :render-content="renderContent"
-                      class="data-tree"
-                      :default-checked-keys="addedIds"
-                  >
-                    <template #empty>
-                      <el-empty description="没有找到匹配的数据" />
-                    </template>
-                  </el-tree-v2>
-                </div>
-
-                <!-- 搜索结果统计 -->
-                <div class="search-stats">
-                  共找到 {{ listData.length }} 条数据，
-                  已选择 {{ selectedCount }} 条
-                </div>
-              </div>
-            </pane>
-
-            <!-- 右侧表格区域 -->
-            <pane class="ml8">
-              <div class="table-panel">
-
-                <!-- 表格 -->
-                <el-form ref="formRef" :model="tableData">
-                  <el-table :data="tableData" style="width: 100%" height="485px">
-                    <!-- 姓名列 -->
-                    <el-table-column prop="name" label="产品名称"  :show-overflow-tooltip="true"/>
-                    <el-table-column prop="clientStyleNo" label="客人款号"  :show-overflow-tooltip="true"/>
-                    <el-table-column prop="styleNo" label="公司款号"  :show-overflow-tooltip="true"/>
-                    <!-- 美元报价 -->
-                    <el-table-column prop="usdQuotation" label="美元报价*"
-                    >
-                      <template #default="scope">
-                        <el-form-item
-                            :prop="`${scope.$index}.usdQuotation`"
-                            style="margin-bottom: 0;"
-                            :rules="[
+        <el-form ref="formRef" :model="tableData">
+          <el-table :data="tableData" style="width: 100%" height="485px">
+            <el-table-column prop="name" label="产品名称" :show-overflow-tooltip="true"/>
+            <el-table-column prop="clientStyleNo" label="客人款号" :show-overflow-tooltip="true"/>
+            <el-table-column prop="styleNo" label="公司款号" :show-overflow-tooltip="true"/>
+            <el-table-column prop="usdQuotation" label="美元报价*">
+              <template #default="scope">
+                <el-form-item
+                    :prop="`${scope.$index}.usdQuotation`"
+                    style="margin-bottom: 0;"
+                    :rules="[
   { required: true, message: '请输入美元报价', trigger: 'blur' },
 ]"
-                        >
-                          <el-input
-                              v-model.number="scope.row.usdQuotation"
-                              placeholder="请输入美元报价"
-                              size="small"
-                              type="number"
-                          />
-                        </el-form-item>
-                      </template>
-                    </el-table-column>
+                >
+                  <el-input
+                      v-model.number="scope.row.usdQuotation"
+                      placeholder="请输入美元报价"
+                      size="small"
+                      type="number"
+                  />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column prop="remark" label="备注">
+              <template #default="scope">
+                <el-form-item
+                    :prop="`${scope.$index}.remark`"
+                    style="margin-bottom: 0;"
+                >
+                  <el-input
+                      v-model="scope.row.remark"
+                      placeholder="请输入备注"
+                      size="small"
+                      type="textarea"
+                  />
+                </el-form-item>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" width="80">
+              <template #default="scope">
+                <el-button v-btnPreventRepeat size="small" type="danger" @click="deleteRow(scope.row)">删除</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-form>
+      </div>
 
-                    <!-- 备注） -->
-                    <el-table-column prop="remark" label="备注">
-                      <template #default="scope">
-                        <el-form-item
-                            :prop="`${scope.$index}.remark`"
-                            style="margin-bottom: 0;"
-                        >
-                          <el-input
-                              v-model="scope.row.remark"
-                              placeholder="请输入备注"
-                              size="small"
-                              type="textarea"
-                          />
-                        </el-form-item>
-                      </template>
-                    </el-table-column>
+      <el-dialog v-model="selectorVisible" title="选择产品" width="1000px" append-to-body>
+        <div class="selector-panel">
+          <el-input
+              v-model="searchQuery"
+              placeholder="请输入产品名称搜索"
+              prefix-icon="Search"
+              clearable
+              class="search-input"
+          />
 
+          <div class="action-buttons">
+            <el-button v-btnPreventRepeat size="small" @click="clearSelection">清空选择</el-button>
+            <el-button v-btnPreventRepeat size="small" @click="selectAllFiltered">全选</el-button>
+            <el-button v-btnPreventRepeat size="small" @click="reverseSelection">反选</el-button>
+          </div>
 
-                    <!-- 操作列 -->
-                    <el-table-column label="操作" width="80">
-                      <template #default="scope">
-                        <el-button  v-btnPreventRepeat
-                            size="small"
-                            type="danger"
-                            @click="deleteRow(scope.row)"
-                        >
-                          删除
-                        </el-button>
-                      </template>
-                    </el-table-column>
-                  </el-table>
-                </el-form>
+          <div style="flex:1; min-height: 420px; border: 1px solid #e4e7ed; border-radius: 4px; overflow: hidden;">
+            <div style="height: 400px">
+              <el-auto-resizer>
+                <template #default="{ height, width }">
+                  <ElTableV2
+                      :data="listData"
+                      :columns="vtColumns as any"
+                      :width="width"
+                      :height="height"
+                      fixed
+                  />
+                </template>
+              </el-auto-resizer>
+            </div>
+          </div>
 
-              </div>
-            </pane>
-          </splitpanes>
-        </pane>
-      </splitpanes>
+          <div class="search-stats">
+            共 {{ allOptions.length }} 条数据，
+            按当前搜索共找到 {{ listData.length }} 条数据，
+            已选择 {{ selectedCount }} 条
+          </div>
+        </div>
+        <template #footer>
+          <el-button v-btnPreventRepeat @click="selectorVisible = false">完成</el-button>
+        </template>
+      </el-dialog>
     </div>
     <template #footer>
       <div class="dialog-footer">
@@ -169,8 +142,9 @@
 
 </template>
 <script lang="ts" setup name="SelectDialog">
-import { ref,  computed, watch, nextTick, h } from "vue";
-import { ElMessage} from "element-plus";
+import { ref,  computed, watch, nextTick, h, getCurrentInstance } from "vue";
+import { ElMessage, ElCheckbox, ElTableV2, ElAutoResizer } from "element-plus";
+import { parseTime } from '../../utils/ruoyi.js'
 import dayjs from 'dayjs'
 import {
   getListPageAll
@@ -239,6 +213,7 @@ function reset () {
   }
   // 清空表格数据
   tableData.value=[]
+  selectorVisible.value = false
 }
 const clientList = ref([])
 
@@ -255,7 +230,7 @@ const allOptions = ref([]);
 /** 查询字典类型列表 */
 async function getList () {
   const res = await getListPageAll()
-  allOptions.value = res.data
+  allOptions.value = res?.rows || res?.data || []
 }
 // 搜索关键词
 const searchQuery = ref("");
@@ -263,11 +238,58 @@ const searchQuery = ref("");
 // 右侧表格的数据
 const tableData = ref([]);
 
-// 树形组件引用
-const treeRef = ref();
+// 选择弹窗-虚拟表格列配置
+const toggleSelection = (row) => {
+  const index = tableData.value.findIndex(item => item.id === row.id)
+  if (index === -1) {
+    tableData.value.push(row)
+  } else {
+    tableData.value.splice(index, 1)
+  }
+}
+
+const vtColumns = [
+  {
+    key: 'selection',
+    dataKey: 'id',
+    width: 55,
+    fixed: 'left',
+    cellRenderer: ({ rowData }) =>
+        h(ElCheckbox, {
+          modelValue: isAddedToTable(rowData.id),
+          onChange: () => toggleSelection(rowData),
+        }),
+  },
+  { title: '产品名称', key: 'name', dataKey: 'name', width: 180 },
+  { title: '样品类别', key: 'sampleCategoryName', dataKey: 'sampleCategoryName', width: 140 },
+  { title: '客人款号', key: 'clientStyleNo', dataKey: 'clientStyleNo', width: 180 },
+  { title: '公司款号', key: 'styleNo', dataKey: 'styleNo', width: 180 },
+  { title: '客户名称', key: 'clientName', dataKey: 'clientName', width: 180 },
+  { title: '工厂名称', key: 'factoryName', dataKey: 'factoryName', width: 180 },
+  { title: '入库时间', key: 'storageTime', dataKey: 'storageTime', width: 180 },
+  { title: '工厂报价', key: 'factoryQuotation', dataKey: 'factoryQuotation', width: 140 },
+  { title: '美元报价', key: 'usdQuotation', dataKey: 'usdQuotation', width: 140 },
+  { title: '尺码', key: 'size', dataKey: 'size', width: 100 },
+  { title: '面料种类', key: 'fabricCategoryName', dataKey: 'fabricCategoryName', width: 180 },
+  { title: '面料成分', key: 'fabricComposition', dataKey: 'fabricComposition', width: 180 },
+  { title: '面料克重', key: 'fabricWeight', dataKey: 'fabricWeight', width: 140 },
+  { title: '面料价格', key: 'fabricPrice', dataKey: 'fabricPrice', width: 140 },
+  { title: '面料供应商', key: 'fabricSupplierName', dataKey: 'fabricSupplierName', width: 180 },
+  { title: '里布种类', key: 'liningCategory', dataKey: 'liningCategory', width: 180 },
+  { title: '里布成分', key: 'liningIngredient', dataKey: 'liningIngredient', width: 180 },
+  { title: '里布克重', key: 'liningWeightPer', dataKey: 'liningWeightPer', width: 180 },
+  { title: '里布价格', key: 'liningPrice', dataKey: 'liningPrice', width: 180 },
+  { title: '里布供应商', key: 'liningSupplierName', dataKey: 'liningSupplierName', width: 180 },
+  { title: '备注', key: 'remark', dataKey: 'remark', width: 180 },
+  {
+    title: '创建时间', key: 'createTime', dataKey: 'createTime', width: 160,
+    cellRenderer: ({ rowData }) => h('span', {}, parseTime(rowData.createTime)),
+  },
+]
 
 // 表单引用
 const formRef = ref();
+const selectorVisible = ref(false);
 
 // 将数据转换为单层列表结构
 const listData = computed(() => {
@@ -276,7 +298,7 @@ const listData = computed(() => {
   }
 
   return allOptions.value.filter(item =>
-      item.name.toLowerCase().includes(searchQuery.value.toLowerCase()));
+      (item.name || '').toLowerCase().includes(searchQuery.value.toLowerCase()));
 });
 
 // 获取已添加到右侧表格的ID列表
@@ -290,34 +312,11 @@ const isAddedToTable = (id) => {
 };
 
 
-// 实时同步：当左侧选择状态变化时，更新右侧表格
-const handleCheckChange = (data, checked) => {
-  console.log("treeRef", treeRef.value.getCurrentNode());
-  console.log("handleCheckChange---data", data);
-  console.log("handleCheckChange", checked);
-  // tableData.value = [...checked.checkedNodes]
-  if (!isAddedToTable(data.id)) {
-    // 选中且未添加到右侧，则添加
-    tableData.value.push(data);
-  } else {
-    // 取消选中且已添加到右侧，则删除
-    const index = tableData.value.findIndex(item => item.id === data.id);
-    if (index !== -1) {
-      tableData.value.splice(index, 1);
-    }
-  }
-};
+// 选择变化：来自虚拟表格的勾选
+const handleCheckChange = toggleSelection
 
-// 实时同步：当右侧表格数据变化时，更新左侧选择状态
-watch(tableData, (newTableData) => {
-  const newAddedIds = newTableData.map(item => item.id);
-  if (treeRef.value) {
-    // 使用 nextTick 确保 DOM 更新后再设置选中状态
-    nextTick(() => {
-      treeRef.value.setCheckedKeys(newAddedIds);
-    });
-  }
-}, { deep: true });
+// 保持选择计数实时更新（无需与树同步）
+watch(tableData, () => {}, { deep: true })
 
 // 删除行
 const deleteRow = (row) => {
@@ -347,20 +346,12 @@ const deleteRow = (row) => {
 
 // 清空选择
 const clearSelection = () => {
-  if (treeRef.value) {
-    treeRef.value.setCheckedKeys([]);
-  }
   tableData.value = [];
 };
 
 // 全选当前搜索结果
 const selectAllFiltered = () => {
   const allIds = listData.value.map(item => item.id);
-  if (treeRef.value) {
-    treeRef.value.setCheckedKeys(allIds);
-  }
-
-  // 添加所有未添加的数据
   listData.value.forEach(item => {
     if (!isAddedToTable(item.id)) {
       tableData.value.push(item);
@@ -374,14 +365,7 @@ const reverseSelection = () => {
   const currentAddedIds = addedIds.value.filter(id =>
       listData.value.some(item => item.id === id),
   );
-
   const newSelection = allIds.filter(id => !currentAddedIds.includes(id));
-
-  if (treeRef.value) {
-    treeRef.value.setCheckedKeys(newSelection);
-  }
-
-  // 移除当前已添加的，添加未添加的
   tableData.value = tableData.value.filter(item =>
       !listData.value.some(listItem => listItem.id === item.id),
   );
@@ -394,14 +378,7 @@ const reverseSelection = () => {
   });
 };
 
-// 自定义节点内容
-const renderContent = ({ node, data }) => {
-  return h("div", {
-    class: "employee-node",
-  }, [
-    h("span", { class: "employee-name" }, data.name),
-  ]);
-};
+// 自定义节点内容（已改为虚拟表格，不再使用树）
 const emit = defineEmits(["refresh"]);
 // 提交表单数据
 const submitForm = async () => {
@@ -455,10 +432,9 @@ const submitForm = async () => {
 // 获取已选择的数量
 const selectedCount = computed(() => {
   return addedIds.value.filter(id =>
-      listData.value.some(item => item.id === id),
+      allOptions.value.some(item => item.id === id),
   ).length;
 });
-
 // 对外暴露
 defineExpose({
   open,
