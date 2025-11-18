@@ -6,8 +6,8 @@
     <div :class="{ hasTagsView: needTagsView, sidebarHide: sidebar.hide }" class="main-container">
       <div :class="{ 'fixed-header': true }" v-if="settingsStore.title">
             <NavBar
-                     left-text="返回"
-                     left-arrow
+                     :left-text="['首页','个人中心'].includes(settingsStore.title) ? '' : '返回'"
+                     :left-arrow="!['首页','个人中心'].includes(settingsStore.title)"
                      @click-left="()=>{router.back()}" :title="settingsStore.title" />
       </div>
       <app-main />
