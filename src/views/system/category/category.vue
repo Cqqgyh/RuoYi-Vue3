@@ -27,7 +27,7 @@
                    plain
                    icon="Plus"
                    @click="handleAdd"
-                   v-hasPermi="['system:dept:add']"
+                   v-hasPermi="['system:sample:category:add']"
         >新增
         </el-button>
       </el-col>
@@ -60,13 +60,13 @@
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button v-btnPreventRepeat link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                     v-hasPermi="['system:dept:edit']">修改
+                     v-hasPermi="['system:sample:category:edit']">修改
           </el-button>
           <el-button v-btnPreventRepeat link type="primary" icon="Plus" @click="handleAdd(scope.row)"
-                     v-hasPermi="['system:dept:add']">新增
+                     v-hasPermi="['system:sample:category:add']">新增
           </el-button>
           <el-button v-btnPreventRepeat v-if="scope.row.parentId != 0" link type="primary" icon="Delete"
-                     @click="handleDelete(scope.row)" v-hasPermi="['system:dept:remove']">删除
+                     @click="handleDelete(scope.row)" v-hasPermi="['system:sample:category:remove']">删除
           </el-button>
         </template>
       </el-table-column>
