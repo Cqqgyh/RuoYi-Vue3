@@ -13,7 +13,8 @@
                   @keyup.enter="handleQuery"
               />
               <div class="h5-actions">
-                <el-button v-btnPreventRepeat type="primary" icon="Search" size="small" @click="handleQuery"></el-button>
+                <el-button v-btnPreventRepeat type="primary" icon="Search" size="small"
+                           @click="handleQuery"></el-button>
                 <el-button v-btnPreventRepeat icon="Refresh" size="small" @click="resetQuery"></el-button>
                 <el-button v-btnPreventRepeat link icon="MoreFilled" size="small" @click="openMore"></el-button>
               </div>
@@ -25,7 +26,7 @@
 
     <el-drawer v-model="moreVisible" title="更多筛选" direction="rtl" size="80%">
       <el-form :model="queryParams" ref="queryMoreRef" :inline="false" label-position="top" class="h5-filter-more">
-               <el-form-item label="供应商名称" prop="supplierName">
+        <el-form-item label="供应商名称" prop="supplierName">
           <el-input
               v-model.trim="queryParams.supplierName"
               placeholder="请输入供应商名称"
@@ -49,7 +50,7 @@
               style="margin-bottom: 3px;width: 100%;"
           />
         </el-form-item>
-       <el-form-item label="供应商编码" prop="supplierCode">
+        <el-form-item label="供应商编码" prop="supplierCode">
           <el-input
               v-model.trim="queryParams.supplierCode"
               placeholder="请输入供应商编码"
@@ -67,33 +68,36 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button  v-btnPreventRepeat
-            type="primary"
-            plain
-            icon="Plus"
-            @click="handleAdd"
-            v-hasPermi="['system:supplier:add']"
+        <el-button v-btnPreventRepeat
+                   type="primary"
+                   plain
+                   icon="Plus"
+                   @click="handleAdd"
+                   size="small"
+                   v-hasPermi="['system:supplier:add']"
         >新增
         </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button  v-btnPreventRepeat
-            type="danger"
-            plain
-            icon="Delete"
-            :disabled="multiple"
-            @click="()=>handleDelete()"
-            v-hasPermi="['system:supplier:remove']"
+        <el-button v-btnPreventRepeat
+                   type="danger"
+                   plain
+                   icon="Delete"
+                   :disabled="multiple"
+                   @click="()=>handleDelete()"
+                   size="small"
+                   v-hasPermi="['system:supplier:remove']"
         >批量删除
         </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button  v-btnPreventRepeat
-            type="warning"
-            plain
-            icon="Download"
-            @click="handleExport"
-            v-hasPermi="['system:supplier:export']"
+        <el-button v-btnPreventRepeat
+                   type="warning"
+                   plain
+                   icon="Download"
+                   @click="handleExport"
+                   size="small"
+                   v-hasPermi="['system:supplier:export']"
         >导出
         </el-button>
       </el-col>
@@ -109,18 +113,18 @@
       <el-table-column label="传真" align="center" prop="fax" :show-overflow-tooltip="true"/>
       <el-table-column label="邮件" align="center" prop="email" :show-overflow-tooltip="true"/>
       <el-table-column label="微信号" align="center" prop="wxCode" :show-overflow-tooltip="true"/>
-      <el-table-column label="创建时间" align="center" prop="createTime"  width="160">
+      <el-table-column label="创建时间" align="center" prop="createTime" width="160">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" fixed="right" align="center" width="160" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button  v-btnPreventRepeat link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
+          <el-button v-btnPreventRepeat link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['system:supplier:edit']">
             修改
           </el-button>
-          <el-button  v-btnPreventRepeat link type="primary" icon="Delete" @click="handleDelete(scope.row)"
+          <el-button v-btnPreventRepeat link type="primary" icon="Delete" @click="handleDelete(scope.row)"
                      v-hasPermi="['system:supplier:remove']">删除
           </el-button>
         </template>
@@ -280,7 +284,7 @@ function handleSelectionChange (selection) {
 
 /** 修改按钮操作 */
 function handleUpdate (row) {
-  router.push({ path: '/supplierAddOrEdit' ,query: { id: row.id }})
+  router.push({ path: '/supplierAddOrEdit', query: { id: row.id } })
   // reset()
   // const id = row.id || ids.value
   // getDetailRequest(id).then(response => {

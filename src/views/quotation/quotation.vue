@@ -69,6 +69,7 @@
                    plain
                    icon="Plus"
                    @click="handleAdd"
+                   size="small"
                    v-hasPermi="['system:batch:record:add']"
         >新增
         </el-button>
@@ -80,6 +81,7 @@
                    icon="Delete"
                    :disabled="multiple"
                    @click="()=>handleDelete()"
+                   size="small"
                    v-hasPermi="['system:batch:record:remove']"
         >批量删除
         </el-button>
@@ -90,6 +92,7 @@
                    plain
                    icon="Download"
                    @click="handleExport"
+                   size="small"
                    v-hasPermi="['system:batch:record:export']"
         >导出
         </el-button>

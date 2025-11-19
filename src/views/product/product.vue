@@ -90,6 +90,7 @@
                    plain
                    icon="Plus"
                    @click="handleAdd"
+                   size="small"
                    v-hasPermi="['system:product:add']"
         >新增
         </el-button>
@@ -100,6 +101,7 @@
                    plain
                    icon="Delete"
                    :disabled="multiple"
+                   size="small"
                    @click="handleDelete"
                    v-hasPermi="['system:product:remove']"
         >批量删除
@@ -112,6 +114,7 @@
                    icon="Download"
                    @click="handleExport"
                    v-hasPermi="['system:product:export']"
+                   size="small"
         >导出
         </el-button>
       </el-col>
