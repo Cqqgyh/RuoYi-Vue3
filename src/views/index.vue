@@ -76,6 +76,14 @@
           </div>
           <div class="quick-arrow">›</div>
         </div>
+        <div class="quick-item" @click="go('/categoryAddOrEdit')">
+          <div class="quick-main">
+            <div class="quick-title">新增样品分类</div>
+            <div class="quick-desc">记录新的分类</div>
+          </div>
+          <div class="quick-arrow">›</div>
+        </div>
+
 <!--        <div class="quick-item" @click="go('/batchAddOrEdit')">-->
 <!--          <div class="quick-main">-->
 <!--            <div class="quick-title">发起报价</div>-->
@@ -95,6 +103,17 @@ import useUserStore from '@/store/modules/user.js'
 const router = useRouter()
 const userStore = useUserStore()
 const permissionStore = usePermissionStore()
+function filterRoutes(routes, target) {
+  const names = new Set()
+  const walk = (list) => {
+    for (const r of list || []) {
+      if (r && r.name) names.add(r.name)
+      if (r && Array.isArray(r.children) && r.children.length) walk(r.children)
+    }
+  }
+  walk(routes)
+  return target.filter((item) => names.has(item.pathName))
+}
 // 功能宫格配置
 const featureList = computed(() => {
  const target = [
@@ -129,12 +148,20 @@ const featureList = computed(() => {
       short: '报',
       desc: '报价单创建与维护',
       bg: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)'
-    }
+    },
+   {
+     name: '样品分类管理',
+     path: '/system/category',
+     pathName: 'Category',
+     short: '样',
+     desc: '样品分类管理',
+     bg: 'linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)'
+   }
   ]
-    return target.filter(item => {
-      return permissionStore.addRoutes.find(route => route.children[0].name === item.pathName)
-    })
+// 递归对比routes中name和target中pathName相同的项目，最终保留target中的项
+return filterRoutes(permissionStore.addRoutes,target)
 })
+
 
 
 
