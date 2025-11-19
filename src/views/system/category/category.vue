@@ -114,12 +114,6 @@ function getList () {
   loading.value = true
   getListPageAll().then(response => {
     const tree = proxy.handleTree(response.data, 'id')
-    fullDeptTree.value = tree
-    deptList.value = tree
-    loading.value = false
-  })
-  getListPageAll().then(response => {
-    const tree = proxy.handleTree(response.data, 'id')
     const filtered = applyLocalFilter(tree, queryParams.value)
     deptList.value = filtered
     loading.value = false
