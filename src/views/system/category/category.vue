@@ -10,10 +10,10 @@
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-<!--      <el-form-item label="创建时间" style="width: 308px">-->
-<!--        <el-date-picker v-model="dateRange" value-format="YYYY-MM-DD" type="daterange" range-separator="-"-->
-<!--                        start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>-->
-<!--      </el-form-item>-->
+      <!--      <el-form-item label="创建时间" style="width: 308px">-->
+      <!--        <el-date-picker v-model="dateRange" value-format="YYYY-MM-DD" type="daterange" range-separator="-"-->
+      <!--                        start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>-->
+      <!--      </el-form-item>-->
       <el-form-item>
         <el-button v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
         <el-button v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
@@ -107,10 +107,9 @@
 
 <script setup name="Category">
 import { getListPageAll, getDetailRequest, delRequest, addRequest, updateRequest } from '@/api/category'
-import { parseTime } from '../../../utils/ruoyi.js'
+import { parseTime } from '@/utils/ruoyi.js'
 
 const { proxy } = getCurrentInstance()
-const dateRange = ref([])
 
 const deptList = ref([])
 const open = ref(false)
@@ -141,8 +140,16 @@ const { queryParams, form, rules } = toRefs(data)
 /** 查询分类列表 */
 function getList () {
   loading.value = true
-  getListPageAll(proxy.addDateRangeMode(queryParams.value, dateRange.value)).then(response => {
-    deptList.value = proxy.handleTree(response.data, 'id')
+  getListPageAll().then(response => {
+    const tree = proxy.handleTree(response.data, 'id')
+    fullDeptTree.value = tree
+    deptList.value = tree
+    loading.value = false
+  })
+  getListPageAll().then(response => {
+    const tree = proxy.handleTree(response.data, 'id')
+    const filtered = applyLocalFilter(tree, queryParams.value)
+    deptList.value = filtered
     loading.value = false
   })
 }
@@ -161,6 +168,35 @@ function reset () {
     categoryName: undefined,
   }
   proxy.resetForm('deptRef')
+}
+
+function applyLocalFilter (tree, params) {
+  const keyword = (params.categoryName || '').trim()
+  const hasStatus = params.status !== undefined && params.status !== null && params.status !== ''
+  const match = (node) => {
+    let ok = true
+    if (keyword) {
+      ok = (node.categoryName || '').includes(keyword)
+    }
+    if (hasStatus) {
+      ok = ok && node.status === params.status
+    }
+    return ok
+  }
+  const loop = (nodes) => {
+    const res = []
+    ;(nodes || []).forEach((node) => {
+      const children = loop(node.children || [])
+      const matched = match(node)
+      if (matched || children.length) {
+        const n = { ...node }
+        n.children = children
+        res.push(n)
+      }
+    })
+    return res
+  }
+  return loop(tree || [])
 }
 
 /** 搜索按钮操作 */
