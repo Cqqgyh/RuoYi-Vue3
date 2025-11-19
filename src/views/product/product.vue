@@ -4,14 +4,15 @@
       <!--      可以根据样品类别查询、公司款号、客人款号、客户名称、工厂等各类产品信息查询产品信息。-->
       <!--      样品类别-->
       <el-form-item label="样品类别" prop="sampleCategoryId">
-        <el-select
-            v-model="queryParams.sampleCategoryId"
-            placeholder="请选择样品类别"
+        <el-tree-select
             style="width: 240px"
-        >
-          <el-option v-for="item in sampleCategoryList" :key="item.value" :label="item.label"
-                     :value="item.value"/>
-        </el-select>
+            v-model="queryParams.sampleCategoryId"
+            :data="sampleCategoryList"
+            :props="{ value: 'id', label: 'categoryName', children: 'children' }"
+            value-key="id"
+            placeholder="请选择样品类别"
+            check-strictly
+        />
       </el-form-item>
       <!--      公司款号-->
       <el-form-item label="公司款号" prop="styleNo">
@@ -211,10 +212,18 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="样品类别" prop="sampleCategoryId">
-              <el-select v-model="form.sampleCategoryId" placeholder="请选择样品类别" filterable clearable>
-                <el-option v-for="item in sampleCategoryList" :key="item.value" :label="item.label"
-                           :value="item.value"/>
-              </el-select>
+              <el-tree-select
+                  v-model="form.sampleCategoryId"
+                  :data="sampleCategoryList"
+                  :props="{ value: 'id', label: 'categoryName', children: 'children' }"
+                  value-key="id"
+                  placeholder="请选择样品类别"
+                  check-strictly
+              />
+<!--              <el-select v-model="form.sampleCategoryId" placeholder="请选择样品类别" filterable clearable>-->
+<!--                <el-option v-for="item in sampleCategoryList" :key="item.value" :label="item.label"-->
+<!--                           :value="item.value"/>-->
+<!--              </el-select>-->
             </el-form-item>
           </el-col>
         </el-row>
@@ -424,6 +433,7 @@ import { getListPageAll as getSupplierListAll } from '@/api/supplier.js'
 import ImageUpload from '@/components/ImageUpload/index.vue'
 import { parseTime } from '../../utils/ruoyi.js'
 import { showImagePreview } from 'vant'
+import { getListPageAll as getSampleCategoryListAll } from '@/api/category.js'
 
 const { proxy } = getCurrentInstance()
 
@@ -484,9 +494,16 @@ getClientList()
 getSupplierList()
 //#endregion
 //#region <样品类别、面料种类>
-const { fabric_category: fabricCategoryList, sample_category: sampleCategoryList } = proxy.useDictForCode(
-    'fabric_category', 'sample_category')
+const { fabric_category: fabricCategoryList,  } = proxy.useDictForCode(
+    'fabric_category')
 console.log('fabricCategoryList', fabricCategoryList)
+const sampleCategoryList =ref([])
+const getSampleCategoryList = async () => {
+  await getSampleCategoryListAll().then(response => {
+    sampleCategoryList.value = proxy.handleTree(response.data, 'id')
+  })
+}
+getSampleCategoryList()
 console.log('sampleCategoryList', sampleCategoryList)
 
 //#endregion
@@ -590,7 +607,7 @@ function reset () {
     /**
      * 样品类别id-字典取
      */
-    sampleCategoryId: '',
+    sampleCategoryId: null,
     /**
      * 尺码
      */
@@ -620,7 +637,7 @@ function handleQuery () {
 /** 重置按钮操作 */
 function resetQuery () {
   dateRange.value = []
-  reset()
+  proxy.resetForm('queryRef')
   handleQuery()
 }
 

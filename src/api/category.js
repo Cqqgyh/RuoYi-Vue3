@@ -10,11 +10,10 @@ export function getListPage(query) {
   })
 }
 // 查询列表
-export function getListPageAll(query) {
+export function getListPageAll() {
   return request({
     url: '/system/sample-category/list',
     method: 'get',
-    params: query
   })
 }
 // 新增
