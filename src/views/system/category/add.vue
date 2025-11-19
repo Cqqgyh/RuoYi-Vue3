@@ -132,10 +132,10 @@ function submitForm () {
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .mobile-container {
   background: #f7f8fa;
-  min-height: 100vh;
+  min-height: 100%;
   padding-bottom: 80px;
 }
 

@@ -66,4 +66,9 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach(() => {
   NProgress.done()
+  requestAnimationFrame(() => {
+    const main = document.querySelector('.app-main')
+    if (main && typeof main.scrollTop === 'number') main.scrollTop = 0
+    window.scrollTo({ top: 0, behavior: 'auto' })
+  })
 })
