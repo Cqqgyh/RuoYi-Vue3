@@ -48,6 +48,7 @@
                    plain
                    icon="Plus"
                    @click="handleAdd"
+                   size="small"
                    v-hasPermi="['system:sample:category:add']"
         >新增
         </el-button>
@@ -57,6 +58,7 @@
                    type="info"
                    plain
                    icon="Sort"
+                   size="small"
                    @click="toggleExpandAll"
         >展开/折叠
         </el-button>
