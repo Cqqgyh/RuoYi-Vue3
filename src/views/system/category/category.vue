@@ -1,24 +1,45 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch">
-      <el-form-item label="分类名称" prop="categoryName">
-        <el-input
-            v-model="queryParams.categoryName"
-            placeholder="请输入分类名称"
-            clearable
-            style="width: 200px"
-            @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <!--      <el-form-item label="创建时间" style="width: 308px">-->
-      <!--        <el-date-picker v-model="dateRange" value-format="YYYY-MM-DD" type="daterange" range-separator="-"-->
-      <!--                        start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>-->
-      <!--      </el-form-item>-->
-      <el-form-item>
-        <el-button v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-        <el-button v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+    <Teleport v-if="flag" to="#searchContainer">
+      <div class="h5-filter-bar" v-show="showSearch">
+        <el-form :model="queryParams" ref="queryRef" :inline="false" label-position="top" class="h5-filter-inline">
+          <el-form-item label="" prop="categoryName" style="margin-bottom: 0;">
+            <div class="h5-filter-primary">
+              <el-input
+                  v-model.trim="queryParams.categoryName"
+                  placeholder="请输入分类名称"
+                  clearable
+                  class="h5-input"
+                  @keyup.enter="handleQuery"
+              />
+              <div class="h5-actions">
+                <el-button v-btnPreventRepeat type="primary" icon="Search" size="small" @click="handleQuery"></el-button>
+                <el-button v-btnPreventRepeat icon="Refresh" size="small" @click="resetQuery"></el-button>
+<!--                <el-button v-btnPreventRepeat link icon="MoreFilled" size="small" @click="openMore"></el-button>-->
+              </div>
+            </div>
+          </el-form-item>
+        </el-form>
+      </div>
+    </Teleport>
+
+    <el-drawer v-model="moreVisible" title="更多筛选" direction="rtl" size="80%">
+      <el-form :model="queryParams" ref="queryMoreRef" :inline="false" label-position="top" class="h5-filter-more">
+        <el-form-item label="分类名称" prop="categoryName">
+          <el-input v-model.trim="queryParams.categoryName" placeholder="请输入分类名称" clearable @keyup.enter="handleQuery" />
+        </el-form-item>
+        <el-form-item label="状态" prop="status">
+          <el-select v-model="queryParams.status" placeholder="请选择状态" clearable>
+            <el-option label="正常" value="0" />
+            <el-option label="停用" value="1" />
+          </el-select>
+        </el-form-item>
+        <div class="h5-drawer-actions">
+          <el-button v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+          <el-button v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
+        </div>
+      </el-form>
+    </el-drawer>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
@@ -27,7 +48,6 @@
                    plain
                    icon="Plus"
                    @click="handleAdd"
-                   size="small"
                    v-hasPermi="['system:sample:category:add']"
         >新增
         </el-button>
@@ -36,12 +56,12 @@
         <el-button v-btnPreventRepeat
                    type="info"
                    plain
-                   size="small"
                    icon="Sort"
                    @click="toggleExpandAll"
         >展开/折叠
         </el-button>
       </el-col>
+      <!--      <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>-->
     </el-row>
 
     <el-table
@@ -77,16 +97,22 @@
 </template>
 
 <script setup name="Category">
-import { getListPageAll, delRequest, addRequest, updateRequest } from '@/api/category'
+import { getListPageAll, getDetailRequest, delRequest, addRequest, updateRequest } from '@/api/category'
 import { parseTime } from '@/utils/ruoyi.js'
-import { useRouter } from 'vue-router'
 
 const { proxy } = getCurrentInstance()
-const router = useRouter()
+let flag = ref(false)
+onMounted(() => {
+  if (document.getElementById('searchContainer')) {
+    flag.value = true
+  }
+})
+
 const deptList = ref([])
 const open = ref(false)
 const loading = ref(true)
 const showSearch = ref(true)
+const moreVisible = ref(false)
 const title = ref('')
 const deptOptions = ref([])
 const isExpandAll = ref(true)
@@ -96,14 +122,10 @@ const data = reactive({
   form: {},
   queryParams: {
     categoryName: undefined,
-    status: undefined,
   },
   rules: {
     parentId: [{ required: true, message: '上级分类不能为空', trigger: 'blur' }],
     categoryName: [{ required: true, message: '分类名称不能为空', trigger: 'blur' }],
-    orderNum: [{ required: true, message: '显示排序不能为空', trigger: 'blur' }],
-    email: [{ type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }],
-    phone: [{ pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/, message: '请输入正确的手机号码', trigger: 'blur' }],
   },
 })
 
@@ -113,7 +135,7 @@ const { queryParams, form, rules } = toRefs(data)
 function getList () {
   loading.value = true
   getListPageAll().then(response => {
-    const tree = proxy.handleTree(response.data, 'id')
+    const  tree = proxy.handleTree(response.data, 'id')
     const filtered = applyLocalFilter(tree, queryParams.value)
     deptList.value = filtered
     loading.value = false
@@ -168,26 +190,35 @@ function applyLocalFilter (tree, params) {
 /** 搜索按钮操作 */
 function handleQuery () {
   getList()
+  closeMore()
 }
 
 /** 重置按钮操作 */
 function resetQuery () {
   proxy.resetForm('queryRef')
+  proxy.resetForm('queryMoreRef')
   handleQuery()
 }
 
 /** 新增按钮操作 */
 function handleAdd (row) {
-  router.push({ path: '/categoryAddOrEdit', query: { parentId: row.id }  })
-  // reset()
-  // getListPageAll().then(response => {
-  //   deptOptions.value = proxy.handleTree(response.data, 'id')
-  // })
-  // if (row != undefined) {
-  //   form.value.parentId = row.id
-  // }
-  // open.value = true
-  // title.value = '添加分类'
+  reset()
+  getListPageAll().then(response => {
+    deptOptions.value = proxy.handleTree(response.data, 'id')
+  })
+  if (row != undefined) {
+    form.value.parentId = row.id
+  }
+  open.value = true
+  title.value = '添加分类'
+}
+
+function openMore () {
+  moreVisible.value = true
+}
+
+function closeMore () {
+  moreVisible.value = false
 }
 
 /** 展开/折叠操作 */
@@ -201,16 +232,15 @@ function toggleExpandAll () {
 
 /** 修改按钮操作 */
 function handleUpdate (row) {
-  router.push({ path: '/categoryAddOrEdit', query: { id: row.id } })
-  // reset()
-  // getListPageAll(row.id).then(response => {
-  //   deptOptions.value = proxy.handleTree(response.data, 'id')
-  // })
-  // getDetailRequest(row.id).then(response => {
-  //   form.value = response.data
-  //   open.value = true
-  //   title.value = '修改分类'
-  // })
+  reset()
+  getListPageAll(row.id).then(response => {
+    deptOptions.value = proxy.handleTree(response.data, 'id')
+  })
+  getDetailRequest(row.id).then(response => {
+    form.value = response.data
+    open.value = true
+    title.value = '修改分类'
+  })
 }
 
 /** 提交按钮 */
@@ -246,3 +276,53 @@ function handleDelete (row) {
 
 getList()
 </script>
+
+<style scoped>
+.h5-filter-bar {
+  padding: 10px 12px;
+  background: var(--el-fill-color-light);
+  border-radius: 8px;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.h5-filter-inline {
+  display: block;
+}
+
+.h5-filter-primary {
+  display: flex;
+  width: 100%;
+}
+
+.h5-input {
+  width: 100%;
+  min-width: 200px;
+}
+
+.h5-actions {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+}
+
+.h5-drawer-actions {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  gap: 8px;
+  padding: 10px 0;
+  background: var(--el-bg-color);
+  border-top: 1px solid var(--el-border-color-light);
+  z-index: 10;
+}
+
+.h5-filter-more {
+  padding-bottom: 60px;
+}
+</style>
