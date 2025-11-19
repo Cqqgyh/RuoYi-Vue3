@@ -47,9 +47,18 @@
           />
         </el-form-item>
         <el-form-item label="样品类别" prop="sampleCategoryId">
-          <el-select v-model="queryParams.sampleCategoryId" placeholder="请选择样品类别">
-            <el-option v-for="item in sampleCategoryList" :key="item.value" :label="item.label" :value="item.value"/>
-          </el-select>
+          <el-tree-select
+              style="width: 240px"
+              v-model="queryParams.sampleCategoryId"
+              :data="sampleCategoryList"
+              :props="{ value: 'id', label: 'categoryName', children: 'children' }"
+              value-key="id"
+              placeholder="请选择样品类别"
+              check-strictly
+          />
+          <!--          <el-select v-model="queryParams.sampleCategoryId" placeholder="请选择样品类别">-->
+          <!--            <el-option v-for="item in sampleCategoryList" :key="item.value" :label="item.label" :value="item.value"/>-->
+          <!--          </el-select>-->
         </el-form-item>
         <el-form-item label="公司款号" prop="styleNo">
           <el-input v-model.trim="queryParams.styleNo" placeholder="请输入公司款号" clearable
@@ -168,7 +177,7 @@
         </template>
       </el-table-column>
       <!--      悬浮操作列-->
-      <el-table-column label="操作"  align="center" width="400" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="400" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button v-btnPreventRepeat link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['system:product:edit']">
@@ -214,8 +223,9 @@ import { getListPageAll as getClientListAll } from '@/api/client.js'
 import { getListPageAll as getSupplierListAll } from '@/api/supplier.js'
 import ImageUpload from '@/components/ImageUpload/index.vue'
 import { useRouter } from 'vue-router'
-import { parseTime } from '../../utils/ruoyi.js'
+import { parseTime } from '@/utils/ruoyi.js'
 import { showImagePreview } from 'vant'
+import { getListPageAll as getSampleCategoryListAll } from '@/api/category.js'
 
 const { proxy } = getCurrentInstance()
 const router = useRouter()
@@ -283,10 +293,16 @@ getClientList()
 getSupplierList()
 //#endregion
 //#region <样品类别、面料种类>
-const { fabric_category: fabricCategoryList, sample_category: sampleCategoryList } = proxy.useDictForCode(
-    'fabric_category', 'sample_category')
+const { fabric_category: fabricCategoryList } = proxy.useDictForCode(
+    'fabric_category')
 console.log('fabricCategoryList', fabricCategoryList)
-console.log('sampleCategoryList', sampleCategoryList)
+const sampleCategoryList = ref([])
+const getSampleCategoryList = async () => {
+  await getSampleCategoryListAll().then(response => {
+    sampleCategoryList.value = proxy.handleTree(response.data, 'id')
+  })
+}
+getSampleCategoryList()
 
 //#endregion
 
@@ -643,9 +659,11 @@ getList()
   border-top: 1px solid var(--el-border-color-light);
   z-index: 100;
 }
+
 .h5-filter-more {
   padding-bottom: 60px;
 }
+
 .h5-drawer-actions::after {
   overflow: hidden;
   content: '';

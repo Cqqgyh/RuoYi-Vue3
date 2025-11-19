@@ -18,9 +18,18 @@
           <el-input v-model.trim="form.name" placeholder="请输入产品名称" clearable/>
         </el-form-item>
         <el-form-item label="样品类别" prop="sampleCategoryId">
-          <el-select v-model="form.sampleCategoryId" placeholder="请选择样品类别" filterable clearable>
-            <el-option v-for="item in sampleCategoryList" :key="item.value" :label="item.label" :value="item.value"/>
-          </el-select>
+          <el-tree-select
+              v-model="form.sampleCategoryId"
+              :data="sampleCategoryList"
+              :props="{ value: 'id', label: 'categoryName', children: 'children' }"
+              value-key="id"
+              placeholder="请选择样品类别"
+              check-strictly
+          />
+<!--          <el-select v-model="form.sampleCategoryId" placeholder="请选择样品类别" filterable clearable>-->
+<!--            <el-option v-for="item in sampleCategoryList" :key="item.value" :label="item.label" :value="item.value"/>-->
+<!--          </el-select>-->
+<!--          -->
         </el-form-item>
         <el-form-item label="入库时间" prop="storageTime">
           <el-date-picker style="width: 100%;" v-model="form.storageTime" type="datetime"
@@ -110,6 +119,7 @@ import useSettingsStore from '@/store/modules/settings.js'
 import { getListPageAll as getClientListAll } from '@/api/client.js'
 import { getListPageAll as getSupplierListAll } from '@/api/supplier.js'
 import ImageUpload from '@/components/ImageUpload/index.vue'
+import { getListPageAll as getSampleCategoryListAll } from '@/api/category.js'
 
 const { proxy } = getCurrentInstance()
 const router = useRouter()
@@ -242,8 +252,15 @@ function reset () {
 
 const supplierList = ref([])
 const clientList = ref([])
-const { fabric_category: fabricCategoryList, sample_category: sampleCategoryList } = proxy.useDictForCode(
-    'fabric_category', 'sample_category')
+const { fabric_category: fabricCategoryList } = proxy.useDictForCode(
+    'fabric_category', )
+const sampleCategoryList = ref([])
+const getSampleCategoryList = async () => {
+  await getSampleCategoryListAll().then(response => {
+    sampleCategoryList.value = proxy.handleTree(response.data, 'id')
+  })
+}
+getSampleCategoryList()
 
 async function getClientList () {
   const res = await getClientListAll()
