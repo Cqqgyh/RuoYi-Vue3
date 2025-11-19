@@ -99,8 +99,10 @@
 <script setup name="Category">
 import { getListPageAll, getDetailRequest, delRequest, addRequest, updateRequest } from '@/api/category'
 import { parseTime } from '@/utils/ruoyi.js'
+import { useRouter } from 'vue-router'
 
 const { proxy } = getCurrentInstance()
+const router=useRouter()
 let flag = ref(false)
 onMounted(() => {
   if (document.getElementById('searchContainer')) {
@@ -202,15 +204,16 @@ function resetQuery () {
 
 /** 新增按钮操作 */
 function handleAdd (row) {
-  reset()
-  getListPageAll().then(response => {
-    deptOptions.value = proxy.handleTree(response.data, 'id')
-  })
-  if (row != undefined) {
-    form.value.parentId = row.id
-  }
-  open.value = true
-  title.value = '添加分类'
+  router.push({ path: '/categoryAddOrEdit', query: { parentId: row.id > 0 ? row.id : '' } })
+  // reset()
+  // getListPageAll().then(response => {
+  //   deptOptions.value = proxy.handleTree(response.data, 'id')
+  // })
+  // if (row != undefined) {
+  //   form.value.parentId = row.id
+  // }
+  // open.value = true
+  // title.value = '添加分类'
 }
 
 function openMore () {
@@ -232,15 +235,16 @@ function toggleExpandAll () {
 
 /** 修改按钮操作 */
 function handleUpdate (row) {
-  reset()
-  getListPageAll(row.id).then(response => {
-    deptOptions.value = proxy.handleTree(response.data, 'id')
-  })
-  getDetailRequest(row.id).then(response => {
-    form.value = response.data
-    open.value = true
-    title.value = '修改分类'
-  })
+  router.push({ path: '/categoryAddOrEdit', query: { id: row.id } })
+  // reset()
+  // getListPageAll(row.id).then(response => {
+  //   deptOptions.value = proxy.handleTree(response.data, 'id')
+  // })
+  // getDetailRequest(row.id).then(response => {
+  //   form.value = response.data
+  //   open.value = true
+  //   title.value = '修改分类'
+  // })
 }
 
 /** 提交按钮 */
