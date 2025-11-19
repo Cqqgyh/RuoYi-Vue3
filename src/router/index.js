@@ -126,6 +126,18 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/categoryAddOrEdit',
+    component: Layout,
+    children: [
+      {
+        path: '/categoryAddOrEdit',
+        component: () => import('@/views/system/category/add'),
+        name: 'CategoryAddOrEdit',
+        meta: { title: '样品分类', icon: 'user' }
+      }
+    ]
+  },
 ]
 
 // 动态路由，基于用户权限动态去加载
