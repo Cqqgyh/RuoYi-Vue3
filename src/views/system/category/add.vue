@@ -57,7 +57,7 @@ const formRef = ref(null)
 const data = reactive({
   form: {},
   rules: {
-    parentId: [{ required: true, message: '请选择上级分类', trigger: 'change' }],
+    // parentId: [{ required: true, message: '请选择上级分类', trigger: 'change' }],
     categoryName: [{ required: true, message: '请输入分类名称', trigger: 'blur' }],
   },
 })
