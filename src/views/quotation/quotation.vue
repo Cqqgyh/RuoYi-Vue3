@@ -189,20 +189,11 @@
     <!--        </div>-->
     <!--      </template>-->
     <!--    </el-dialog>-->
-    <!-- 添加或修改参数配置对话框 -->
-    <PopSelection
-        @refresh="getList"
-        ref="PopSelectionRef"
-        :title="title"
-        width="1200px"
-        append-to-body
-    />
   </div>
 
 </template>
 
 <script setup name="Quotation">
-import PopSelection from './popSelection.vue'
 import {
   getListPage,
   getDetailRequest,
@@ -244,11 +235,6 @@ const data = reactive({
 })
 
 const { queryParams, form } = toRefs(data)
-//#region <弹窗相关>
-const visible = ref(false)
-const PopSelectionRef = ref()
-
-//#endregion
 
 /** 查询字典类型列表 */
 function getList () {
@@ -343,7 +329,6 @@ function handleSelectionChange (selection) {
 
 /** 修改按钮操作 */
 async function handleUpdate (row) {
-  title.value = '修改报价'
   router.push({ path: '/quotationAddOrEdit', query: { id: row.id } })
   // 获取row.productList数组的id
   // visible.value = !visible.value
