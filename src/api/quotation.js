@@ -64,3 +64,12 @@ export function sendMailRequest(query) {
     params: query
   })
 }
+// 打印
+export function printPdfRequest(query) {
+  return request({
+    url: '/system/quotation/batch/print-pdf',
+    method: 'post',
+    params: query,
+    responseType: 'blob'
+  })
+}

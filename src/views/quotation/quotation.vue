@@ -110,7 +110,7 @@
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" fixed="right" align="center" width="240" class-name="small-padding fixed-width">
+      <el-table-column label="操作" fixed="right" align="center" width="350" class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button  v-btnPreventRepeat link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
                      v-hasPermi="['system:batch:record:edit']">
@@ -118,6 +118,9 @@
           </el-button>
           <el-button  v-btnPreventRepeat link type="primary" icon="Message" @click="handleSendEmail(scope.row)"
                      v-hasPermi="['system:record:mail']">发送邮件
+          </el-button>
+          <el-button  v-btnPreventRepeat link type="primary" icon="Printer" @click="handlePrintPdf(scope.row)"
+                      v-hasPermi="['system:record:print']">PDF下载
           </el-button>
           <el-button  v-btnPreventRepeat link type="primary" icon="Delete" @click="handleDelete(scope.row)"
                      v-hasPermi="['system:batch:record:remove']">删除
@@ -191,7 +194,7 @@ import {
   addRequest,
   updateRequest,
   delRequest,
-  delBatchRequest, sendMailRequest,
+  delBatchRequest, sendMailRequest, printPdfRequest,
 } from '@/api/quotation.js'
 import { parseTime } from '@/utils/ruoyi.js'
 
@@ -352,6 +355,20 @@ function handleSendEmail (row) {
     proxy.$modal.msgSuccess('发送成功')
   }).catch(() => {})
 }
+/** 打印按钮操作 */
+function handlePrintPdf (row) {
+  proxy.$modal.confirm('是否确认下载此PDF？').then(function () {
+    return printPdfRequest({ recordId: row.id })
+  }).then((res) => {
+    // 使用项目已有的下载方式
+    const blob = new Blob([res], { type: 'application/pdf' })
+    const fileName = `报价单_${row.quotationNo}.pdf`
+    saveAs(blob, fileName)
+    // 调用浏览器打印这个PDF
+    proxy.$modal.msgSuccess('下载成功')
+  }).catch(() => {})
+}
+
 
 
 
