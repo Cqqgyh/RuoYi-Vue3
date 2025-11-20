@@ -212,9 +212,11 @@ import {
   delBatchRequest, sendMailRequest,
 } from '@/api/quotation.js'
 import { parseTime } from '@/utils/ruoyi.js'
+import { useRouter } from 'vue-router'
+
 
 const { proxy } = getCurrentInstance()
-
+const router = useRouter()
 const typeList = ref([])
 const open = ref(false)
 const loading = ref(true)
@@ -317,9 +319,10 @@ function resetQuery () {
 
 /** 新增按钮操作 */
 function handleAdd () {
-  title.value = '添加报价'
-  visible.value = !visible.value
-  PopSelectionRef.value.open()
+  router.push({ path: '/quotationAddOrEdit' })
+  // title.value = '添加报价'
+  // visible.value = !visible.value
+  // PopSelectionRef.value.open()
 }
 
 function openMore () {
@@ -341,10 +344,11 @@ function handleSelectionChange (selection) {
 /** 修改按钮操作 */
 async function handleUpdate (row) {
   title.value = '修改报价'
+  router.push({ path: '/quotationAddOrEdit', query: { id: row.id } })
   // 获取row.productList数组的id
-  visible.value = !visible.value
-  const res = await getDetailRequest(row.id)
-  PopSelectionRef.value.open(res.data)
+  // visible.value = !visible.value
+  // const res = await getDetailRequest(row.id)
+  // PopSelectionRef.value.open(res.data)
 }
 
 /** 提交按钮 */

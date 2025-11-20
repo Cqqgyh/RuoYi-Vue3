@@ -138,6 +138,18 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/quotationAddOrEdit',
+    component: Layout,
+    children: [
+      {
+        path: '/quotationAddOrEdit',
+        component: () => import('@/views/quotation/add'),
+        name: 'QuotationAddOrEdit',
+        meta: { title: '报价', icon: 'user' }
+      }
+    ]
+  },
 ]
 
 // 动态路由，基于用户权限动态去加载
