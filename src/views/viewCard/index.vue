@@ -276,6 +276,12 @@ const productData = ref<ProductData>({
 async function fetchData(id) {
   const res = await getViewDetailRequest(id)
   productData.value = res.data
+  Object.keys(productData.value).forEach(key => {
+    // fieldValue !== '' && fieldValue !== null && fieldValue !== undefined
+    if (productData.value[key] === '' || productData.value[key] === null || productData.value[key] === undefined) {
+      productData.value[key] = '--'
+    }
+  })
   productShowConfigList.value = res.data?.sysDictDataList?.map(item => ({
     // 下划线转小驼峰
     props: item.dictValue.replace(/_([a-z])/g, (_, letter) => letter.toUpperCase()),
@@ -349,16 +355,16 @@ onMounted(() => {
 
 // 格式化货币显示
 const formatCurrency = (value: string | number) => {
-  if (!value) return ''
-  // return '¥' + parseFloat(value).toFixed(2)
-  return '¥' + value
+  // if (!value) return ''
+  return '¥' + parseFloat(value).toFixed(2)
+  // return '¥' + value
 }
 
 // 格式化美元显示
 const formatUSD = (value: string | number) => {
-  if (!value) return ''
-  // return '$' + parseFloat(value).toFixed(2)
-  return '$' + value
+  // if (!value) return ''
+  return '$' + parseFloat(value).toFixed(2)
+  // return '$' + value
 }
 
 // 判断字段是否应该显示
@@ -380,7 +386,9 @@ const shouldShowField = (fieldName: string | number) => {
   }
 
   // 对于字符串类型字段，检查是否为空
-  return fieldValue !== '' && fieldValue !== null && fieldValue !== undefined
+
+  // return fieldValue !== '' && fieldValue !== null && fieldValue !== undefined
+  return true
 }
 
 // 判断模块是否应该显示（至少有一个字段需要显示）
