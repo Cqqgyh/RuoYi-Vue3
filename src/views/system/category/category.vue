@@ -136,15 +136,17 @@ const data = reactive({
 const { queryParams, form, rules } = toRefs(data)
 
 /** 查询分类列表 */
-function getList () {
+async function getList () {
   loading.value = true
   getListPageAll().then(response => {
-    const  tree = proxy.handleTree(response.data, 'id')
+    const tree = proxy.handleTree(response.data, 'id')
     const filtered = applyLocalFilter(tree, queryParams.value)
     deptList.value = filtered
+  }).finally(() => {
     loading.value = false
   })
 }
+
 
 /** 取消按钮 */
 function cancel () {
