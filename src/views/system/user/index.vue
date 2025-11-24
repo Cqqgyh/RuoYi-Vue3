@@ -187,6 +187,13 @@
         </el-row>
         <el-row>
           <el-col :span="24">
+            <el-form-item label="授权码" prop="authorizationCode">
+              <el-input v-model.trim="form.authorizationCode" type="textarea" placeholder="请输入授权码"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
             <el-form-item label="仅可见自己登记的产品" prop="isView">
               <!--              0-否, 1-是-->
               <el-radio-group v-model="form.isView">
@@ -505,6 +512,7 @@ function reset() {
     sex: undefined,
     status: "0",
     isView: 1,
+    authorizationCode: undefined,
     remark: undefined,
     postIds: [],
     roleIds: []

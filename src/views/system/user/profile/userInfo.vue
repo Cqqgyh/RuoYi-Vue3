@@ -9,6 +9,9 @@
       <el-form-item label="邮箱" prop="email">
          <el-input v-model="form.email" maxlength="50" />
       </el-form-item>
+     <el-form-item label="授权码" prop="authorizationCode">
+       <el-input v-model.trim="form.authorizationCode" />
+     </el-form-item>
       <el-form-item label="性别">
          <el-radio-group v-model="form.sex">
             <el-radio value="0">男</el-radio>
@@ -61,7 +64,7 @@ function close() {
 // 回显当前登录用户信息
 watch(() => props.user, user => {
   if (user) {
-    form.value = { nickName: user.nickName, phonenumber: user.phonenumber, email: user.email, sex: user.sex }
+    form.value = { nickName: user.nickName, phonenumber: user.phonenumber, email: user.email, authorizationCode: user.authorizationCode, sex: user.sex }
   }
 },{ immediate: true })
 </script>
