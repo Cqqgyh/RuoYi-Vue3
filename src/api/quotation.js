@@ -57,10 +57,10 @@ export function delBatchRequest(ids) {
   })
 }
 // 发送邮件 /system/quotation/batch/send-mail
-export function sendMailRequest(query) {
+export function sendMailRequest(data) {
   return request({
     url: '/system/quotation/batch/send-mail',
     method: 'post',
-    params: query
+    data: data
   })
 }

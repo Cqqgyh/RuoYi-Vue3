@@ -371,11 +371,12 @@ function handleDelete (row) {
 // handleSendEmail
 /** 发送邮件按钮操作 */
 function handleSendEmail (row) {
-  proxy.$modal.confirm('是否确认发送邮件？').then(function () {
-    return sendMailRequest({ recordId: row.id })
-  }).then(() => {
-    proxy.$modal.msgSuccess('发送成功')
-  }).catch(() => {})
+  router.push({ path: '/sendMail', query: { recordId: row.id } })
+  // proxy.$modal.confirm('是否确认发送邮件？').then(function () {
+  //   return sendMailRequest({ recordId: row.id })
+  // }).then(() => {
+  //   proxy.$modal.msgSuccess('发送成功')
+  // }).catch(() => {})
 }
 
 /** 导出按钮操作 */

@@ -150,6 +150,18 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/sendMail',
+    component: Layout,
+    children: [
+      {
+        path: '/sendMail',
+        component: () => import('@/views/quotation/SendMailDialog'),
+        name: 'SendMail',
+        meta: { title: '发送邮件', icon: 'user' }
+      }
+    ]
+  },
 ]
 
 // 动态路由，基于用户权限动态去加载
