@@ -371,7 +371,7 @@ function handleDelete (row) {
 // handleSendEmail
 /** 发送邮件按钮操作 */
 function handleSendEmail (row) {
-  router.push({ path: '/sendMail', query: { recordId: row.id } })
+  router.push({ path: '/sendMail', query: { id: row.id } })
   // proxy.$modal.confirm('是否确认发送邮件？').then(function () {
   //   return sendMailRequest({ recordId: row.id })
   // }).then(() => {
