@@ -116,7 +116,7 @@
                      v-hasPermi="['system:batch:record:edit']">
             修改
           </el-button>
-          <el-button  v-btnPreventRepeat link type="primary" icon="Message" @click="handleSendEmail(scope.row)"
+          <el-button  v-btnPreventRepeat link type="primary" icon="Message" @click="openSendMailDialog(scope.row)"
                      v-hasPermi="['system:record:mail']">发送邮件
           </el-button>
           <el-button  v-btnPreventRepeat link type="primary" icon="Printer" @click="handlePrintPdf(scope.row)"
@@ -182,19 +182,21 @@
         width="1200px"
         append-to-body
     />
+    <SendMailDialog ref="SendMailDialogRef" />
   </div>
 
 </template>
 
 <script setup name="Quotation">
 import PopSelection from './popSelection.vue'
+import SendMailDialog from './SendMailDialog.vue'
 import {
   getListPage,
   getDetailRequest,
   addRequest,
   updateRequest,
   delRequest,
-  delBatchRequest, sendMailRequest, printPdfRequest,
+  delBatchRequest, printPdfRequest,
 } from '@/api/quotation.js'
 import { parseTime } from '@/utils/ruoyi.js'
 
@@ -225,6 +227,7 @@ const visible = ref(false)
 const PopSelectionRef = ref()
 
 //#endregion
+
 
 /** 查询字典类型列表 */
 function getList () {
@@ -346,14 +349,10 @@ function handleDelete (row) {
     proxy.$modal.msgSuccess('删除成功')
   }).catch(() => {})
 }
-// handleSendEmail
-/** 发送邮件按钮操作 */
-function handleSendEmail (row) {
-  proxy.$modal.confirm('是否确认发送邮件？').then(function () {
-    return sendMailRequest({ recordId: row.id })
-  }).then(() => {
-    proxy.$modal.msgSuccess('发送成功')
-  }).catch(() => {})
+/** 打开发送邮件弹窗 */
+const SendMailDialogRef = ref()
+function openSendMailDialog (row) {
+  SendMailDialogRef.value.open(row)
 }
 /** 打印按钮操作 */
 function handlePrintPdf (row) {
