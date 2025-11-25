@@ -25,6 +25,7 @@
               value-key="id"
               placeholder="请选择样品类别"
               check-strictly
+              clearable
           />
 <!--          <el-select v-model="form.sampleCategoryId" placeholder="请选择样品类别" filterable clearable>-->
 <!--            <el-option v-for="item in sampleCategoryList" :key="item.value" :label="item.label" :value="item.value"/>-->

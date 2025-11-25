@@ -48,13 +48,13 @@
         </el-form-item>
         <el-form-item label="样品类别" prop="sampleCategoryId">
           <el-tree-select
-              style="width: 240px"
               v-model="queryParams.sampleCategoryId"
               :data="sampleCategoryList"
               :props="{ value: 'id', label: 'categoryName', children: 'children' }"
               value-key="id"
               placeholder="请选择样品类别"
               check-strictly
+              clearable
           />
           <!--          <el-select v-model="queryParams.sampleCategoryId" placeholder="请选择样品类别">-->
           <!--            <el-option v-for="item in sampleCategoryList" :key="item.value" :label="item.label" :value="item.value"/>-->
