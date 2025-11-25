@@ -12,6 +12,7 @@
             value-key="id"
             placeholder="请选择样品类别"
             check-strictly
+            clearable
         />
       </el-form-item>
       <!--      公司款号-->
@@ -219,6 +220,7 @@
                   value-key="id"
                   placeholder="请选择样品类别"
                   check-strictly
+                  clearable
               />
 <!--              <el-select v-model="form.sampleCategoryId" placeholder="请选择样品类别" filterable clearable>-->
 <!--                <el-option v-for="item in sampleCategoryList" :key="item.value" :label="item.label"-->
@@ -641,28 +643,11 @@ function resetQuery () {
   handleQuery()
 }
 
-const x = () => {
-  const digitalProjectId = params.formConfig.data?.digitalProjectId
-  const digitalProjectColumn = params.formConfig.columns.find(col => col.key === 'digitalProjectId')
-  if (digitalProjectId && digitalProjectColumn) {
-    const res = digitalProjectColumn.props.options?.find(item => item.value === digitalProjectId)
-    if (res) {
-      params.formConfig.data.firstName = res.secondName
-      params.formConfig.data.firstId = res.secondId
-    } else {
-      params.formConfig.data.firstName = ''
-      params.formConfig.data.firstId = null
-    }
-
-  }
-
-}
-
 /** 新增按钮操作 */
 function handleAdd () {
   reset()
   open.value = true
-  title.value = '添加客户'
+  title.value = '新增产品'
 }
 
 /** 多选框选中数据 */
@@ -679,7 +664,7 @@ function handleUpdate (row) {
   getDetailRequest(id).then(response => {
     form.value = response.data
     open.value = true
-    title.value = '修改字典类型'
+    title.value = '修改产品'
   })
 }
 
