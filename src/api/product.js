@@ -72,3 +72,11 @@ export function getQrcodeUrlRequest(data) {
     responseType: 'blob'
   })
 }
+/// 下载PDF
+export function printPdfRequest(query) {
+  return request({
+    url: '/system/product/print-pdf',
+    method: 'post',
+    params: query
+  })
+}

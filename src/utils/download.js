@@ -1,9 +1,9 @@
 import { ElMessage } from "element-plus";
 
-const getBlob = (url) => {
+const getBlob = (url, requestType = "GET") => {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
+    xhr.open(requestType, url, true);
     xhr.responseType = "blob";
     xhr.setRequestHeader("Cache-Control", "no-cache");
     xhr.onload = () => {
@@ -46,9 +46,10 @@ const saveAs = (blob, filename) => {
 const downloadFile = async (
   url,
   filename,
+  requestType = "GET"
 ) => {
 
-  return getBlob(url)
+  return getBlob(url, requestType)
     .then((blob) => {
       saveAs(blob, filename);
       return Promise.resolve();
