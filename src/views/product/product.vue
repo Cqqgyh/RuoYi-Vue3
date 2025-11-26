@@ -185,6 +185,9 @@
                      v-hasPermi="['system:product:share']">
             下载二维码
           </el-button>
+          <el-button  v-btnPreventRepeat link type="primary" icon="Printer" @click="handlePrintPdf(scope.row)"
+                      v-hasPermi="['system:product:print']">PDF下载
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -428,7 +431,7 @@ import {
   updateRequest,
   delRequest,
   delBatchRequest,
-  getQrcodeUrlRequest,
+  getQrcodeUrlRequest, printPdfRequest,
 } from '@/api/product.js'
 import { getListPageAll as getClientListAll } from '@/api/client.js'
 import { getListPageAll as getSupplierListAll } from '@/api/supplier.js'
@@ -436,6 +439,7 @@ import ImageUpload from '@/components/ImageUpload/index.vue'
 import { parseTime } from '../../utils/ruoyi.js'
 import { showImagePreview } from 'vant'
 import { getListPageAll as getSampleCategoryListAll } from '@/api/category.js'
+import downloadFile from '@/utils/download.js'
 
 const { proxy } = getCurrentInstance()
 
@@ -667,6 +671,25 @@ function handleUpdate (row) {
     title.value = '修改产品'
   })
 }
+/** 打印PDF按钮操作 */
+function handlePrintPdf (row) {
+  proxy.$modal.confirm('是否确认下载此PDF？').then(async function () {
+    const res = await printPdfRequest({ productId: row.id })
+    if (window.navigator.userAgent.includes('miniProgram') || window.navigator.userAgent.includes('wechat') ||
+        window.navigator.userAgent.includes('chat') || window.navigator.userAgent.includes('Chat')) {
+      // 打开新地址页面
+      window.open(window.location.origin + import.meta.env.VITE_APP_BASE_API + res.url)
+    }else {
+      await  downloadFile(window.location.origin + import.meta.env.VITE_APP_BASE_API + res.url, `产品_${row.name}.pdf`)
+    }
+    // 调用浏览器打印这个PDF
+    proxy.$modal.msgSuccess('下载成功')
+  }).then((res) => {
+
+  }).catch(() => {})
+}
+
+
 
 const shareLink = ref('')
 
