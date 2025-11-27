@@ -103,13 +103,77 @@
       <el-dialog v-model="selectorVisible" title="选择产品" :width="isMobile ? '100%' : '1000px'" :fullscreen="isMobile"
                  :top="isMobile ? '0' : '15vh'" append-to-body :class="{ 'mobile-dialog': isMobile }">
         <div class="selector-panel">
-          <el-input
-              v-model="searchQuery"
-              placeholder="请输入产品名称搜索"
-              prefix-icon="Search"
-              clearable
-              class="search-input"
-          />
+          <div class="h5-filter-bar" v-show="showSearch">
+            <el-form :model="queryParams" ref="queryRef" :inline="false" label-position="top" class="h5-filter-inline">
+              <el-form-item label="" prop="name" style="margin-bottom: 0;">
+                <div class="h5-filter-primary">
+                  <el-input
+                      v-model.trim="queryParams.name"
+                      placeholder="请输入产品名称"
+                      clearable
+                      class="h5-input"
+                      @keyup.enter="handleQuery"
+                  />
+                  <div class="h5-actions">
+<!--                    <el-button v-btnPreventRepeat type="primary" icon="Search" size="small" @click="handleQuery"></el-button>-->
+                    <el-button v-btnPreventRepeat icon="Refresh" size="small" @click="resetQuery"></el-button>
+                    <el-button v-btnPreventRepeat link icon="MoreFilled" size="small" @click="openMore"></el-button>
+                  </div>
+                </div>
+              </el-form-item>
+            </el-form>
+          </div>
+
+          <el-drawer v-model="moreVisible" title="更多筛选" direction="rtl" size="80%">
+            <el-form :model="queryParams" ref="queryMoreRef" :inline="false" label-position="top" class="h5-filter-more">
+              <el-form-item label="产品名称" prop="name">
+                <el-input v-model.trim="queryParams.name" placeholder="请输入产品名称" clearable @keyup.enter="handleQuery"/>
+              </el-form-item>
+              <el-form-item label="创建时间">
+                <el-date-picker
+                    v-model="dateRange[0]"
+                    value-format="YYYY-MM-DD"
+                    type="date"
+                    placeholder="请选择开始日期"
+                    style="margin-bottom: 3px;width: 100%;"
+                />
+                <el-date-picker
+                    v-model="dateRange[1]"
+                    value-format="YYYY-MM-DD"
+                    type="date"
+                    placeholder="请选择结束日期"
+                    style="margin-bottom: 3px;width: 100%;"
+                />
+              </el-form-item>
+              <el-form-item label="样品类别" prop="sampleCategoryId">
+                <el-tree-select
+                    v-model="queryParams.sampleCategoryId"
+                    :data="sampleCategoryList"
+                    :props="{ value: 'id', label: 'categoryName', children: 'children' }"
+                    value-key="id"
+                    placeholder="请选择样品类别"
+                    check-strictly
+                    clearable
+                />
+              </el-form-item>
+              <el-form-item label="公司款号" prop="styleNo">
+                <el-input v-model.trim="queryParams.styleNo" placeholder="请输入公司款号" clearable @keyup.enter="handleQuery"/>
+              </el-form-item>
+              <el-form-item label="客人款号" prop="clientStyleNo">
+                <el-input v-model.trim="queryParams.clientStyleNo" placeholder="请输入客人款号" clearable @keyup.enter="handleQuery"/>
+              </el-form-item>
+              <el-form-item label="客户名称" prop="clientName">
+                <el-input v-model.trim="queryParams.clientName" placeholder="请输入客户名称" clearable @keyup.enter="handleQuery"/>
+              </el-form-item>
+              <el-form-item label="工厂名称" prop="factoryName">
+                <el-input v-model.trim="queryParams.factoryName" placeholder="请输入工厂名称" clearable @keyup.enter="handleQuery"/>
+              </el-form-item>
+            </el-form>
+            <div class="h5-drawer-actions">
+              <el-button v-btnPreventRepeat type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+              <el-button v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>
+            </div>
+          </el-drawer>
 
           <div class="action-buttons">
             <el-button v-btnPreventRepeat size="small" @click="clearSelection">清空选择</el-button>
@@ -186,7 +250,7 @@
 
 </template>
 <script lang="ts" setup name="SelectDialog">
-import {ref, computed, watch, nextTick, h, getCurrentInstance, onMounted, onBeforeUnmount} from "vue";
+import {ref, computed, watch, nextTick, h, getCurrentInstance, onMounted, onBeforeUnmount, reactive, toRefs} from "vue";
 import {ElMessage} from "element-plus";
 import {ActionBar as VanActionBar} from 'vant'
 import useSettingsStore from '@/store/modules/settings.js'
@@ -202,6 +266,7 @@ import {
   getListPageAll as getClientListAll
 } from '@/api/client.js'
 import {useRoute, useRouter} from "vue-router";
+import { getListPageAll as getSampleCategoryListAll } from '@/api/category.js'
 
 const {proxy} = getCurrentInstance()
 const route = useRoute()
@@ -301,8 +366,49 @@ async function getList() {
   allOptions.value = res?.rows || res?.data || []
 }
 
-// 搜索关键词
-const searchQuery = ref("");
+const showSearch = ref(true)
+const moreVisible = ref(false)
+const queryRef = ref()
+const queryMoreRef = ref()
+const dateRange = ref<string[]>([])
+const sampleCategoryList = ref<any[]>([])
+const data = reactive({
+  queryParams: {
+    name: '',
+    sampleCategoryId: '',
+    styleNo: '',
+    clientStyleNo: '',
+    clientName: '',
+    factoryName: '',
+  },
+})
+const { queryParams } = toRefs(data)
+
+const getSampleCategoryList = async () => {
+  await getSampleCategoryListAll().then(response => {
+    sampleCategoryList.value = proxy.handleTree(response.data, 'id')
+  })
+}
+getSampleCategoryList()
+
+function openMore() {
+  moreVisible.value = true
+}
+
+function closeMore() {
+  moreVisible.value = false
+}
+
+function handleQuery() {
+  closeMore()
+}
+
+function resetQuery() {
+  dateRange.value = []
+  proxy.resetForm('queryRef')
+  proxy.resetForm('queryMoreRef')
+  handleQuery()
+}
 
 // 右侧表格的数据
 const tableData = ref([]);
@@ -328,12 +434,44 @@ const isMobile = ref(false);
 
 // 将数据转换为单层列表结构
 const listData = computed(() => {
-  if (!searchQuery.value) {
-    return allOptions.value;
-  }
+  let result = allOptions.value
+  const qp = queryParams.value
 
-  return allOptions.value.filter(item =>
-      (item.name || '').toLowerCase().includes(searchQuery.value.toLowerCase()));
+  if (qp.name) {
+    const kw = qp.name.toLowerCase()
+    result = result.filter(item => (item.name || '').toLowerCase().includes(kw))
+  }
+  if (qp.sampleCategoryId) {
+    result = result.filter(item => String(item.sampleCategoryId || '') === String(qp.sampleCategoryId))
+  }
+  if (qp.styleNo) {
+    const kw = qp.styleNo.toLowerCase()
+    result = result.filter(item => (item.styleNo || '').toLowerCase().includes(kw))
+  }
+  if (qp.clientStyleNo) {
+    const kw = qp.clientStyleNo.toLowerCase()
+    result = result.filter(item => (item.clientStyleNo || '').toLowerCase().includes(kw))
+  }
+  if (qp.clientName) {
+    const kw = qp.clientName.toLowerCase()
+    result = result.filter(item => (item.clientName || '').toLowerCase().includes(kw))
+  }
+  if (qp.factoryName) {
+    const kw = qp.factoryName.toLowerCase()
+    result = result.filter(item => (item.factoryName || '').toLowerCase().includes(kw))
+  }
+  const [start, end] = dateRange.value || []
+  if (start || end) {
+    const s = start ? dayjs(start, 'YYYY-MM-DD').startOf('day') : null
+    const e = end ? dayjs(end, 'YYYY-MM-DD').endOf('day') : null
+    result = result.filter(item => {
+      const ct = dayjs(item.createTime)
+      if (s && !ct.isAfter(s) && !ct.isSame(s)) return false
+      if (e && !ct.isBefore(e) && !ct.isSame(e)) return false
+      return true
+    })
+  }
+  return result
 });
 
 // 获取已添加到右侧表格的ID列表
@@ -513,7 +651,7 @@ const selectedCount = computed(() => {
 }
 
 .selector-panel {
-  padding: 20px;
+  padding: 20px 0;
   height: 100%;
   overflow-y: auto;
   display: flex;
@@ -586,6 +724,61 @@ const selectedCount = computed(() => {
   }
 }
 
+.h5-filter-bar {
+  padding: 10px 12px;
+  background: var(--el-fill-color-light);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  margin-bottom: 12px;
+}
+
+.h5-filter-inline {
+  display: block;
+}
+
+.h5-filter-primary {
+  display: flex;
+  width: 100%;
+}
+
+.h5-input {
+  width: 100%;
+  min-width: 200px;
+}
+
+.h5-actions {
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+}
+
+.h5-drawer-actions {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  gap: 8px;
+  padding: 10px 0 10px 0;
+  background: var(--el-bg-color);
+  border-top: 1px solid var(--el-border-color-light);
+  z-index: 100;
+}
+
+.h5-filter-more {
+  padding-bottom: 60px;
+}
+
+.h5-drawer-actions::after {
+  overflow: hidden;
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  width: 100%;
+  height: 25px;
+  background: var(--el-bg-color);
+  z-index: 100;
+}
+
 .table-panel {
   padding: 0;
   height: 100%;
@@ -649,7 +842,7 @@ const selectedCount = computed(() => {
 
 @media (max-width: 768px) {
   .selector-panel {
-    padding: 12px;
+    padding: 12px 0;
 
     .action-buttons {
       flex-wrap: wrap;
