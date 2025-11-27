@@ -63,6 +63,8 @@
               <el-table-column label="业务员昵称" align="center" key="nickName" prop="nickName" v-if="columns.nickName.visible" :show-overflow-tooltip="true" />
 <!--              <el-table-column label="部门" align="center" key="deptName" prop="dept.deptName" v-if="columns.deptName.visible" :show-overflow-tooltip="true" />-->
               <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns.phonenumber.visible" width="120" />
+              <el-table-column label="授权码" align="center" key="authorizationCode" prop="authorizationCode" v-if="columns.authorizationCode.visible" width="120" />
+              <el-table-column label="邮箱" align="center" key="email" prop="email" v-if="columns.email.visible" width="200" />
               <el-table-column label="仅可见自己登记的产品" align="center" key="isView" prop="isView" v-if="columns.isView.visible" width="120">
                 <template #default="scope">
                   <el-tag v-if="scope.row.isView === 1" :type="'success'">{{  '是'  }}</el-tag>
@@ -286,6 +288,8 @@ const columns = ref({
   nickName: { label: '业务员昵称', visible: true },
   deptName: { label: '部门', visible: true },
   phonenumber: { label: '手机号码', visible: true },
+  authorizationCode: { label: '授权码', visible: true },
+  email: { label: '邮箱', visible: true },
   status: { label: '状态', visible: true },
   isView: { label: '仅可见自己登记的产品', visible: true },
   createTime: { label: '创建时间', visible: true },
