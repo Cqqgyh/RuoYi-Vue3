@@ -2,6 +2,15 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
       <!--      可以根据样品类别查询、公司款号、客人款号、客户名称、工厂等各类产品信息查询产品信息。-->
+      <el-form-item label="产品名称" prop="name">
+        <el-input
+            v-model.trim="queryParams.name"
+            placeholder="请输入产品名称"
+            clearable
+            style="width: 240px"
+            @keyup.enter="handleQuery"
+        />
+      </el-form-item>
       <!--      样品类别-->
       <el-form-item label="样品类别" prop="sampleCategoryId">
         <el-tree-select
