@@ -37,7 +37,7 @@
       </el-form>
       <div class="table-panel">
         <div class="action-buttons" style="margin-bottom: 10px;">
-          <el-button v-btnPreventRepeat type="primary"  @click="selectorVisible = true">选择产品</el-button>
+          <el-button v-btnPreventRepeat type="primary"  @click=" selectorVisible = true">选择产品</el-button>
         </div>
 
         <el-form ref="formRef" :model="tableData">
@@ -87,15 +87,76 @@
         </el-form>
       </div>
 
-      <el-dialog v-model="selectorVisible" title="选择产品" width="1000px" append-to-body>
+      <el-dialog v-model="selectorVisible" title="选择产品" width="1100px" append-to-body>
         <div class="selector-panel">
-          <el-input
-              v-model="searchQuery"
-              placeholder="请输入产品名称搜索"
-              prefix-icon="Search"
-              clearable
-              class="search-input"
-          />
+          <el-form :model="queryParams" :inline="true" label-width="68px" class="search-input">
+            <el-form-item label="产品名称" prop="name">
+              <el-input
+                  v-model.trim="queryParams.name"
+                  placeholder="请输入产品名称"
+                  clearable
+                  style="width: 240px"
+              />
+            </el-form-item>
+            <el-form-item label="样品类别" prop="sampleCategoryId">
+              <el-tree-select
+                  style="width: 240px"
+                  v-model="queryParams.sampleCategoryId"
+                  :data="sampleCategoryList"
+                  :props="{ value: 'id', label: 'categoryName', children: 'children' }"
+                  value-key="id"
+                  placeholder="请选择样品类别"
+                  check-strictly
+                  clearable
+              />
+            </el-form-item>
+            <el-form-item label="公司款号" prop="styleNo">
+              <el-input
+                  v-model.trim="queryParams.styleNo"
+                  placeholder="请输入公司款号"
+                  clearable
+                  style="width: 240px"
+              />
+            </el-form-item>
+            <el-form-item label="客人款号" prop="clientStyleNo">
+              <el-input
+                  v-model.trim="queryParams.clientStyleNo"
+                  placeholder="请输入客人款号"
+                  clearable
+                  style="width: 240px"
+              />
+            </el-form-item>
+            <el-form-item label="客户名称" prop="clientName">
+              <el-input
+                  v-model.trim="queryParams.clientName"
+                  placeholder="请输入客户名称"
+                  clearable
+                  style="width: 240px"
+              />
+            </el-form-item>
+            <el-form-item label="工厂名称" prop="factoryName">
+              <el-input
+                  v-model.trim="queryParams.factoryName"
+                  placeholder="请输入工厂名称"
+                  clearable
+                  style="width: 240px"
+              />
+            </el-form-item>
+            <el-form-item label="创建时间" style="width: 308px">
+              <el-date-picker
+                  v-model="dateRange"
+                  value-format="YYYY-MM-DD"
+                  type="daterange"
+                  range-separator="-"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期"
+              />
+            </el-form-item>
+<!--&lt;!&ndash;            重置&ndash;&gt;-->
+<!--            <el-form-item>-->
+<!--              <el-button v-btnPreventRepeat icon="Refresh" @click="resetQuery">重置</el-button>-->
+<!--            </el-form-item>-->
+          </el-form>
 
           <div class="action-buttons">
             <el-button v-btnPreventRepeat size="small" @click="clearSelection">清空选择</el-button>
@@ -146,6 +207,7 @@ import { ref,  computed, watch, nextTick, h, getCurrentInstance } from "vue";
 import { ElMessage, ElCheckbox, ElTableV2, ElAutoResizer } from "element-plus";
 import { parseTime } from '../../utils/ruoyi.js'
 import dayjs from 'dayjs'
+import { getListPageAll as getSampleCategoryListAll } from '@/api/category.js'
 import {
   getListPageAll
 } from '@/api/product.js'
@@ -232,8 +294,17 @@ async function getList () {
   const res = await getListPageAll()
   allOptions.value = res?.rows || res?.data || []
 }
-// 搜索关键词
-const searchQuery = ref("");
+// 与产品列表一致的查询条件
+const sampleCategoryList = ref([])
+const dateRange = ref([])
+const queryParams = ref({
+  sampleCategoryId: null,
+  name: '',
+  styleNo: '',
+  clientStyleNo: '',
+  clientName: '',
+  factoryName: '',
+})
 
 // 右侧表格的数据
 const tableData = ref([]);
@@ -290,16 +361,60 @@ const vtColumns = [
 // 表单引用
 const formRef = ref();
 const selectorVisible = ref(false);
-
-// 将数据转换为单层列表结构
-const listData = computed(() => {
-  if (!searchQuery.value) {
-    return allOptions.value;
+watch(()=>selectorVisible.value, (newVal, oldVal) => {
+  if(newVal){
+    resetQuery()
   }
+})
+const getSampleCategoryList = async () => {
+  await getSampleCategoryListAll().then(response => {
+    sampleCategoryList.value = proxy.handleTree(response.data, 'id')
+  })
+}
+getSampleCategoryList()
 
-  return allOptions.value.filter(item =>
-      (item.name || '').toLowerCase().includes(searchQuery.value.toLowerCase()));
-});
+// 过滤函数
+const includesIgnoreCase = (src, q) => {
+  if (!q) return true
+  const s = (src || '').toString().toLowerCase()
+  return s.includes(q.toString().toLowerCase())
+}
+
+// 过滤后的列表数据
+const listData = computed(() => {
+  const list = allOptions.value
+  const q = queryParams.value
+  return list.filter(item => {
+    if (q.sampleCategoryId && item.sampleCategoryId !== q.sampleCategoryId) return false
+    if (!includesIgnoreCase(item.styleNo, q.styleNo)) return false
+    if (!includesIgnoreCase(item.name, q.name)) return false
+    if (!includesIgnoreCase(item.clientStyleNo, q.clientStyleNo)) return false
+    if (!includesIgnoreCase(item.clientName, q.clientName)) return false
+    if (!includesIgnoreCase(item.factoryName, q.factoryName)) return false
+    if (dateRange.value && dateRange.value.length === 2) {
+      const ct = item.createTime
+      if (!ct) return false
+      const t = dayjs(ct)
+      const start = dayjs(`${dateRange.value[0]} 00:00:00`)
+      const end = dayjs(`${dateRange.value[1]} 23:59:59`)
+      if (t.isBefore(start) || t.isAfter(end)) return false
+    }
+    return true
+  })
+})
+
+// 重置查询条件
+function resetQuery () {
+  dateRange.value = []
+  queryParams.value = {
+    sampleCategoryId: null,
+    name: '',
+    styleNo: '',
+    clientStyleNo: '',
+    clientName: '',
+    factoryName: '',
+  }
+}
 
 // 获取已添加到右侧表格的ID列表
 const addedIds = computed(() => {
