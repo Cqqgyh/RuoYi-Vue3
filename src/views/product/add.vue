@@ -103,6 +103,20 @@
         <el-form-item label="备注" prop="remark">
           <el-input v-model.trim="form.remark" type="textarea" placeholder="请输入备注"/>
         </el-form-item>
+        <el-form-item v-if="form.id" label="历史报价" prop="remark">
+          <div>
+            <div v-if="Array.isArray(form.quotationProductList) && form.quotationProductList.length">
+              <ul style="overflow: auto;">
+                <li v-for="i in form.quotationProductList" :key="i" style="margin-bottom: 10px;">
+                  <span style="margin-right:50px">报价日期:{{ i.quotationDate }}</span>
+                  <span>美元报价:{{ i.usdQuotation }}</span>
+                </li>
+              </ul>
+            </div>
+            <div v-else style="color: var(--el-text-color-secondary);">暂无历史报价</div>
+          </div>
+        </el-form-item>
+
       </el-form>
     </el-card>
     <van-action-bar class="mobile-actions">
