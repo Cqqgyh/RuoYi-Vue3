@@ -15,24 +15,24 @@
         </div>
         <div class="card-body">
           <div class="field-item" v-if="shouldShowField('name')">
-            <span class="field-label">{{ fieldLabels.name }}：</span>
-            <span class="field-value">{{ productData.name }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.name.cn }}</div><div class="label-en">{{ fieldText.name.en }}</div></div>
+            <div class="field-value">{{ productData.name }}</div>
           </div>
           <div class="field-item" v-if="shouldShowField('sampleCategoryName')">
-            <span class="field-label">{{ fieldLabels.sampleCategoryName }}：</span>
-            <span class="field-value">{{ productData.sampleCategoryName }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.sampleCategoryName.cn }}</div><div class="label-en">{{ fieldText.sampleCategoryName.en }}</div></div>
+            <div class="field-value">{{ productData.sampleCategoryName }}</div>
           </div>
           <div class="field-item" v-if="shouldShowField('storageTime')">
-            <span class="field-label">{{ fieldLabels.storageTime }}：</span>
-            <span class="field-value">{{ productData.storageTime }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.storageTime.cn }}</div><div class="label-en">{{ fieldText.storageTime.en }}</div></div>
+            <div class="field-value">{{ productData.storageTime }}</div>
           </div>
           <div class="field-item" v-if="shouldShowField('clientName')">
-            <span class="field-label">{{ fieldLabels.clientName }}：</span>
-            <span class="field-value">{{ productData.clientName }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.clientName.cn }}</div><div class="label-en">{{ fieldText.clientName.en }}</div></div>
+            <div class="field-value">{{ productData.clientName }}</div>
           </div>
           <div class="field-item" v-if="shouldShowField('factoryName')">
-            <span class="field-label">{{ fieldLabels.factoryName }}：</span>
-            <span class="field-value">{{ productData.factoryName }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.factoryName.cn }}</div><div class="label-en">{{ fieldText.factoryName.en }}</div></div>
+            <div class="field-value">{{ productData.factoryName }}</div>
           </div>
         </div>
       </div>
@@ -44,12 +44,12 @@
         </div>
         <div class="card-body">
           <div class="field-item" v-if="shouldShowField('clientStyleNo')">
-            <span class="field-label">{{ fieldLabels.clientStyleNo }}：</span>
-            <span class="field-value">{{ productData.clientStyleNo }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.clientStyleNo.cn }}</div><div class="label-en">{{ fieldText.clientStyleNo.en }}</div></div>
+            <div class="field-value">{{ productData.clientStyleNo }}</div>
           </div>
           <div class="field-item" v-if="shouldShowField('styleNo')">
-            <span class="field-label">{{ fieldLabels.styleNo }}：</span>
-            <span class="field-value">{{ productData.styleNo }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.styleNo.cn }}</div><div class="label-en">{{ fieldText.styleNo.en }}</div></div>
+            <div class="field-value">{{ productData.styleNo }}</div>
           </div>
         </div>
       </div>
@@ -61,12 +61,12 @@
         </div>
         <div class="card-body">
           <div class="field-item" v-if="shouldShowField('factoryQuotation')">
-            <span class="field-label">{{ fieldLabels.factoryQuotation }}：</span>
-            <span class="field-value price">{{ formatCurrency(productData.factoryQuotation) }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.factoryQuotation.cn }}</div><div class="label-en">{{ fieldText.factoryQuotation.en }}</div></div>
+            <div class="field-value price">{{ formatCurrency(productData.factoryQuotation) }}</div>
           </div>
           <div class="field-item" v-if="shouldShowField('newestUsdQuotation')">
-            <span class="field-label">{{ fieldLabels.newestUsdQuotation }}：</span>
-            <span class="field-value price">{{ formatUSD(productData.newestUsdQuotation) }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.newestUsdQuotation.cn }}</div><div class="label-en">{{ fieldText.newestUsdQuotation.en }}</div></div>
+            <div class="field-value price">{{ formatUSD(productData.newestUsdQuotation) }}</div>
           </div>
         </div>
       </div>
@@ -78,8 +78,8 @@
         </div>
         <div class="card-body">
           <div class="field-item" v-if="shouldShowField('size')">
-            <span class="field-label">{{ fieldLabels.size }}：</span>
-            <span class="field-value">{{ productData.size }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.size.cn }}</div><div class="label-en">{{ fieldText.size.en }}</div></div>
+            <div class="field-value">{{ productData.size }}</div>
           </div>
         </div>
       </div>
@@ -92,24 +92,24 @@
         </div>
         <div class="card-body">
           <div class="field-item" v-if="shouldShowField('fabricCategoryName')">
-            <span class="field-label">{{ fieldLabels.fabricCategoryName }}：</span>
-            <span class="field-value">{{ productData.fabricCategoryName }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.fabricCategoryName.cn }}</div><div class="label-en">{{ fieldText.fabricCategoryName.en }}</div></div>
+            <div class="field-value">{{ productData.fabricCategoryName }}</div>
           </div>
           <div class="field-item" v-if="shouldShowField('fabricComposition')">
-            <span class="field-label">{{ fieldLabels.fabricComposition }}：</span>
-            <span class="field-value">{{ productData.fabricComposition }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.fabricComposition.cn }}</div><div class="label-en">{{ fieldText.fabricComposition.en }}</div></div>
+            <div class="field-value">{{ productData.fabricComposition }}</div>
           </div>
           <div class="field-item" v-if="shouldShowField('fabricWeight')">
-            <span class="field-label">{{ fieldLabels.fabricWeight }}：</span>
-            <span class="field-value">{{ productData.fabricWeight }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.fabricWeight.cn }}</div><div class="label-en">{{ fieldText.fabricWeight.en }}</div></div>
+            <div class="field-value">{{ productData.fabricWeight }}</div>
           </div>
           <div class="field-item" v-if="shouldShowField('fabricPrice')">
-            <span class="field-label">{{ fieldLabels.fabricPrice }}：</span>
-            <span class="field-value price">{{ formatCurrency(productData.fabricPrice) }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.fabricPrice.cn }}</div><div class="label-en">{{ fieldText.fabricPrice.en }}</div></div>
+            <div class="field-value price">{{ formatCurrency(productData.fabricPrice) }}</div>
           </div>
           <div class="field-item" v-if="shouldShowField('fabricSupplierName')">
-            <span class="field-label">{{ fieldLabels.fabricSupplierName }}：</span>
-            <span class="field-value">{{ productData.fabricSupplierName }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.fabricSupplierName.cn }}</div><div class="label-en">{{ fieldText.fabricSupplierName.en }}</div></div>
+            <div class="field-value">{{ productData.fabricSupplierName }}</div>
           </div>
         </div>
       </div>
@@ -122,24 +122,24 @@
         </div>
         <div class="card-body">
           <div class="field-item" v-if="shouldShowField('liningCategory')">
-            <span class="field-label">{{ fieldLabels.liningCategory }}：</span>
-            <span class="field-value">{{ productData.liningCategory }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.liningCategory.cn }}</div><div class="label-en">{{ fieldText.liningCategory.en }}</div></div>
+            <div class="field-value">{{ productData.liningCategory }}</div>
           </div>
           <div class="field-item" v-if="shouldShowField('liningIngredient')">
-            <span class="field-label">{{ fieldLabels.liningIngredient }}：</span>
-            <span class="field-value">{{ productData.liningIngredient }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.liningIngredient.cn }}</div><div class="label-en">{{ fieldText.liningIngredient.en }}</div></div>
+            <div class="field-value">{{ productData.liningIngredient }}</div>
           </div>
           <div class="field-item" v-if="shouldShowField('liningWeightPer')">
-            <span class="field-label">{{ fieldLabels.liningWeightPer }}：</span>
-            <span class="field-value">{{ productData.liningWeightPer }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.liningWeightPer.cn }}</div><div class="label-en">{{ fieldText.liningWeightPer.en }}</div></div>
+            <div class="field-value">{{ productData.liningWeightPer }}</div>
           </div>
           <div class="field-item" v-if="shouldShowField('liningPrice')">
-            <span class="field-label">{{ fieldLabels.liningPrice }}：</span>
-            <span class="field-value price">{{ formatCurrency(productData.liningPrice) }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.liningPrice.cn }}</div><div class="label-en">{{ fieldText.liningPrice.en }}</div></div>
+            <div class="field-value price">{{ formatCurrency(productData.liningPrice) }}</div>
           </div>
           <div class="field-item" v-if="shouldShowField('liningSupplierName')">
-            <span class="field-label">{{ fieldLabels.liningSupplierName }}：</span>
-            <span class="field-value">{{ productData.liningSupplierName }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.liningSupplierName.cn }}</div><div class="label-en">{{ fieldText.liningSupplierName.en }}</div></div>
+            <div class="field-value">{{ productData.liningSupplierName }}</div>
           </div>
         </div>
       </div>
@@ -151,8 +151,8 @@
         </div>
         <div class="card-body">
           <div class="field-item" v-if="shouldShowField('remark')">
-            <span class="field-label">{{ fieldLabels.remark }}：</span>
-            <span class="field-value remark">{{ productData.remark }}</span>
+            <div class="field-label"><div class="label-cn">{{ fieldText.remark.cn }}</div><div class="label-en">{{ fieldText.remark.en }}</div></div>
+            <div class="field-value remark">{{ productData.remark }}</div>
           </div>
         </div>
       </div>
@@ -160,7 +160,7 @@
       <!-- 照片信息卡片 -->
       <div class="card" v-if="shouldShowSection(['fileUrlList'])">
         <div class="card-header">
-          <h2>{{ fieldLabels.fileUrlList }}</h2>
+          <h2><span class="header-cn">{{ fieldText.fileUrlList.cn }}</span> <span class="header-en">{{ fieldText.fileUrlList.en }}</span></h2>
         </div>
         <div class="card-body">
           <div v-if="productData.fileUrlList && productData.fileUrlList.length > 0 && shouldShowField('fileUrlList')"
@@ -209,7 +209,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted} from 'vue'
+import {ref, onMounted, getCurrentInstance} from 'vue'
 import {useRoute} from 'vue-router'
 import {Swipe, SwipeItem, Image as VanImage, ImagePreview, showImagePreview} from 'vant';
 import {getViewDetailRequest} from '@/api/product.js'
@@ -289,30 +289,29 @@ async function fetchData(id) {
   }))
 }
 
-// 字段标签映射
-const fieldLabels = {
-  name: '产品名称',
-  sampleCategoryName: '样品类别',
-  storageTime: '入库时间',
-  clientName: '客户名称',
-  factoryName: '工厂名称',
-  clientStyleNo: '客人款号',
-  styleNo: '公司款号',
-  factoryQuotation: '工厂报价',
-  newestUsdQuotation: '美元报价',
-  size: '尺码',
-  fabricCategoryName: '面料种类',
-  fabricComposition: '面料成分',
-  fabricWeight: '面料克重',
-  fabricPrice: '面料价格',
-  fabricSupplierName: '面料供应商',
-  liningCategory: '里布种类',
-  liningIngredient: '里布成分',
-  liningWeightPer: '里布克重',
-  liningPrice: '里布价格',
-  liningSupplierName: '里布供应商',
-  remark: '备注',
-  fileUrlList: '照片'
+const fieldText = {
+  name: { cn: '产品名称', en: 'NAME' },
+  sampleCategoryName: { cn: '样品类别', en: 'SAMPLE CATEGORY' },
+  storageTime: { cn: '入库时间', en: 'DATE' },
+  clientName: { cn: '客户', en: 'CLIENT' },
+  factoryName: { cn: '工厂', en: 'FACTORY' },
+  clientStyleNo: { cn: '客人款号', en: 'CLIENT STYLE NO.' },
+  styleNo: { cn: '公司款号', en: 'STYLE NO.' },
+  factoryQuotation: { cn: '工厂报价', en: 'RMB' },
+  newestUsdQuotation: { cn: '美元报价', en: 'USD' },
+  size: { cn: '尺码', en: 'SIZE' },
+  fabricCategoryName: { cn: '面料种类', en: 'FABRIC CATEGORY' },
+  fabricComposition: { cn: '面料成分', en: 'COMPOSTION' },
+  fabricWeight: { cn: '面料克重', en: 'FABRIC WEIGHT' },
+  fabricPrice: { cn: '面料价格', en: 'FABRIC PRICE' },
+  fabricSupplierName: { cn: '面料供应商', en: 'FABRIC SUPPLIER' },
+  liningCategory: { cn: '里布种类', en: 'LINING CATEGORY' },
+  liningIngredient: { cn: '里布成分', en: 'COMPOSTION' },
+  liningWeightPer: { cn: '里布克重', en: 'LINING WEIGHT' },
+  liningPrice: { cn: '里布价格', en: 'LINING PRICE' },
+  liningSupplierName: { cn: '里布供应商', en: 'LINING SUPPLIER' },
+  remark: { cn: '备注', en: 'Remark' },
+  fileUrlList: { cn: '照片', en: 'Photos' },
 }
 
 // 获取路由参数并加载数据（示例）
@@ -355,16 +354,14 @@ onMounted(() => {
 
 // 格式化货币显示
 const formatCurrency = (value: string | number) => {
-  // if (!value) return ''
-  return '¥' + parseFloat(value).toFixed(2)
-  // return '¥' + value
+  const num = Number(value)
+  return Number.isFinite(num) ? '¥' + num.toFixed(2) : '--'
 }
 
 // 格式化美元显示
 const formatUSD = (value: string | number) => {
-  // if (!value) return ''
-  return '$' + parseFloat(value).toFixed(2)
-  // return '$' + value
+  const num = Number(value)
+  return Number.isFinite(num) ? '$' + num.toFixed(2) : '--'
 }
 
 // 判断字段是否应该显示
@@ -464,11 +461,23 @@ const handleImagePreview = (startPosition: number) => {
           }
 
           .field-label {
-            width: 30%;
-            font-weight: 500;
-            color: #666;
-            font-size: 14px;
+            width: 38%;
             flex-shrink: 0;
+          }
+
+          .label-cn {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+            line-height: 1.2;
+          }
+
+          .label-en {
+            color: #888;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            line-height: 1.2;
           }
 
           .field-value {
@@ -558,7 +567,6 @@ const handleImagePreview = (startPosition: number) => {
 
             .field-label {
               width: 100%;
-              font-weight: 600;
             }
           }
         }
