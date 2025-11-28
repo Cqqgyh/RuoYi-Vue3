@@ -194,8 +194,8 @@
                      v-hasPermi="['system:product:share']">
             下载二维码
           </el-button>
-          <el-button  v-btnPreventRepeat link type="primary" icon="Printer" @click="handlePrintPdf(scope.row)"
-                      v-hasPermi="['system:product:print']">PDF下载
+          <el-button v-btnPreventRepeat link type="primary" icon="Printer" @click="handlePrintPdf(scope.row)"
+                     v-hasPermi="['system:product:print']">PDF下载
           </el-button>
         </template>
       </el-table-column>
@@ -234,10 +234,10 @@
                   check-strictly
                   clearable
               />
-<!--              <el-select v-model="form.sampleCategoryId" placeholder="请选择样品类别" filterable clearable>-->
-<!--                <el-option v-for="item in sampleCategoryList" :key="item.value" :label="item.label"-->
-<!--                           :value="item.value"/>-->
-<!--              </el-select>-->
+              <!--              <el-select v-model="form.sampleCategoryId" placeholder="请选择样品类别" filterable clearable>-->
+              <!--                <el-option v-for="item in sampleCategoryList" :key="item.value" :label="item.label"-->
+              <!--                           :value="item.value"/>-->
+              <!--              </el-select>-->
             </el-form-item>
           </el-col>
         </el-row>
@@ -415,12 +415,26 @@
             <el-form-item label="备注" prop="remark">
               <el-input v-model.trim="form.remark" type="textarea" placeholder="请输入备注"/>
             </el-form-item>
+            <el-form-item v-if="form.id" label="历史报价" prop="remark">
+              <div>
+                <div v-if="Array.isArray(form.quotationProductList) && form.quotationProductList.length">
+                  <ul v-infinite-scroll="()=>{}" class="infinite-list" style="overflow: auto;height: 50px;
+  padding: 0;
+  margin: 0;
+  list-style: none;">
+                    <li v-for="i in form.quotationProductList" :key="i" style="margin-bottom: 10px;">
+                      <span style="margin-right:50px">报价日期:{{ i.quotationDate }}</span>
+                      <span>美元报价:{{ i.usdQuotation }}</span>
+                    </li>
+
+                  </ul>
+                </div>
+                <div v-else style="color: var(--el-text-color-secondary);">暂无历史报价</div>
+              </div>
+            </el-form-item>
 
           </el-col>
-
         </el-row>
-
-
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -509,10 +523,10 @@ getClientList()
 getSupplierList()
 //#endregion
 //#region <样品类别、面料种类>
-const { fabric_category: fabricCategoryList,  } = proxy.useDictForCode(
+const { fabric_category: fabricCategoryList } = proxy.useDictForCode(
     'fabric_category')
 console.log('fabricCategoryList', fabricCategoryList)
-const sampleCategoryList =ref([])
+const sampleCategoryList = ref([])
 const getSampleCategoryList = async () => {
   await getSampleCategoryListAll().then(response => {
     sampleCategoryList.value = proxy.handleTree(response.data, 'id')
@@ -680,6 +694,7 @@ function handleUpdate (row) {
     title.value = '修改产品'
   })
 }
+
 /** 打印PDF按钮操作 */
 function handlePrintPdf (row) {
   proxy.$modal.confirm('是否确认下载此PDF？').then(async function () {
@@ -688,8 +703,8 @@ function handlePrintPdf (row) {
         window.navigator.userAgent.includes('chat') || window.navigator.userAgent.includes('Chat')) {
       // 打开新地址页面
       window.open(window.location.origin + import.meta.env.VITE_APP_BASE_API + res.url)
-    }else {
-      await  downloadFile(window.location.origin + import.meta.env.VITE_APP_BASE_API + res.url, `产品_${row.name}.pdf`)
+    } else {
+      await downloadFile(window.location.origin + import.meta.env.VITE_APP_BASE_API + res.url, `产品_${row.name}.pdf`)
     }
     // 调用浏览器打印这个PDF
     proxy.$modal.msgSuccess('下载成功')
@@ -697,8 +712,6 @@ function handlePrintPdf (row) {
 
   }).catch(() => {})
 }
-
-
 
 const shareLink = ref('')
 
