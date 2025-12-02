@@ -418,7 +418,7 @@
             <el-form-item v-if="form.id" label="历史报价" prop="remark">
               <div>
                 <div v-if="Array.isArray(form.quotationProductList) && form.quotationProductList.length">
-                  <ul v-infinite-scroll="()=>{}" class="infinite-list" style="overflow: auto;height: 50px;
+                  <ul v-infinite-scroll="()=>{}" class="infinite-list" style="overflow: auto;max-height: 150px;
   padding: 0;
   margin: 0;
   list-style: none;">
