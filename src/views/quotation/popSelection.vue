@@ -9,7 +9,7 @@
           <el-col :span="8">
 <!--            动态rules，当tableData长度大于时，报价单号必填-->
             <el-form-item label="报价单号" prop="quotationNo" :required="true" :rules="[{ required: true, message: '请输入报价单号', trigger: 'blur' }]">
-              <el-input v-model.trim="form.quotationNo" placeholder="请输入报价单号"/>
+              <el-input v-model.trim="form.quotationNo" placeholder="请输入报价单号" maxlength="255"/>
             </el-form-item>
 
           </el-col>
@@ -59,6 +59,7 @@
                       placeholder="请输入美元报价"
                       size="small"
                       type="number"
+                      :max="9999999999999999"
                   />
                 </el-form-item>
               </template>

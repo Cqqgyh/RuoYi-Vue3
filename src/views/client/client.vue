@@ -111,25 +111,25 @@
 
       <el-form ref="dictRef" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="客户编码" prop="clientCode">
-          <el-input v-model.trim="form.clientCode" placeholder="请输入客户编码"/>
+          <el-input v-model.trim="form.clientCode" placeholder="请输入客户编码" maxlength="255"/>
         </el-form-item>
         <el-form-item label="客户名称" prop="clientName">
-          <el-input v-model.trim="form.clientName" placeholder="请输入客户名称"/>
+          <el-input v-model.trim="form.clientName" placeholder="请输入客户名称" maxlength="255"/>
         </el-form-item>
         <el-form-item label="国别" prop="country">
-          <el-input v-model.trim="form.country" placeholder="请输入国别"/>
+          <el-input v-model.trim="form.country" placeholder="请输入国别" maxlength="255"/>
         </el-form-item>
         <el-form-item label="联系人" prop="contact">
-          <el-input v-model.trim="form.contact" placeholder="请输入联系人"/>
+          <el-input v-model.trim="form.contact" placeholder="请输入联系人" maxlength="255"/>
         </el-form-item>
         <el-form-item label="电话" prop="telphone">
-          <el-input v-model.trim="form.telphone" placeholder="请输入电话"/>
+          <el-input v-model.trim="form.telphone" placeholder="请输入电话" maxlength="64"/>
         </el-form-item>
         <el-form-item label="传真" prop="fax">
-          <el-input v-model.trim="form.fax" placeholder="请输入传真"/>
+          <el-input v-model.trim="form.fax" placeholder="请输入传真" maxlength="255"/>
         </el-form-item>
         <el-form-item label="邮件" prop="email">
-          <el-input v-model.trim="form.email" placeholder="请输入邮件"/>
+          <el-input v-model.trim="form.email" placeholder="请输入邮件" maxlength="255"/>
         </el-form-item>
 
       </el-form>
