@@ -19,7 +19,7 @@
               v-model.trim="form.clientCode"
               placeholder="请输入客户编码"
               clearable
-              maxlength="50"
+              maxlength="255"
               show-word-limit
               autocomplete="off"
           />
@@ -29,7 +29,7 @@
               v-model.trim="form.clientName"
               placeholder="请输入客户名称"
               clearable
-              maxlength="100"
+              maxlength="255"
               show-word-limit
               autocomplete="off"
           />
@@ -39,7 +39,7 @@
               v-model.trim="form.country"
               placeholder="请输入国别"
               clearable
-              maxlength="50"
+              maxlength="255"
               autocomplete="off"
           />
         </el-form-item>
@@ -48,7 +48,7 @@
               v-model.trim="form.contact"
               placeholder="请输入联系人"
               clearable
-              maxlength="50"
+              maxlength="255"
               autocomplete="off"
           />
         </el-form-item>
@@ -58,7 +58,7 @@
               placeholder="请输入电话"
               type="tel"
               clearable
-              maxlength="20"
+              maxlength="64"
               autocomplete="off"
           />
         </el-form-item>
@@ -67,7 +67,7 @@
               v-model.trim="form.fax"
               placeholder="请输入传真"
               clearable
-              maxlength="20"
+              maxlength="255"
               autocomplete="off"
           />
         </el-form-item>
@@ -77,7 +77,7 @@
               placeholder="请输入邮件"
               type="email"
               clearable
-              maxlength="100"
+              maxlength="255"
               autocomplete="off"
           />
         </el-form-item>

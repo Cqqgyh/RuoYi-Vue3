@@ -15,7 +15,7 @@
           }'
       >
         <el-form-item label="产品名称" prop="name">
-          <el-input v-model.trim="form.name" placeholder="请输入产品名称" clearable/>
+          <el-input v-model.trim="form.name" placeholder="请输入产品名称" clearable maxlength="255"/>
         </el-form-item>
         <el-form-item label="样品类别" prop="sampleCategoryId">
           <el-tree-select
@@ -47,19 +47,19 @@
           </el-select>
         </el-form-item>
         <el-form-item label="客人款号" prop="clientStyleNo">
-          <el-input v-model.trim="form.clientStyleNo" placeholder="请输入客人款号" clearable/>
+          <el-input v-model.trim="form.clientStyleNo" placeholder="请输入客人款号" clearable maxlength="255"/>
         </el-form-item>
         <el-form-item label="公司款号" prop="styleNo">
-          <el-input v-model.trim="form.styleNo" placeholder="请输入公司款号" clearable/>
+          <el-input v-model.trim="form.styleNo" placeholder="请输入公司款号" clearable maxlength="255"/>
         </el-form-item>
         <el-form-item label="工厂报价" prop="factoryQuotation">
-          <el-input-number v-model.trim="form.factoryQuotation" placeholder="请输入工厂报价" :precision="2"/>
+          <el-input-number v-model.trim="form.factoryQuotation" placeholder="请输入工厂报价" :precision="2" :max="9999999999999999"/>
         </el-form-item>
         <el-form-item label="美元报价" prop="usdQuotation">
-          <el-input-number v-model.trim="form.usdQuotation" placeholder="请输入美元报价" :precision="2"/>
+          <el-input-number v-model.trim="form.usdQuotation" placeholder="请输入美元报价" :precision="2" :max="9999999999999999"/>
         </el-form-item>
         <el-form-item label="尺码" prop="size">
-          <el-input v-model.trim="form.size" placeholder="请输入尺码" clearable/>
+          <el-input v-model.trim="form.size" placeholder="请输入尺码" clearable maxlength="255"/>
         </el-form-item>
         <el-form-item label="面料种类" prop="fabricCategoryId">
           <el-select v-model="form.fabricCategoryId" placeholder="请选择面料种类" filterable clearable>
@@ -67,13 +67,13 @@
           </el-select>
         </el-form-item>
         <el-form-item label="面料成分" prop="fabricComposition">
-          <el-input v-model.trim="form.fabricComposition" placeholder="请输入面料成分" clearable/>
+          <el-input v-model.trim="form.fabricComposition" placeholder="请输入面料成分" clearable maxlength="255"/>
         </el-form-item>
         <el-form-item label="面料克重" prop="fabricWeight">
-          <el-input-number v-model.trim="form.fabricWeight" placeholder="请输入面料克重" :precision="2"/>
+          <el-input-number v-model.trim="form.fabricWeight" placeholder="请输入面料克重" :precision="2" :max="9999999999999999"/>
         </el-form-item>
         <el-form-item label="面料价格" prop="fabricPrice">
-          <el-input-number v-model.trim="form.fabricPrice" placeholder="请输入面料价格" :precision="2"/>
+          <el-input-number v-model.trim="form.fabricPrice" placeholder="请输入面料价格" :precision="2" :max="9999999999999999"/>
         </el-form-item>
         <el-form-item label="面料供应商" prop="fabricSupplierId">
           <el-select v-model="form.fabricSupplierId" placeholder="请选择面料供应商" filterable clearable>
@@ -81,16 +81,16 @@
           </el-select>
         </el-form-item>
         <el-form-item label="里布种类" prop="liningCategory">
-          <el-input v-model.trim="form.liningCategory" placeholder="请输入里布种类" clearable/>
+          <el-input v-model.trim="form.liningCategory" placeholder="请输入里布种类" clearable maxlength="255"/>
         </el-form-item>
         <el-form-item label="里布成分" prop="liningIngredient">
-          <el-input v-model.trim="form.liningIngredient" placeholder="请输入里布成分" clearable/>
+          <el-input v-model.trim="form.liningIngredient" placeholder="请输入里布成分" clearable maxlength="255"/>
         </el-form-item>
         <el-form-item label="里布克重" prop="liningWeightPer">
-          <el-input-number v-model.trim="form.liningWeightPer" placeholder="请输入里布克重" :precision="2"/>
+          <el-input-number v-model.trim="form.liningWeightPer" placeholder="请输入里布克重" :precision="2" :max="9999999999999999"/>
         </el-form-item>
         <el-form-item label="里布价格" prop="liningPrice">
-          <el-input-number v-model.trim="form.liningPrice" placeholder="请输入里布价格" :precision="2"/>
+          <el-input-number v-model.trim="form.liningPrice" placeholder="请输入里布价格" :precision="2" :max="9999999999999999"/>
         </el-form-item>
         <el-form-item label="里布供应商" prop="liningSupplierId">
           <el-select v-model="form.liningSupplierId" placeholder="请选择里布供应商" filterable clearable>

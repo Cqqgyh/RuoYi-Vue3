@@ -15,7 +15,7 @@
         }'
       >
         <el-form-item label="邮件标题" prop="subject">
-          <el-input v-model.trim="form.subject" placeholder="请输入邮件标题" clearable />
+          <el-input v-model.trim="form.subject" placeholder="请输入邮件标题" clearable maxlength="255" />
         </el-form-item>
         <el-form-item label="邮件正文" prop="content">
           <el-input v-model.trim="form.content" type="textarea" :rows="6" placeholder="请输入邮件正文" />
