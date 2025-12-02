@@ -271,7 +271,7 @@ function handleUpdate (row) {
   getDetailRequest(id).then(response => {
     form.value = response.data
     open.value = true
-    title.value = '修改字典类型'
+    title.value = '修改客户'
   })
 }
 
