@@ -59,7 +59,7 @@
                       placeholder="请输入美元报价"
                       size="small"
                       type="number"
-                      :max="9999999999999999"
+                      :max="99999999999999"
                   />
                 </el-form-item>
               </template>
