@@ -70,7 +70,7 @@
                       placeholder="请输入美元报价"
                       size="small"
                       :precision="2"
-                      :max="9999999999999999"
+                      :max="99999999999999"
                       style="width: 100%;"
                   />
                 </el-form-item>
