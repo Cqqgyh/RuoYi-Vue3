@@ -190,7 +190,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="授权码" prop="authorizationCode">
-              <el-input v-model.trim="form.authorizationCode" type="textarea" placeholder="请输入授权码"></el-input>
+              <el-input v-model.trim="form.authorizationCode"  placeholder="请输入授权码" maxlength="128"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
