@@ -286,7 +286,7 @@ const columns = ref({
   userId: { label: '业务员编号', visible: true },
   userName: { label: '业务员名称', visible: true },
   nickName: { label: '业务员昵称', visible: true },
-  deptName: { label: '部门', visible: true },
+  // deptName: { label: '部门', visible: true },
   phonenumber: { label: '手机号码', visible: true },
   authorizationCode: { label: '授权码', visible: true },
   email: { label: '邮箱', visible: true },
