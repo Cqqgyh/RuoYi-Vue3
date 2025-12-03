@@ -19,7 +19,7 @@
               v-model.trim="form.clientCode"
               placeholder="请输入客户编码"
               clearable
-              maxlength="255"
+              maxlength="64"
               show-word-limit
               autocomplete="off"
           />

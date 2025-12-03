@@ -29,7 +29,7 @@
               v-model.trim="form.categoryName"
               placeholder="请输入分类名称"
               clearable
-              maxlength="100"
+              maxlength="255"
               show-word-limit
               autocomplete="off"
           />
