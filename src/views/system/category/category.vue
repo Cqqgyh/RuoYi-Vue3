@@ -90,7 +90,7 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="分类名称" prop="categoryName">
-              <el-input v-model="form.categoryName" placeholder="请输入分类名称"/>
+              <el-input v-model="form.categoryName" placeholder="请输入分类名称" maxlength="255"/>
             </el-form-item>
           </el-col>
         </el-row>

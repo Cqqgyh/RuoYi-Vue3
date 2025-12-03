@@ -117,7 +117,7 @@
           <el-input v-model.trim="form.clientName" placeholder="请输入客户名称" maxlength="255"/>
         </el-form-item>
         <el-form-item label="国别" prop="country">
-          <el-input v-model.trim="form.country" placeholder="请输入国别" maxlength="255"/>
+          <el-input v-model.trim="form.country" placeholder="请输入国别" maxlength="64"/>
         </el-form-item>
         <el-form-item label="联系人" prop="contact">
           <el-input v-model.trim="form.contact" placeholder="请输入联系人" maxlength="255"/>
