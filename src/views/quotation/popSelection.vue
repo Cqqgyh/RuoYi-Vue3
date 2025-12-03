@@ -57,7 +57,7 @@
                   <el-input
                       v-model.number="scope.row.usdQuotation"
                       placeholder="请输入美元报价"
-                      size="small"
+                      size="large"
                       type="number"
                       :max="99999999999999"
                   />
