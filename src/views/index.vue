@@ -2,7 +2,7 @@
   <div class="welcome-container">
     <div class="welcome-content">
       <h1 class="welcome-title">欢迎使用本系统</h1>
-      <p class="welcome-desc">高效、优雅、现代化的后台管理平台</p>
+<!--      <p class="welcome-desc">高效、优雅、现代化的后台管理平台</p>-->
     </div>
   </div>
 </template>
