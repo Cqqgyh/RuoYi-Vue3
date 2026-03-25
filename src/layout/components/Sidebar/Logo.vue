@@ -7,7 +7,8 @@
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="logo" class="sidebar-logo sidebar-logo2" />
-        <h1 class="sidebar-title">{{ title }}</h1>
+<!--        <h1 class="sidebar-title">{{ title }}</h1>-->
+        <h1 class="sidebar-title">{{ '蓝海服饰样品报价系统' }}</h1>
       </router-link>
     </transition>
   </div>
@@ -76,9 +77,9 @@ const getLogoTextColor = computed(() => {
       margin-right: 12px;
     }
     & .sidebar-logo2 {
-      width: 20px;
-      height: 20px;
-      margin-right: 0;
+      //width: 20px;
+      //height: 20px;
+      margin-right: 5px;
     }
 
     & .sidebar-title {
