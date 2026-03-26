@@ -633,7 +633,10 @@ function handleExport () {
   }, `产品管理_${new Date().getTime()}.xlsx`)
 }
 
-// getList()
+getList()
+getClientList()
+getSupplierList()
+getSampleCategoryList()
 onActivated(() => {
   getList()
   getClientList()
