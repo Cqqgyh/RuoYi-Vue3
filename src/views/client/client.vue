@@ -315,6 +315,7 @@ function handleExport () {
 }
 
 
+getList()
 onActivated(() => {
   getList()
 })

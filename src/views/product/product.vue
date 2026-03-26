@@ -828,12 +828,14 @@ function handleExport () {
   }, `产品管理_${new Date().getTime()}.xlsx`)
 }
 
-
+getList()
+getClientList()
+getSupplierList()
+getSampleCategoryList()
 onActivated(() => {
   getList()
   getClientList()
   getSupplierList()
   getSampleCategoryList()
-  console.log('sampleCategoryList', sampleCategoryList)
 })
 </script>

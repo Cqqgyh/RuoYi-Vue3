@@ -377,7 +377,7 @@ function handleExport () {
     ...queryParams.value,
   }, `报价管理_${new Date().getTime()}.xlsx`)
 }
-
+getList()
 onActivated(() => {
   getList()
 })
