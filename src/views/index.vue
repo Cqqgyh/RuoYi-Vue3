@@ -143,8 +143,8 @@ const featureList = computed(() => {
     },
     {
       name: '报价管理',
-      path: '/batch',
-      pathName: 'Batch',
+      path: '/quotation',
+      pathName: 'Quotation',
       short: '报',
       desc: '报价单创建与维护',
       bg: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)'
