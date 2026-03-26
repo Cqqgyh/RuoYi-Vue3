@@ -84,13 +84,13 @@
           <div class="quick-arrow">›</div>
         </div>
 
-<!--        <div class="quick-item" @click="go('/batchAddOrEdit')">-->
-<!--          <div class="quick-main">-->
-<!--            <div class="quick-title">发起报价</div>-->
-<!--            <div class="quick-desc">根据客户需求快速报价</div>-->
-<!--          </div>-->
-<!--          <div class="quick-arrow">›</div>-->
-<!--        </div>-->
+        <div class="quick-item" @click="go('/quotationAddOrEdit')">
+          <div class="quick-main">
+            <div class="quick-title">新增报价</div>
+            <div class="quick-desc">根据客户需求快速报价</div>
+          </div>
+          <div class="quick-arrow">›</div>
+        </div>
       </div>
     </section>
   </div>
