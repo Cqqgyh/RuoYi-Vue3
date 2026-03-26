@@ -296,8 +296,6 @@ async function getSupplierList () {
   supplierList.value = res.data
 }
 
-getClientList()
-getSupplierList()
 //#endregion
 //#region <样品类别、面料种类>
 const { fabric_category: fabricCategoryList } = proxy.useDictForCode(
@@ -309,7 +307,6 @@ const getSampleCategoryList = async () => {
     sampleCategoryList.value = proxy.handleTree(response.data, 'id')
   })
 }
-getSampleCategoryList()
 
 //#endregion
 
@@ -636,7 +633,14 @@ function handleExport () {
   }, `产品管理_${new Date().getTime()}.xlsx`)
 }
 
-getList()
+// getList()
+onActivated(() => {
+  getList()
+  getClientList()
+  getSupplierList()
+  getSampleCategoryList()
+  console.log('sampleCategoryList', sampleCategoryList)
+})
 </script>
 
 <style scoped lang="scss">

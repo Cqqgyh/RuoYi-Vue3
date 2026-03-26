@@ -335,7 +335,11 @@ function handleExport () {
   }, `客户管理_${new Date().getTime()}.xlsx`)
 }
 
-getList()
+// getList()
+
+onActivated(() => {
+  getList()
+})
 </script>
 
 <style scoped>

@@ -386,7 +386,9 @@ function handleExport () {
   }, `报价管理_${new Date().getTime()}.xlsx`)
 }
 
-getList()
+onActivated(() => {
+  getList()
+})
 </script>
 
 <style scoped>

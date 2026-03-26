@@ -341,7 +341,9 @@ function handleExport () {
   }, `供应商管理_${new Date().getTime()}.xlsx`)
 }
 
-getList()
+onActivated(() => {
+  getList()
+})
 </script>
 
 <style scoped>
